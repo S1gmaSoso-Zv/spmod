@@ -1,0 +1,10 @@
+{
+  "proxyEnabled": true,
+  "proxyUrl": "socks5://127.0.0.1:10808",
+  "downloadDir": "C:\\Users\\sigma\\Music\\Spotify Downloads",
+  "activePreset": "direct",
+  "lastVerified": "2026-11-07T20:00:00.000Z",
+  "lastBypassDate": "2026-11-07T15:30:35.253Z",
+  "accountCountry": "LV",
+  "autoBypass": true
+}

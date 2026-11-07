@@ -1,0 +1,12 @@
+{
+  "name": "spotify-mod",
+  "version": "0.1.0",
+  "description": "Custom Spotify modification with modular theming and zero-dependency builder",
+  "main": "dist/bundle.js",
+  "scripts": {
+    "build": "node build.js"
+  },
+  "keywords": ["spotify", "mod"],
+  "author": "",
+  "license": "MIT"
+}

@@ -1,0 +1,176 @@
+/* ============================================================
+   Spotify Encore Design System - Offline Downloader Controls
+   Strict Spotify Desktop Aesthetic (Zero Emojis, Pure SVG & CSS)
+   ============================================================ */
+
+/* 1. Кнопка скачивания в шапке плейлиста (нативный круглый стиль 32x32px) */
+.mod-download-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background: transparent;
+  color: #b3b3b3;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  margin-left: 8px;
+  transition: transform 0.15s cubic-bezier(0.3, 0, 0, 1), color 0.15s ease;
+  position: relative;
+  flex-shrink: 0;
+  padding: 0;
+}
+
+.mod-download-btn:hover {
+  color: #ffffff;
+  transform: scale(1.05);
+}
+
+.mod-download-btn:active {
+  transform: scale(0.95);
+}
+
+.mod-download-btn svg {
+  width: 16px;
+  height: 16px;
+  display: block;
+  fill: currentColor;
+}
+
+/* Статус: Скачивание (вращение стрелки) */
+.mod-download-btn.downloading {
+  color: #1ed760;
+  animation: modSpin 1.4s linear infinite;
+}
+
+@keyframes modSpin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Статус: Скачано (зеленая круглая иконка как в Spotify Premium) */
+.mod-download-btn.downloaded {
+  color: #1ed760;
+}
+
+.mod-download-btn.downloaded:hover {
+  color: #1fdf64;
+  transform: scale(1.06);
+}
+
+/* 2. Текстовый счетчик прогресса (чистый шрифт без рамок и вырвиглазных цветов) */
+.mod-action-counter {
+  display: inline-flex;
+  align-items: center;
+  font-size: 12px;
+  font-weight: 500;
+  color: #b3b3b3;
+  margin-left: 8px;
+  margin-right: 4px;
+  white-space: nowrap;
+  letter-spacing: -0.01em;
+  vertical-align: middle;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* 3. Кнопки управления (Пауза, Стоп) в стиле Spotify Encore (круглые 32x32px) */
+.mod-encore-circle-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: transparent;
+  border: none;
+  color: #b3b3b3;
+  cursor: pointer;
+  transition: transform 0.15s cubic-bezier(0.3, 0, 0, 1), color 0.15s ease, background-color 0.15s ease;
+  margin-left: 4px;
+  padding: 0;
+  vertical-align: middle;
+}
+
+.mod-encore-circle-btn:hover {
+  color: #ffffff;
+  background-color: rgba(255, 255, 255, 0.08);
+  transform: scale(1.06);
+}
+
+.mod-encore-circle-btn:active {
+  transform: scale(0.95);
+}
+
+.mod-encore-circle-btn svg {
+  width: 14px;
+  height: 14px;
+  display: block;
+  fill: currentColor;
+}
+
+.mod-encore-circle-btn.danger:hover {
+  color: #f15e6c;
+  background-color: rgba(241, 94, 108, 0.1);
+}
+
+/* 4. Выпадающее контекстное меню для скачанного плейлиста (Encore Context Menu) */
+.mod-encore-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  margin-top: 6px;
+  background-color: #282828;
+  border-radius: 6px;
+  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.08);
+  padding: 4px;
+  min-width: 210px;
+  z-index: 999999;
+  display: flex;
+  flex-direction: column;
+  animation: modMenuFade 0.15s cubic-bezier(0.3, 0, 0, 1);
+}
+
+@keyframes modMenuFade {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.mod-encore-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 12px;
+  border-radius: 4px;
+  color: #eaeaea;
+  font-size: 13px;
+  font-weight: 500;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  width: 100%;
+  transition: background-color 0.12s ease, color 0.12s ease;
+}
+
+.mod-encore-menu-item:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+}
+
+.mod-encore-menu-item.danger {
+  color: #f15e6c;
+}
+
+.mod-encore-menu-item.danger:hover {
+  background-color: rgba(241, 94, 108, 0.15);
+  color: #ff6b7a;
+}
+
+.mod-encore-menu-item svg {
+  width: 16px;
+  height: 16px;
+  fill: currentColor;
+  flex-shrink: 0;
+}

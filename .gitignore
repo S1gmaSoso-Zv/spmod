@@ -1,0 +1,52 @@
+# Logs & runtime data
+*.log
+*.log.*
+companion/*.log
+companion/*.log.*
+companion/playlists.json
+
+# Test, scratch & temporary debug scripts
+check_*.ps1
+test_*.ps1
+diag_*.ps1
+watch_*.ps1
+monitor_*.ps1
+find_*.ps1
+restore_*.ps1
+read_*.ps1
+launch_*.ps1
+launch.ps1
+get_*.ps1
+fix_*.ps1
+prepare_*.ps1
+remove_*.ps1
+reset_*.ps1
+restart_*.ps1
+start_spotify.ps1
+run_*.ps1
+dl_*.ps1
+extract_*.ps1
+inject_*.ps1
+create_*.ps1
+enum_*.ps1
+cleanup-*.ps1
+debug_*.ps1
+get_cdp_errors.js
+spotx_*.*
+TEST_*.md
+tests/
+dummy_*.*
+*.m4a
+*.mp3
+Spotify Downloads/
+
+# Backups & local agent artifacts
+backup/
+.agents/
+extracted_test/
+*.bak
+
+# Node & OS
+node_modules/
+.DS_Store
+Thumbs.db

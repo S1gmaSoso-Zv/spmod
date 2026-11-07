@@ -1,0 +1,845 @@
+/* ============================================================
+   Spotify Encore Design System - Mod Settings & Controls
+   Strict Spotify Desktop Aesthetic (Pure SVG & CSS, Zero Emojis)
+   ============================================================ */
+
+/* 1. Кнопка настроек мода в правой верхней панели (возле профиля) */
+.mod-topbar-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background-color: rgba(0, 0, 0, 0.54);
+  color: #b3b3b3;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  margin-right: 8px;
+  margin-left: 4px;
+  transition: transform 0.2s cubic-bezier(0.3, 0, 0, 1), color 0.15s ease, background-color 0.15s ease;
+  position: relative;
+  flex-shrink: 0;
+  vertical-align: middle;
+  padding: 0;
+}
+
+.mod-topbar-button:hover {
+  background-color: rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+  transform: scale(1.06);
+}
+
+.mod-topbar-button:active,
+.mod-topbar-button.active {
+  background-color: rgba(255, 255, 255, 0.18);
+  color: #ffffff;
+  transform: scale(0.96);
+}
+
+.mod-topbar-button svg {
+  width: 18px;
+  height: 18px;
+  display: block;
+  fill: currentColor;
+  transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.mod-topbar-button.spinning svg {
+  transform: rotate(360deg);
+}
+
+/* 2. Модальный оверлей */
+.mod-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.72);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 999999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: modFadeIn 0.15s cubic-bezier(0.3, 0, 0, 1);
+}
+
+.mod-modal-overlay.closing {
+  animation: modFadeOut 0.15s cubic-bezier(0, 0, 0.2, 1) forwards;
+}
+
+.mod-modal-overlay.closing .mod-modal-dialog {
+  animation: modScaleDown 0.15s cubic-bezier(0, 0, 0.2, 1) forwards;
+}
+
+@keyframes modFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes modFadeOut {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+/* 3. Окно настроек */
+.mod-modal-dialog {
+  width: 780px;
+  max-width: 92vw;
+  max-height: 84vh;
+  background-color: #121212;
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.65), 0 0 0 1px rgba(255, 255, 255, 0.08);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  font-family: var(--mod-font-family, inherit);
+  animation: modScaleUp 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes modScaleUp {
+  from { opacity: 0; transform: scale(0.97); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes modScaleDown {
+  from { opacity: 1; transform: scale(1); }
+  to { opacity: 0; transform: scale(0.96); }
+}
+
+/* 4. Шапка модального окна */
+.mod-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px 14px 24px;
+  background-color: #121212;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.mod-modal-title-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.mod-modal-title {
+  margin: 0;
+  font-family: var(--encore-title-font-stack, var(--font-family, inherit));
+  font-size: 20px;
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: -0.04em;
+}
+
+.mod-modal-subtitle {
+  font-size: 13px;
+  color: #b3b3b3;
+  margin-top: 3px;
+}
+
+.mod-modal-close-btn {
+  background: transparent;
+  border: none;
+  color: #b3b3b3;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s ease;
+  padding: 0;
+}
+
+.mod-modal-close-btn:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  transform: scale(1.05);
+}
+
+/* 5. Навигационные вкладки в нативном стиле Encore Pills */
+.mod-tabs-nav {
+  display: flex;
+  align-items: center;
+  background-color: #121212;
+  padding: 12px 24px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  gap: 8px;
+  overflow-x: hidden;
+  flex-wrap: nowrap;
+}
+
+.mod-tab-btn {
+  background-color: rgba(255, 255, 255, 0.07);
+  border: none;
+  color: #ffffff;
+  padding: 8px 16px;
+  font-size: 13px;
+  font-weight: 700;
+  border-radius: 9999px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s cubic-bezier(0.2, 0, 0, 1);
+  white-space: nowrap;
+  user-select: none;
+}
+
+.mod-tab-btn:hover {
+  background-color: rgba(255, 255, 255, 0.12);
+  transform: scale(1.02);
+}
+
+.mod-tab-btn:active {
+  transform: scale(0.97);
+}
+
+.mod-tab-btn.active {
+  background-color: #ffffff;
+  color: #000000;
+}
+
+.mod-tab-btn.active svg {
+  fill: #000000;
+}
+
+.mod-tab-btn svg {
+  width: 16px;
+  height: 16px;
+  fill: currentColor;
+  transition: fill 0.15s ease;
+}
+
+/* 6. Тело окна и контент вкладок */
+.mod-modal-body {
+  padding: 20px 24px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-height: calc(84vh - 140px);
+}
+
+.mod-tab-content {
+  display: none;
+  flex-direction: column;
+  gap: 12px;
+  animation: modFadeIn 0.15s ease;
+}
+
+.mod-tab-content.active {
+  display: flex;
+  animation: modTabEnter 0.18s cubic-bezier(0, 0, 0.2, 1);
+}
+
+@keyframes modTabEnter {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Карточки секций */
+.mod-card {
+  padding: 16px 18px;
+  border-radius: 8px;
+  background-color: #181818;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.65);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.mod-card:hover {
+  background-color: #1e1e1e;
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+.mod-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.mod-card-title {
+  font-family: var(--encore-title-font-stack, var(--font-family, inherit));
+  font-size: 15px;
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: -0.02em;
+}
+
+.mod-card-desc {
+  font-size: 13px;
+  color: #b3b3b3;
+  line-height: 1.5;
+}
+
+/* Информационный коллаут */
+.mod-callout {
+  padding: 12px 16px;
+  border-radius: 8px;
+  background: rgba(30, 215, 96, 0.06);
+  border: 1px solid rgba(30, 215, 96, 0.2);
+  color: #d1d1d1;
+  font-size: 12px;
+  line-height: 1.45;
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
+
+.mod-callout svg {
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+/* Кнопки Encore */
+.mod-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 7px 14px;
+  border-radius: 9999px;
+  font-size: 12px;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.15s ease, background-color 0.15s ease, color 0.15s ease;
+  user-select: none;
+}
+
+.mod-btn:hover {
+  transform: scale(1.03);
+}
+
+.mod-btn:active {
+  transform: scale(0.97);
+}
+
+.mod-btn-primary {
+  background-color: #1ed760;
+  color: #000000;
+}
+
+.mod-btn-primary:hover {
+  background-color: #1fdf64;
+}
+
+.mod-btn-secondary {
+  background-color: rgba(255, 255, 255, 0.08);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.mod-btn-secondary:hover {
+  background-color: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.mod-btn-danger {
+  background-color: rgba(241, 94, 108, 0.12);
+  color: #f15e6c;
+  border: 1px solid rgba(241, 94, 108, 0.25);
+}
+
+.mod-btn-danger:hover {
+  background-color: rgba(241, 94, 108, 0.2);
+}
+
+/* Бейджи-пилюли Encore */
+.mod-pill-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 10px;
+  border-radius: 9999px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  background: rgba(255, 255, 255, 0.08);
+  color: #ffffff;
+}
+
+/* Поле пути */
+.mod-path-box {
+  background-color: #121212;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 6px;
+  padding: 8px 12px;
+  font-family: Consolas, monospace;
+  font-size: 11.5px;
+  color: #1ed760;
+  word-break: break-all;
+}
+
+/* Поле ввода */
+.mod-input {
+  background-color: #121212;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 6px;
+  color: #ffffff;
+  padding: 7px 12px;
+  font-size: 12.5px;
+  outline: none;
+  flex: 1;
+  transition: border-color 0.15s ease;
+}
+
+.mod-input:focus {
+  border-color: #1ed760;
+}
+
+/* Фильтры по категориям в стиле нативных пиллов Spotify */
+.mod-country-filters {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-top: 4px;
+}
+
+.mod-country-filter-btn {
+  background: rgba(255, 255, 255, 0.07);
+  border: none;
+  color: #ffffff;
+  padding: 6px 14px;
+  border-radius: 16px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.mod-country-filter-btn:hover {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.mod-country-filter-btn.active {
+  background: #ffffff;
+  color: #000000;
+}
+
+/* Пресеты серверов */
+.mod-preset-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  border-radius: 6px;
+  background-color: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.mod-preset-item:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.mod-preset-item.active {
+  background-color: rgba(30, 215, 96, 0.06);
+  border-color: rgba(30, 215, 96, 0.35);
+}
+
+.mod-preset-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.mod-preset-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.mod-preset-url {
+  font-size: 11px;
+  color: #888888;
+  font-family: Consolas, monospace;
+}
+
+/* Статус проверки прокси */
+.mod-proxy-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.mod-proxy-badge.success {
+  background: rgba(30, 215, 96, 0.12);
+  border: 1px solid rgba(30, 215, 96, 0.3);
+  color: #1ed760;
+}
+
+.mod-proxy-badge.error {
+  background: rgba(233, 20, 41, 0.12);
+  border: 1px solid rgba(233, 20, 41, 0.3);
+  color: #f15e6c;
+}
+
+.mod-proxy-badge.testing {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #d1d1d1;
+}
+
+/* Элементы функций */
+.mod-setting-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  background-color: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+}
+
+.mod-setting-info {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding-right: 14px;
+}
+
+.mod-setting-name {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.mod-setting-desc {
+  font-size: 11.5px;
+  color: #a7a7a7;
+  margin-top: 2px;
+}
+
+/* Тумблер Spotify */
+.mod-switch {
+  position: relative;
+  display: inline-block;
+  width: 44px;
+  height: 24px;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
+.mod-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.mod-switch-slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #535353;
+  border-radius: 24px;
+  transition: background-color 0.2s cubic-bezier(0.3, 0, 0, 1);
+}
+
+.mod-switch-slider:before {
+  position: absolute;
+  content: "";
+  height: 18px;
+  width: 18px;
+  left: 3px;
+  bottom: 3px;
+  background-color: #ffffff;
+  border-radius: 50%;
+  transition: transform 0.2s cubic-bezier(0.3, 0, 0, 1);
+}
+
+.mod-switch input:checked + .mod-switch-slider {
+  background-color: #1ed760;
+}
+
+.mod-switch input:checked + .mod-switch-slider:before {
+  transform: translateX(20px);
+}
+
+/* Подвал окна */
+.mod-modal-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 24px;
+  background-color: #121212;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.mod-modal-status-badge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: #a7a7a7;
+}
+
+.mod-status-indicator {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #1ed760;
+  box-shadow: 0 0 8px rgba(30, 215, 96, 0.6);
+  flex-shrink: 0;
+}
+
+.mod-status-indicator.offline {
+  background-color: #e91429;
+  box-shadow: 0 0 8px rgba(233, 20, 41, 0.6);
+}
+
+.mod-modal-hotkey-hint {
+  font-size: 11px;
+  color: #6a6a6a;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 3px 7px;
+  border-radius: 4px;
+  font-family: monospace;
+}
+
+/* ============================================================
+   Блок обхода 14 дней и выбор региона Spotify Encore
+   ============================================================ */
+
+/* Баннер статуса обхода Encore */
+.mod-bypass-banner {
+  background-color: #181818;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  padding: 16px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+
+.mod-bypass-banner:hover {
+  border-color: rgba(255, 255, 255, 0.14);
+}
+
+.mod-bypass-status-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.mod-status-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 10px;
+  border-radius: 9999px;
+  font-size: 11px;
+  font-weight: 700;
+  background: rgba(30, 215, 96, 0.12);
+  color: #1ed760;
+  border: 1px solid rgba(30, 215, 96, 0.25);
+  margin-left: auto;
+}
+
+.mod-status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: #1ed760;
+  flex-shrink: 0;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.mod-status-dot.error,
+.mod-status-dot--error {
+  background-color: #f15e6c;
+}
+
+.mod-status-dot.muted,
+.mod-status-dot--muted {
+  background-color: #a7a7a7;
+}
+
+.mod-bypass-indicator {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #1ed760;
+  flex-shrink: 0;
+}
+
+.mod-bypass-title {
+  font-family: var(--encore-title-font-stack, var(--font-family, inherit));
+  font-size: 14px;
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: -0.02em;
+}
+
+.mod-bypass-desc {
+  font-size: 12px;
+  color: #b3b3b3;
+  line-height: 1.5;
+}
+
+.mod-bypass-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 4px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.mod-bypass-meta-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11.5px;
+  color: #a7a7a7;
+}
+
+/* Интерактивная сетка регионов */
+.mod-region-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-top: 6px;
+  max-height: 280px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.mod-region-card {
+  background-color: #181818;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 6px;
+  padding: 10px 12px;
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease, transform 0.15s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  position: relative;
+  user-select: none;
+}
+
+.mod-region-card:hover {
+  background-color: #242424;
+  border-color: rgba(255, 255, 255, 0.2);
+  transform: translateY(-1px);
+}
+
+.mod-region-card.active {
+  background-color: #222222;
+  border-color: #1ed760;
+  box-shadow: 0 0 0 1px #1ed760;
+}
+
+.mod-region-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.mod-country-badge,
+.mod-region-code {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 26px;
+  height: 18px;
+  padding: 0 5px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: 0.04em;
+}
+
+.mod-region-card.active .mod-country-badge,
+.mod-region-card.active .mod-region-code {
+  background: #1ed760;
+  color: #000000;
+}
+
+.mod-region-radio {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 1.5px solid #727272;
+  position: relative;
+  transition: all 0.15s ease;
+}
+
+.mod-region-card.active .mod-region-radio {
+  border-color: #1ed760;
+  background-color: #1ed760;
+  box-shadow: inset 0 0 0 3px #181818;
+}
+
+.mod-region-name {
+  font-size: 13px;
+  font-weight: 700;
+  color: #ffffff;
+  line-height: 1.2;
+}
+
+.mod-region-hint {
+  font-size: 11px;
+  color: #888888;
+  line-height: 1.35;
+}
+
+/* Пошаговая инструкция для человека */
+.mod-steps-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 6px;
+}
+
+.mod-step-item {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.mod-step-num {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  color: #1ed760;
+  font-size: 11px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.mod-step-text {
+  font-size: 12px;
+  color: #d1d1d1;
+  line-height: 1.45;
+  flex: 1;
+}
+
+

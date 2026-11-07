@@ -1,0 +1,154 @@
+/* ============================================================
+   Spotify Mod - Advanced CSS Adblock (Leaf-Level Scoped)
+   Hides banners, upgrade prompts, sponsored slots, and visual clutter
+   Eliminates container :has() to preserve right sidebar & Now Playing Bar
+   Keeps user profile menu, context menus, and navigation fully functional
+   ============================================================ */
+
+/* 1. Кнопки Upgrade to Premium в шапке и панелях */
+.Root__top-bar [data-testid="upgrade-button"],
+button[data-testid="upgrade-button"],
+a[data-testid="upgrade-button"],
+[data-testid="top-bar-upgrade-button"],
+[data-testid="action-bar-button-upgrade"],
+.main-topBar-UpgradeButton,
+[data-testid="user-widget-dropdown-menu"] [data-testid="loggedin_upgrade_menu"],
+[id*="loggedin_upgrade_menu"],
+a[href*="spotify.com/premium"]:not([data-testid="user-widget-link"]),
+a[href*="spotify.com/purchase"]:not([data-testid="user-widget-link"]),
+button[aria-label*="Upgrade"]:not([data-testid*="user"]),
+button[aria-label*="Улучшить"]:not([data-testid*="user"]),
+a[aria-label*="Upgrade"]:not([data-testid*="user"]),
+a[aria-label*="Улучшить"]:not([data-testid*="user"]) {
+  display: none !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  width: 0 !important;
+  height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* 2. Leaderboard banners (between navigation and player) */
+#leaderboard-ad-element,
+.uAHPSe7bihFdDS76WWIg,
+.VMAxhgsNK7QdtS6kLrYW,
+[data-testid="hpto-parent-container"],
+.GBFjEce25V0Iu4r0ElZX,
+.main-leaderboardComponent-container,
+[data-testid="test-ref-div"] {
+  display: none !important;
+  height: 0 !important;
+  min-height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+}
+
+/* 3. Homepage Takeover & In-Feed Banners & General Ad Containers */
+div[data-testid="ad-banner"],
+div[data-testid="billboard-ad"],
+div[data-testid="leaderboard-ad"],
+div[data-testid="in-feed-ad"],
+[data-testid="test-ad-container"],
+[data-testid="home-upsell-card"],
+.home-ads-container,
+[class*="home-ads-container"],
+.b1RJ1EmDQKXxEdRfS3VV,
+.y8zgGn9TRryk8aSMwRag,
+.main-home-upsell,
+.main-billboardComponent-container,
+.banner-ad-container,
+.ad-iframe,
+.ad-placeholder,
+.sponsor-container,
+[class*="ad-container"],
+div[data-testid*="upsell"],
+div[data-testid*="ad-slot"],
+[data-testid="home-ad-card"],
+.GdrmVD6TSeSu2IGKWHm7 {
+  display: none !important;
+  height: 0 !important;
+  min-height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+}
+
+/* 4. Playlist & Show Leavebehinds (Sponsored cards & Recent Ads) */
+[data-testid="leavebehinds-wrapper"],
+[data-testid="leavebehind"],
+[data-testid="leavebehinds-list-wrapper"],
+[data-testid="leavebehinds-see-all"],
+div[data-testid="feed-upsell-banner"],
+div[data-testid="download-cta-banner"],
+[class*="SponsoredPlaceholder"],
+[class*="sponsored-container"],
+[class*="AdvertContainer"] {
+  display: none !important;
+  height: 0 !important;
+  min-height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+}
+
+/* 5. Desktop Update Notification Banner */
+[data-testid="desktop-update-banner"],
+div[data-testid="desktop-update-banner"],
+.riCDTx8wwIkR8ilEuxOA,
+.desktop-update-notification,
+[class*="UpsellBanner"] {
+  display: none !important;
+  height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* 6. Premium Upsell Page & Modals */
+.ZzU_KGHiP55yEoQV7TkV,
+iframe[src*="sponsored-recommendations.spotify.com"],
+[data-testid*="upsell-tooltip"],
+[data-testid*="premium-upsell"],
+div[class*="upsellTooltip"],
+div[data-theme="encore-blue-set"]:not(:has([role="menu"])),
+div[data-theme="encore-blue"]:not(:has([role="menu"])),
+div[class*="tippy-box"][data-theme*="blue"]:not(:has([role="menu"])),
+div[class*="tippy-box"][data-theme*="announcement"]:not(:has([role="menu"])),
+div[class*="encore-announcement"]:not(:has([role="menu"])) {
+  display: none !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  visibility: hidden !important;
+}
+
+/* 7. Context menu items (Download / Premium) */
+ul[role="menu"] li:has(button[aria-label*="Скачать"]),
+ul[role="menu"] li:has(button[aria-label*="Download"]),
+ul[role="menu"] li:has(a[href*="premium"]),
+ul[role="menu"] button:has(svg path[d*="M12 3a9"]):not(#mod-player-download-btn) {
+  display: none !important;
+}
+
+/* 8. Scoped Ad Break Overlays (NEVER touches aside or now-playing-widget containers) */
+[data-testid="ad-break-container"],
+[class*="AdBreak"],
+[class*="ad-break"],
+[data-testid="video-ad-overlay"],
+.main-adBreak-container,
+[data-testid="skippable-ad-circle-timer"],
+[data-testid="skippable-ad-delay"],
+.A_dgCpuNz1P_9_RPygVC,
+[data-testid="video-player-parking-surface"] {
+  display: none !important;
+  pointer-events: none !important;
+  height: 0 !important;
+  width: 0 !important;
+}
+
+/* 9. Video ad overlay suppression during ad playback */
+body.mod-ad-playing [data-testid="video-player-parking-surface"],
+body.mod-ad-playing [data-testid="video-ad-overlay"] {
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
