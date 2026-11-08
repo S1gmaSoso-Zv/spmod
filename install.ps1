@@ -17,12 +17,38 @@ $isRemote = [string]::IsNullOrEmpty($PSScriptRoot)
 $modRoot = if ($isRemote) { $TargetDir } else { $PSScriptRoot }
 
 if ($isRemote) {
-    Write-Host "`n[1/8] Running via Web One-Liner. Setting up mod directory..." -ForegroundColor Yellow
+    Write-Host "`n[1/8] Running via Web One-Liner. Downloading spmod package..." -ForegroundColor Yellow
     if (-not (Test-Path $modRoot)) {
         New-Item -ItemType Directory -Path $modRoot -Force | Out-Null
     }
     
-    Write-Host "      Target directory: $modRoot" -ForegroundColor Green
+    try {
+        $zipUrl = "https://github.com/S1gmaSoso-Zv/spmod/archive/refs/heads/main.zip"
+        $tempZip = "$env:TEMP\spmod-main.zip"
+        $tempExtract = "$env:TEMP\spmod-extract"
+        
+        if (Test-Path $tempExtract) { Remove-Item $tempExtract -Recurse -Force -ErrorAction SilentlyContinue }
+        
+        Invoke-WebRequest -Uri $zipUrl -OutFile $tempZip -UseBasicParsing
+        
+        if (Get-Command Expand-Archive -ErrorAction SilentlyContinue) {
+            Expand-Archive -Path $tempZip -DestinationPath $tempExtract -Force
+        } else {
+            Add-Type -AssemblyName System.IO.Compression.FileSystem
+            [System.IO.Compression.ZipFile]::ExtractToDirectory($tempZip, $tempExtract)
+        }
+        
+        $extractedFolder = Join-Path $tempExtract "spmod-main"
+        if (Test-Path $extractedFolder) {
+            Copy-Item -Path "$extractedFolder\*" -Destination $modRoot -Recurse -Force
+        }
+        
+        Remove-Item $tempZip -Force -ErrorAction SilentlyContinue
+        Remove-Item $tempExtract -Recurse -Force -ErrorAction SilentlyContinue
+        Write-Host "      Downloaded and unpacked spmod to: $modRoot" -ForegroundColor Green
+    } catch {
+        Write-Host "      Zip package pull: $($_.Exception.Message). Ensuring individual files..." -ForegroundColor Yellow
+    }
 } else {
     Write-Host "`n[1/8] Local installer running from: $modRoot" -ForegroundColor Green
 }
@@ -149,13 +175,21 @@ if (-not (Test-Path $spaBak)) {
 
 $bundleFile = "$modRoot\dist\bundle.js"
 if (-not (Test-Path $bundleFile)) {
-    
-    if (Get-Command node -ErrorAction SilentlyContinue) {
+    $bundleDir = Split-Path $bundleFile
+    if (-not (Test-Path $bundleDir)) { New-Item -ItemType Directory -Path $bundleDir -Force | Out-Null }
+
+    if ((Get-Command node -ErrorAction SilentlyContinue) -and (Test-Path "$modRoot\build.js")) {
         Write-Host "      Building latest bundle.js..." -ForegroundColor Yellow
         & node "$modRoot\build.js"
     } else {
-        Write-Error "Prebuilt dist/bundle.js not found in mod root."
-        exit 1
+        Write-Host "      Downloading prebuilt bundle.js from GitHub..." -ForegroundColor Yellow
+        try {
+            Invoke-WebRequest -Uri "https://raw.githubusercontent.com/S1gmaSoso-Zv/spmod/main/dist/bundle.js" -OutFile $bundleFile -UseBasicParsing
+            Write-Host "      Prebuilt bundle.js fetched successfully." -ForegroundColor Green
+        } catch {
+            Write-Error "Could not retrieve bundle.js: $($_.Exception.Message)"
+            exit 1
+        }
     }
 }
 
@@ -201,11 +235,27 @@ try {
 }
 
 Write-Host "`n[7/8] Setting up Companion Daemon and Auto-Start..." -ForegroundColor Yellow
+$companionDir = "$modRoot\companion"
+if (-not (Test-Path $companionDir)) { New-Item -ItemType Directory -Path $companionDir -Force | Out-Null }
+$rawBase = "https://raw.githubusercontent.com/S1gmaSoso-Zv/spmod/main"
+
+foreach ($f in @("server.js", "downloader.js", "SpotifyCompanionDaemon.cs", "start.ps1", "SpotifyCompanionDaemon.exe")) {
+    $targetFile = "$companionDir\$f"
+    if (-not (Test-Path $targetFile)) {
+        try {
+            Invoke-WebRequest -Uri "$rawBase/companion/$f" -OutFile $targetFile -UseBasicParsing
+        } catch {}
+    }
+}
+
 $daemonCs = "$modRoot\companion\SpotifyCompanionDaemon.cs"
 $daemonExe = "$modRoot\companion\SpotifyCompanionDaemon.exe"
 
-if (Test-Path $daemonCs) {
+if (-not (Test-Path $daemonExe) -and (Test-Path $daemonCs)) {
     $cscPath = "C:\Windows\Microsoft.NET\Framework64\v4.0.30319\csc.exe"
+    if (-not (Test-Path $cscPath)) {
+        $cscPath = "C:\Windows\Microsoft.NET\Framework\v4.0.30319\csc.exe"
+    }
     if (Test-Path $cscPath) {
         & $cscPath /target:winexe /optimize+ /out:"$daemonExe" "$daemonCs" | Out-Null
         Write-Host "      Compiled SpotifyCompanionDaemon.exe using native .NET." -ForegroundColor Green
