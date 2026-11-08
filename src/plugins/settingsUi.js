@@ -250,8 +250,8 @@ export const settingsUiPlugin = {
         <!-- Шапка -->
         <div class="mod-modal-header">
           <div class="mod-modal-title-group">
-            <h2 class="mod-modal-title">Spotify Mod</h2>
-            <div class="mod-modal-subtitle">Обход 14 дней, офлайн-музыка и настройки</div>
+            <h2 class="mod-modal-title">spmod</h2>
+            <div class="mod-modal-subtitle">Офлайн-загрузчик, прокси и параметры</div>
           </div>
           <button class="mod-modal-close-btn" id="mod-modal-close" aria-label="Закрыть" title="Закрыть (Esc)">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
@@ -577,7 +577,7 @@ export const settingsUiPlugin = {
             <div class="mod-status-indicator" id="mod-footer-indicator"></div>
             <span id="mod-companion-status-text">Companion подключен</span>
           </div>
-          <div class="mod-modal-hotkey-hint">Spotify Mod v2.0 • Ctrl + Shift + M</div>
+          <div class="mod-modal-hotkey-hint">spmod • Ctrl + Shift + M</div>
         </div>
       </div>
     `;
@@ -1355,8 +1355,8 @@ export const settingsUiPlugin = {
       const btn = document.createElement('button');
       btn.id = 'mod-topbar-btn';
       btn.className = 'mod-topbar-button';
-      btn.title = 'Настройки Spotify Mod (Ctrl + Shift + M)';
-      btn.setAttribute('aria-label', 'Настройки Spotify Mod');
+      btn.title = 'Настройки spmod (Ctrl + Shift + M)';
+      btn.setAttribute('aria-label', 'Настройки spmod');
 
       // Чистая SVG иконка шестеренки Spotify Encore
       btn.innerHTML = `

@@ -247,8 +247,8 @@ const server = http.createServer(async (req, res) => {
   if (req.method === 'GET' && pathname === '/ping') {
     return sendJson(res, 200, {
       status: 'ok',
-      service: 'Spotify Mod Companion',
-      version: '1.5.0',
+      service: 'spmod Companion',
+      version: '1.0.0',
       port: PORT,
       downloadDir: downloader.getDownloadDir(),
       queueLength: downloader.queue.length,
@@ -261,8 +261,8 @@ const server = http.createServer(async (req, res) => {
     const detected = await detectLocalProxies();
     return sendJson(res, 200, {
       status: 'ok',
-      service: 'Spotify Mod Companion',
-      version: '1.5.0',
+      service: 'spmod Companion',
+      version: '1.0.0',
       port: PORT,
       downloadDir: downloader.getDownloadDir(),
       queueLength: downloader.queue.length,

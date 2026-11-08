@@ -1,6 +1,6 @@
 /**
  * Spotify Mod Bundle v0.5.0 (Offline Download & Polished UI)
- * Generated: 2026-11-07T15:26:54.059Z
+ * Generated: 2026-11-08T07:09:51.835Z
  * Zero-dependency build
  */
 (function() {
@@ -1417,8 +1417,8 @@
           <!-- Шапка -->
           <div class="mod-modal-header">
             <div class="mod-modal-title-group">
-              <h2 class="mod-modal-title">Spotify Mod</h2>
-              <div class="mod-modal-subtitle">Обход 14 дней, офлайн-музыка и настройки</div>
+              <h2 class="mod-modal-title">spmod</h2>
+              <div class="mod-modal-subtitle">Офлайн-загрузчик, прокси и параметры</div>
             </div>
             <button class="mod-modal-close-btn" id="mod-modal-close" aria-label="Закрыть" title="Закрыть (Esc)">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
@@ -1744,7 +1744,7 @@
               <div class="mod-status-indicator" id="mod-footer-indicator"></div>
               <span id="mod-companion-status-text">Companion подключен</span>
             </div>
-            <div class="mod-modal-hotkey-hint">Spotify Mod v2.0 • Ctrl + Shift + M</div>
+            <div class="mod-modal-hotkey-hint">spmod • Ctrl + Shift + M</div>
           </div>
         </div>
       `;
@@ -2522,8 +2522,8 @@
         const btn = document.createElement('button');
         btn.id = 'mod-topbar-btn';
         btn.className = 'mod-topbar-button';
-        btn.title = 'Настройки Spotify Mod (Ctrl + Shift + M)';
-        btn.setAttribute('aria-label', 'Настройки Spotify Mod');
+        btn.title = 'Настройки spmod (Ctrl + Shift + M)';
+        btn.setAttribute('aria-label', 'Настройки spmod');
   
         // Чистая SVG иконка шестеренки Spotify Encore
         btn.innerHTML = `
@@ -3387,7 +3387,7 @@
         const btn = document.createElement('button');
         btn.id = 'mod-player-download-btn';
         btn.className = 'mod-download-btn';
-        btn.title = 'Скачать текущий трек офлайн (Spotify Mod)';
+        btn.title = 'Скачать текущий трек офлайн (spmod)';
         btn.setAttribute('aria-label', 'Скачать трек');
   
         btn.innerHTML = `
@@ -3505,7 +3505,7 @@
           <path d="M12 3v11.59l4.29-4.3 1.42 1.42L12 17.41l-5.71-5.7 1.42-1.42 4.29 4.3V3h2zm-8 16h16v2H4v-2z"/>
         </svg>
       `;
-      btn.title = 'Скачать плейлист (Spotify Mod)';
+      btn.title = 'Скачать плейлист (spmod)';
     },
   
     showToast(message) {

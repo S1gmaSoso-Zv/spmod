@@ -1,8 +1,8 @@
-# install.ps1 - Universal One-Click Installer for Spotify Mod
+# install.ps1 - Universal One-Click Installer for spmod
 # Supports both one-liner (irm ... | iex) and local run (Install.bat)
 [CmdletBinding()]
 param(
-    [string]$TargetDir = "$env:APPDATA\SpotifyMod",
+    [string]$TargetDir = "$env:APPDATA\spmod",
     [switch]$ForceReinstall
 )
 
@@ -10,7 +10,7 @@ $ErrorActionPreference = "Stop"
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 
 Write-Host "==========================================================" -ForegroundColor Cyan
-Write-Host "           Spotify Mod - Universal Installer              " -ForegroundColor Cyan
+Write-Host "                spmod - Native Engine                     " -ForegroundColor Cyan
 Write-Host "   (Zero Ads + Offline Downloader + Auto Proxy Detection) " -ForegroundColor Cyan
 Write-Host "==========================================================" -ForegroundColor Cyan
 
@@ -247,16 +247,16 @@ if (Test-Path $daemonCs) {
 
 # Register Windows Startup shortcut
 $startupFolder = [Environment]::GetFolderPath("Startup")
-$shortcutPath = "$startupFolder\SpotifyModCompanion.lnk"
+$shortcutPath = "$startupFolder\spmod.lnk"
 try {
     $wsh = New-Object -ComObject WScript.Shell
     $shortcut = $wsh.CreateShortcut($shortcutPath)
     $shortcut.TargetPath = $daemonExe
     $shortcut.WorkingDirectory = "$modRoot\companion"
-    $shortcut.Description = "Spotify Mod Background Companion"
+    $shortcut.Description = "spmod Background Companion"
     $shortcut.WindowStyle = 7
     $shortcut.Save()
-    Write-Host "      Created Windows Startup shortcut (silent boot on login)." -ForegroundColor Green
+    Write-Host "      Created Windows Startup shortcut (spmod.lnk)." -ForegroundColor Green
 } catch {}
 
 # Start Companion Daemon

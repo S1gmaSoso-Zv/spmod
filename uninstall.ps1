@@ -1,11 +1,11 @@
-# uninstall.ps1 - Complete 1-click uninstaller for Spotify Mod
+# uninstall.ps1 - Complete 1-click uninstaller for spmod
 [CmdletBinding()]
 param()
 
 $ErrorActionPreference = "Continue"
 
 Write-Host "=========================================" -ForegroundColor Cyan
-Write-Host "        Spotify Mod Uninstaller          " -ForegroundColor Cyan
+Write-Host "           spmod Uninstaller             " -ForegroundColor Cyan
 Write-Host "=========================================" -ForegroundColor Cyan
 
 # 1. Stop Spotify and Companion Daemon
@@ -28,10 +28,12 @@ try {
 # 2. Remove Windows Startup Shortcut
 Write-Host "[2/4] Removing Startup shortcut..." -ForegroundColor Yellow
 $startupFolder = [Environment]::GetFolderPath("Startup")
-$shortcut = "$startupFolder\SpotifyModCompanion.lnk"
-if (Test-Path $shortcut) {
-    Remove-Item $shortcut -Force -ErrorAction SilentlyContinue
-    Write-Host "      Removed: $shortcut" -ForegroundColor Green
+foreach ($lnk in @("spmod.lnk", "SpotifyModCompanion.lnk")) {
+    $shortcut = "$startupFolder\$lnk"
+    if (Test-Path $shortcut) {
+        Remove-Item $shortcut -Force -ErrorAction SilentlyContinue
+        Write-Host "      Removed: $shortcut" -ForegroundColor Green
+    }
 }
 
 # 3. Restore pristine xpui.spa from backup

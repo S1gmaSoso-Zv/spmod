@@ -685,7 +685,7 @@ export const downloaderUiPlugin = {
       const btn = document.createElement('button');
       btn.id = 'mod-player-download-btn';
       btn.className = 'mod-download-btn';
-      btn.title = 'Скачать текущий трек офлайн (Spotify Mod)';
+      btn.title = 'Скачать текущий трек офлайн (spmod)';
       btn.setAttribute('aria-label', 'Скачать трек');
 
       btn.innerHTML = `
@@ -803,7 +803,7 @@ export const downloaderUiPlugin = {
         <path d="M12 3v11.59l4.29-4.3 1.42 1.42L12 17.41l-5.71-5.7 1.42-1.42 4.29 4.3V3h2zm-8 16h16v2H4v-2z"/>
       </svg>
     `;
-    btn.title = 'Скачать плейлист (Spotify Mod)';
+    btn.title = 'Скачать плейлист (spmod)';
   },
 
   showToast(message) {
