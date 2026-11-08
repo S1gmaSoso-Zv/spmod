@@ -276,12 +276,11 @@ try {
     Write-Host "      Created Windows Startup shortcut (spmod.lnk)." -ForegroundColor Green
 } catch {}
 
-try {
-    powershell.exe -NoProfile -ExecutionPolicy Bypass -File "$modRoot\companion\start.ps1" -Restart
-} catch {
-    if (Test-Path $daemonExe) {
-        Start-Process -FilePath $daemonExe -WorkingDirectory "$modRoot\companion"
-    }
+Stop-Process -Name SpotifyCompanionDaemon -Force -ErrorAction SilentlyContinue
+Start-Sleep -Milliseconds 300
+if (Test-Path $daemonExe) {
+    Start-Process -FilePath $daemonExe -WorkingDirectory "$modRoot\companion"
+    Write-Host "      Started SpotifyCompanionDaemon background service." -ForegroundColor Green
 }
 
 Write-Host "`n[8/8] Launching Spotify..." -ForegroundColor Yellow
