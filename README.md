@@ -84,14 +84,14 @@
 Откройте **PowerShell** (`Win + X` ➔ *Терминал* или *Windows PowerShell*) и выполните:
 
 ```powershell
-irm https://raw.githubusercontent.com/siggmaxnj/spmod/main/install.ps1 | iex
+irm https://raw.githubusercontent.com/S1gmaSoso-Zv/spmod/main/install.ps1 | iex
 ```
 
 *Скрипт автоматически найдет Spotify (или установит официальный Win32, если клиент отсутствует), настроит права доступа, пропишет службу в автозагрузку и запустит клиент за 15 секунд.*
 
 ### Способ 2: Двойным кликом (Install.bat)
 
-1. Скачайте архив релиза со страницы [**Releases**](https://github.com/siggmaxnj/spmod/releases).
+1. Скачайте архив релиза со страницы [**Releases**](https://github.com/S1gmaSoso-Zv/spmod/releases).
 2. Распакуйте архив в любую папку.
 3. Запустите `Install.bat` двойным кликом.
 
