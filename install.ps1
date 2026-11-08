@@ -7,6 +7,7 @@ param(
 
 $ErrorActionPreference = "Stop"
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force -ErrorAction SilentlyContinue
 
 Write-Host "==========================================================" -ForegroundColor Cyan
 Write-Host "                spmod - Native Engine                     " -ForegroundColor Cyan
@@ -275,7 +276,13 @@ try {
     Write-Host "      Created Windows Startup shortcut (spmod.lnk)." -ForegroundColor Green
 } catch {}
 
-& "$modRoot\companion\start.ps1" -Restart
+try {
+    powershell.exe -NoProfile -ExecutionPolicy Bypass -File "$modRoot\companion\start.ps1" -Restart
+} catch {
+    if (Test-Path $daemonExe) {
+        Start-Process -FilePath $daemonExe -WorkingDirectory "$modRoot\companion"
+    }
+}
 
 Write-Host "`n[8/8] Launching Spotify..." -ForegroundColor Yellow
 $spotifyExe = "$spotifyDir\Spotify.exe"
