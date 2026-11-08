@@ -1,11 +1,4 @@
-/**
- * Plugin: Downloader UI & Offline Playback (Spotify Encore Native Design)
- * - Strict Spotify Encore styling: circular 32x32 buttons, pure SVG, zero emojis
- * - Real-time state recovery on navigation (no progress loss when switching playlists)
- * - Context menu on downloaded playlists: Play Offline, Open in Explorer, Delete from Offline
- * - In-app local audio playback engine with auto-next and shuffle
- * - Prevents duplicate downloads
- */
+
 export const downloaderUiPlugin = {
   id: 'downloader-ui',
   name: 'Офлайн скачивание плейлистов и треков',
@@ -19,7 +12,6 @@ export const downloaderUiPlugin = {
   syncTimer: null,
   menuEl: null,
 
-  // Внутренний аудио-движок для воспроизведения скачанных треков внутри Spotify
   offlinePlayer: {
     audio: new Audio(),
     playlist: null,
@@ -56,7 +48,6 @@ export const downloaderUiPlugin = {
     this.cleanupActionBarControls();
   },
 
-  // 1. БЕЗОПАСНЫЙ ФИЛЬТР ТУЛТИПОВ PREMIUM (НЕ ТРОГАЯ ВЫПАДАЮЩИЕ МЕНЮ)
   initTooltipKiller() {
     const killTooltips = () => {
       const tooltips = document.querySelectorAll(
@@ -90,7 +81,6 @@ export const downloaderUiPlugin = {
     this.tooltipKillerObserver.observe(document.body, { childList: true, subtree: true });
   },
 
-  // 2. ПЕРЕХВАТ КНОПКИ СКАЧИВАНИЯ В ШАПКЕ ПЛЕЙЛИСТА
   bindPlaylistDownloadInterceptor() {
     const self = this;
     const handledEvents = [
@@ -117,7 +107,6 @@ export const downloaderUiPlugin = {
         const playlistName = self.getCurrentPlaylistName();
         if (!playlistName) return;
 
-        // Защита от повторного запуска скачивания
         if (self.inFlightDownloads.has(playlistName)) {
           self.showToast(`Плейлист «${playlistName}» уже обрабатывается`);
           return;
@@ -138,7 +127,6 @@ export const downloaderUiPlugin = {
       }, true);
     });
 
-    // Закрытие контекстного меню по клику вне
     document.addEventListener('click', (e) => {
       if (this.menuEl && !this.menuEl.contains(e.target)) {
         this.closeContextMenu();
@@ -146,7 +134,6 @@ export const downloaderUiPlugin = {
     });
   },
 
-  // 3. БЫСТРАЯ СИНХРОНИЗАЦИЯ СОСТОЯНИЯ ПРИ НАВИГАЦИИ (БЕЗ СБРОСОВ)
   startPlaylistSync() {
     const self = this;
 
@@ -196,7 +183,7 @@ export const downloaderUiPlugin = {
             self.cleanupActionBarControls();
           }
         } else {
-          // Проверяем глобальную активную работу
+          
           if (data && data.activeJob && data.activeJob.activePlaylist && data.activeJob.activePlaylist.name === playlistName) {
             const p = data.activeJob.activePlaylist;
             self.activeDownloads.set(playlistName, p);
@@ -210,10 +197,8 @@ export const downloaderUiPlugin = {
       } catch (e) {}
     };
 
-    // Опрос каждые 800мс
     this.syncTimer = setInterval(syncCurrentView, 800);
 
-    // Мгновенная реакция на смену страницы в DOM
     const mainEl = document.querySelector('main') || document.body;
     const navObserver = new MutationObserver(() => {
       syncCurrentView();
@@ -221,11 +206,9 @@ export const downloaderUiPlugin = {
     navObserver.observe(mainEl, { childList: true, subtree: false });
   },
 
-  // 4. ОТОБРАЖЕНИЕ КНОПОК ПАУЗЫ И СТОПА В ШАПКЕ ПЛЕЙЛИСТА (100% ENCORE)
   renderActionBarControls(buttonEl, playlistName, counterText, isPaused) {
     if (!buttonEl || !buttonEl.parentNode) return;
 
-    // 1. Текстовый счетчик
     let counterEl = document.getElementById('mod-action-counter');
     if (!counterEl) {
       counterEl = document.createElement('span');
@@ -235,7 +218,6 @@ export const downloaderUiPlugin = {
     }
     counterEl.textContent = counterText;
 
-    // 2. Кнопка Пауза / Возобновить (круглая 32x32px)
     let pauseBtn = document.getElementById('mod-action-pause-btn');
     if (!pauseBtn) {
       pauseBtn = document.createElement('button');
@@ -264,7 +246,6 @@ export const downloaderUiPlugin = {
       }
     };
 
-    // 3. Кнопка Отмены (круглая 32x32px с крестиком)
     let stopBtn = document.getElementById('mod-action-stop-btn');
     if (!stopBtn) {
       stopBtn = document.createElement('button');
@@ -310,7 +291,6 @@ export const downloaderUiPlugin = {
     if (stopBtn) stopBtn.remove();
   },
 
-  // 5. КОНТЕКСТНОЕ МЕНЮ ДЛЯ СКАЧАННОГО ПЛЕЙЛИСТА
   openContextMenu(buttonEl, playlistName) {
     this.closeContextMenu();
 
@@ -337,14 +317,12 @@ export const downloaderUiPlugin = {
     buttonEl.parentNode.appendChild(menu);
     this.menuEl = menu;
 
-    // 1. Воспроизвести офлайн
     menu.querySelector('#mod-menu-play-offline').onclick = async (e) => {
       e.stopPropagation();
       this.closeContextMenu();
       await this.startOfflinePlayback(playlistName);
     };
 
-    // 2. Открыть в Проводнике
     menu.querySelector('#mod-menu-open-folder').onclick = async (e) => {
       e.stopPropagation();
       this.closeContextMenu();
@@ -369,7 +347,6 @@ export const downloaderUiPlugin = {
       }
     };
 
-    // 3. Удалить из офлайна
     menu.querySelector('#mod-menu-delete-offline').onclick = async (e) => {
       e.stopPropagation();
       this.closeContextMenu();
@@ -404,7 +381,6 @@ export const downloaderUiPlugin = {
     }
   },
 
-  // 6. ОФЛАЙН-ВОСПРОИЗВЕДЕНИЕ СКАЧАННЫХ ТРЕКОВ ВНУТРИ SPOTIFY
   initOfflineAudioEngine() {
     const audio = this.offlinePlayer.audio;
 
@@ -445,7 +421,6 @@ export const downloaderUiPlugin = {
     p.currentIndex = index;
     const track = p.tracks[index];
 
-    // Ставим на паузу нативный плеер Spotify если он играет
     try {
       const playBtn = document.querySelector('button[data-testid="control-button-playpause"]');
       if (playBtn && playBtn.getAttribute('aria-label') === 'Пауза' || playBtn && playBtn.getAttribute('aria-label') === 'Pause') {
@@ -470,7 +445,6 @@ export const downloaderUiPlugin = {
     }
   },
 
-  // 7. СБОР ТРЕКОВ И СКАЧИВАНИЕ
   async handlePlaylistDownload(buttonEl, playlistName) {
     if (this.inFlightDownloads.has(playlistName)) {
       this.showToast(`Плейлист «${playlistName}» уже обрабатывается`);
@@ -491,7 +465,6 @@ export const downloaderUiPlugin = {
         return;
       }
 
-      // Pre-flight check: проверка статуса плейлиста в Companion перед сбором треков
       try {
         const statusRes = await fetch(`http://127.0.0.1:43821/playlist-status?name=${encodeURIComponent(playlistName)}`);
         if (statusRes.ok) {
@@ -671,7 +644,6 @@ export const downloaderUiPlugin = {
     return Array.from(trackMap.values());
   },
 
-  // 8. КНОПКА СКАЧИВАНИЯ ТРЕКА В ПАНЕЛИ ПЛЕЕРА (СНИЗУ СПРАВА)
   injectPlayerButton() {
     const self = this;
 

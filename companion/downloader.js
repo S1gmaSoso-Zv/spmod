@@ -40,7 +40,6 @@ async function resolveWorkingProxy(proxyUrlString) {
   }
 }
 
-// Убедиться, что папки существуют
 function ensureDirs() {
   if (!fs.existsSync(DOWNLOAD_DIR)) {
     try { fs.mkdirSync(DOWNLOAD_DIR, { recursive: true }); } catch (e) {}
@@ -55,7 +54,7 @@ class DownloadManager {
   constructor() {
     this.queue = [];
     this.history = [];
-    this.playlists = new Map(); // playlistName -> { name, total, completed, failed, status, folder, tracks }
+    this.playlists = new Map(); 
     this.isProcessing = false;
     this.isPaused = false;
     this.activeItem = null;
@@ -81,13 +80,11 @@ class DownloadManager {
               } catch (e) {}
             }
 
-            // Если папки не существует или в ней 0 файлов, не считаем плейлист скачанным
             if (!fs.existsSync(pFolder) || audioFilesCount === 0) {
               needsSave = true;
               continue;
             }
 
-            // Восстановление/согласование осиротевших плейлистов при перезапуске сервера
             if (item.status === 'downloading' || item.status === 'paused') {
               if (item.total > 0 && audioFilesCount >= item.total) {
                 item.status = 'completed';
@@ -261,13 +258,11 @@ class DownloadManager {
     const cleanName = (playlistName || '').replace(/[\\/:*?"<>|]/g, '_').trim();
     console.log(`[Downloader] Deleting downloaded playlist: ${cleanName}`);
 
-    // Очистить из очереди, если еще стоял
     this.queue = this.queue.filter(item => item.playlist !== cleanName);
     if (this.activeItem && this.activeItem.playlist === cleanName && this.currentProcess) {
       try { this.currentProcess.kill('SIGTERM'); } catch (e) {}
     }
 
-    // Удалить папку плейлиста с диска
     const playlistFolder = path.join(DOWNLOAD_DIR, cleanName);
     if (fs.existsSync(playlistFolder)) {
       try {
@@ -278,20 +273,17 @@ class DownloadManager {
       }
     }
 
-    // Удалить .m3u8 файл
     const m3uFile = path.join(DOWNLOAD_DIR, `${cleanName}.m3u8`);
     if (fs.existsSync(m3uFile)) {
       try { fs.unlinkSync(m3uFile); } catch (e) {}
     }
 
-    // Удалить из карты и обновить JSON
     this.playlists.delete(cleanName);
     this.savePlaylists();
 
     return { success: true, name: cleanName };
   }
 
-  // Проверка / автоскачивание standalone yt-dlp.exe
   ensureYtDlp() {
     return new Promise((resolve, reject) => {
       if (fs.existsSync(YTDLP_PATH)) {
@@ -330,7 +322,6 @@ class DownloadManager {
     });
   }
 
-  // Добавление одиночного трека в очередь
   enqueue(track) {
     const item = {
       id: track.id || `${Date.now()}_${Math.random().toString(36).substr(2, 5)}`,
@@ -341,7 +332,7 @@ class DownloadManager {
       coverUrl: track.coverUrl || '',
       playlist: track.playlist || null,
       targetFolder: track.targetFolder || DOWNLOAD_DIR,
-      status: 'queued', // queued | downloading | completed | error
+      status: 'queued', 
       progress: 0,
       filePath: null,
       error: null,
@@ -357,7 +348,6 @@ class DownloadManager {
     return item;
   }
 
-  // Добавление целого плейлиста в очередь с правильной структурой и номерами треков
   enqueuePlaylist(playlistName, tracks) {
     const cleanName = (playlistName || 'Playlist').replace(/[\\/:*?"<>|]/g, '_').trim();
     const playlistFolder = path.join(DOWNLOAD_DIR, cleanName);
@@ -436,7 +426,6 @@ class DownloadManager {
     return this.playlists.get(cleanName) || null;
   }
 
-  // Создание / обновление .m3u8 плейлиста
   generateM3uPlaylist(playlistName) {
     try {
       const cleanName = (playlistName || '').replace(/[\\/:*?"<>|]/g, '_').trim();
@@ -480,7 +469,6 @@ class DownloadManager {
         try { fs.mkdirSync(targetDir, { recursive: true }); } catch (e) {}
       }
 
-      // Проверка наличия аудиофайла на диске (>10KB) для пропуска уже скачанных треков
       const existingExts = ['.m4a', '.mp3', '.opus'];
       let existingTrackPath = null;
       for (const ext of existingExts) {
@@ -488,7 +476,7 @@ class DownloadManager {
         if (fs.existsSync(candidate)) {
           try {
             const stat = fs.statSync(candidate);
-            if (stat.size > 10240) { // Валидный аудиофайл > 10КБ
+            if (stat.size > 10240) { 
               existingTrackPath = candidate;
               break;
             }

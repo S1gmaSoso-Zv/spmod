@@ -9,12 +9,10 @@ const OUT_FILE = path.join(DIST_DIR, 'bundle.js');
 console.log('[Build] Starting zero-dependency build...');
 const startTime = Date.now();
 
-// 1. Убедиться, что папка dist существует
 if (!fs.existsSync(DIST_DIR)) {
   fs.mkdirSync(DIST_DIR, { recursive: true });
 }
 
-// 2. Чтение всех CSS файлов
 const cssFiles = [
   path.join(SRC_DIR, 'theme', 'theme.css'),
   path.join(SRC_DIR, 'theme', 'adblock.css'),
@@ -28,7 +26,6 @@ for (const f of cssFiles) {
   }
 }
 
-// 3. Чтение модулей
 const registryCode = fs.readFileSync(path.join(SRC_DIR, 'core', 'registry.js'), 'utf8')
   .replace(/export\s+const\s+registry\s*=\s*new\s+PluginRegistry\(\);?/, 'const registry = new PluginRegistry();')
   .replace(/export\s+/g, '');
@@ -53,7 +50,6 @@ const downloaderUiCode = fs.readFileSync(path.join(SRC_DIR, 'plugins', 'download
   .replace(/export\s+const\s+downloaderUiPlugin\s*=/, 'const downloaderUiPlugin =')
   .replace(/export\s+/g, '');
 
-// 4. Сборка единого самодостаточного IIFE-бандла
 const bundledCode = `/**
  * Spotify Mod Bundle v0.5.0 (Offline Download & Polished UI)
  * Generated: ${new Date().toISOString()}

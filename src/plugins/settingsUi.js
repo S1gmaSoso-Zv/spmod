@@ -1,12 +1,4 @@
-/**
- * Plugin: Settings UI (Spotify Encore Native Design v2.0)
- * - 4 clean tabs: Регион и Обход (14 дней) | Офлайн-загрузки | Прокси и Сеть | Функции мода
- * - Native 32x32px circular button in top-right header (next to profile avatar)
- * - Integration with native Profile dropdown menu ("Настройки мода")
- * - Automatic Spotify account country detection & 14-day bypass scheduler
- * - Live step-by-step progress for downloads (search, stream, percent)
- * - Zero emojis in icons, pure SVG, smooth Spotify Encore animations
- */
+
 export const settingsUiPlugin = {
   id: 'settings-ui',
   name: 'Интерфейс настроек',
@@ -63,7 +55,7 @@ export const settingsUiPlugin = {
       description: 'Для пользователей официального клиента Cloudflare WARP на ПК.',
       isLocal: true
     },
-    // Узлы категории Spotify
+    
     {
       id: 'spotify-direct',
       name: 'Системный VPN / Прямое соединение',
@@ -175,12 +167,10 @@ export const settingsUiPlugin = {
     }
   },
 
-  // 1. АВТООПРЕДЕЛЕНИЕ СТРАНЫ ПРОФИЛЯ SPOTIFY
   async detectSpotifyCountry() {
     try {
       let country = null;
 
-      // Способ 1: Через внутренний API сессии Spicetify / Spotify Platform
       if (window.Spicetify && window.Spicetify.Platform && window.Spicetify.Platform.UserAPI) {
         try {
           const user = await window.Spicetify.Platform.UserAPI.getUser();
@@ -188,12 +178,10 @@ export const settingsUiPlugin = {
         } catch (e) {}
       }
 
-      // Способ 2: Глобальный флаг из перехваченных сессий
       if (!country && window.__spotify_user_country) {
         country = window.__spotify_user_country.toUpperCase();
       }
 
-      // Способ 3: Через Web API с внутренним Bearer токеном
       if (!country && window.Spicetify && window.Spicetify.Platform && window.Spicetify.Platform.AuthorizationAPI) {
         try {
           const token = await window.Spicetify.Platform.AuthorizationAPI.getValidAccessToken();
@@ -207,7 +195,6 @@ export const settingsUiPlugin = {
         } catch (e) {}
       }
 
-      // Способ 4: Через перехваченный Bearer токен в CEF
       if (!country && window.__spotify_bearer_token) {
         try {
           const res = await fetch('https://api.spotify.com/v1/me', {
@@ -222,7 +209,7 @@ export const settingsUiPlugin = {
         this.detectedCountry = country;
         try { localStorage.setItem('mod:selected_country', country); } catch (e) {}
         console.log('[Mod:UI] Detected Spotify account country:', country);
-        // Синхронизируем с Companion
+        
         fetch('http://127.0.0.1:43821/set-account-region', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -232,7 +219,6 @@ export const settingsUiPlugin = {
     } catch (err) {}
   },
 
-  // 2. СОЗДАНИЕ МОДАЛЬНОГО ОКНА НАСТРОЕК В СТИЛЕ SPOTIFY ENCORE
   createModal() {
     const existing = document.getElementById('mod-settings-modal');
     if (existing) {
@@ -585,13 +571,11 @@ export const settingsUiPlugin = {
     document.body.appendChild(overlay);
     this.modalEl = overlay;
 
-    // Закрытие окна
     overlay.querySelector('#mod-modal-close').addEventListener('click', () => this.close());
     overlay.addEventListener('click', (e) => {
       if (e.target === overlay) this.close();
     });
 
-    // Переключение вкладок
     const tabBtns = overlay.querySelectorAll('.mod-tab-btn');
     tabBtns.forEach(btn => {
       btn.addEventListener('click', () => {
@@ -600,7 +584,6 @@ export const settingsUiPlugin = {
       });
     });
 
-    // Карточки выбора региона
     const regionCards = overlay.querySelectorAll('.mod-region-card');
     regionCards.forEach(card => {
       card.addEventListener('click', async () => {
@@ -625,12 +608,10 @@ export const settingsUiPlugin = {
       });
     });
 
-    // Кнопка: Открыть профиль Spotify
     overlay.querySelector('#mod-open-spotify-profile-action').addEventListener('click', () => {
       window.open('https://www.spotify.com/account/profile', '_blank');
     });
 
-    // Кнопка: Подтвердить вход сейчас
     const triggerBypassBtn = overlay.querySelector('#mod-trigger-bypass-btn');
     const bypassResultEl = overlay.querySelector('#mod-bypass-action-result');
     triggerBypassBtn.addEventListener('click', async () => {
@@ -669,7 +650,6 @@ export const settingsUiPlugin = {
       }
     });
 
-    // Тумблер авто-обхода
     const autoBypassToggle = overlay.querySelector('#mod-toggle-autobypass');
     autoBypassToggle.addEventListener('change', async () => {
       try {
@@ -682,7 +662,6 @@ export const settingsUiPlugin = {
       } catch (e) {}
     });
 
-    // Открыть папку в Проводнике
     const openFolderBtn = overlay.querySelector('#mod-open-folder-btn');
     openFolderBtn.addEventListener('click', async () => {
       const dirVal = (overlay.querySelector('#mod-path-input')?.value || '').trim();
@@ -710,7 +689,6 @@ export const settingsUiPlugin = {
       }
     });
 
-    // Диалог выбора папки Windows
     const browseBtn = overlay.querySelector('#mod-browse-folder-btn');
     const pathInput = overlay.querySelector('#mod-path-input');
     const savePathBtn = overlay.querySelector('#mod-save-path-btn');
@@ -735,7 +713,6 @@ export const settingsUiPlugin = {
       }
     });
 
-    // Сохранить введенный путь вручную
     savePathBtn.addEventListener('click', async () => {
       const dir = pathInput.value.trim();
       if (!dir) return;
@@ -754,7 +731,6 @@ export const settingsUiPlugin = {
       }
     });
 
-    // Кнопки Пауза / Стоп в модальном окне
     const pauseBtn = overlay.querySelector('#mod-modal-pause-btn');
     const stopBtn = overlay.querySelector('#mod-modal-stop-btn');
 
@@ -786,7 +762,6 @@ export const settingsUiPlugin = {
       }
     });
 
-    // Фильтры категорий серверов
     const categoryBtns = overlay.querySelectorAll('.mod-country-filter-btn');
     categoryBtns.forEach(btn => {
       btn.addEventListener('click', () => {
@@ -799,7 +774,6 @@ export const settingsUiPlugin = {
       });
     });
 
-    // Проверка прокси
     const proxyInput = overlay.querySelector('#mod-proxy-input');
     const proxyTestBtn = overlay.querySelector('#mod-proxy-test-btn');
     const proxySaveBtn = overlay.querySelector('#mod-proxy-save-btn');
@@ -839,7 +813,6 @@ export const settingsUiPlugin = {
       }
     });
 
-    // Сохранить прокси
     proxySaveBtn.addEventListener('click', async () => {
       const urlVal = proxyInput.value.trim();
       try {
@@ -862,7 +835,6 @@ export const settingsUiPlugin = {
       }
     });
 
-    // Тумблер Adblock
     const adblockToggle = overlay.querySelector('#mod-toggle-adblock');
     if (adblockToggle && window.__MOD__ && window.__MOD__.registry) {
       adblockToggle.checked = window.__MOD__.registry.isPluginEnabled('adblock', true);
@@ -930,7 +902,6 @@ export const settingsUiPlugin = {
         </div>
       `;
 
-      // Проверка пинга отдельного узла
       const pingBtn = item.querySelector('.mod-preset-ping-btn');
       pingBtn.addEventListener('click', async (e) => {
         e.stopPropagation();
@@ -958,7 +929,6 @@ export const settingsUiPlugin = {
         }
       });
 
-      // Выбор узла
       const selectBtn = item.querySelector('.mod-preset-select-btn');
       selectBtn.addEventListener('click', async () => {
         if (proxyInput) proxyInput.value = p.url;
@@ -1095,7 +1065,6 @@ export const settingsUiPlugin = {
 
         if (autoToggle) autoToggle.checked = info.autoBypass;
 
-        // Выделяем активную карточку
         const cards = document.querySelectorAll('.mod-region-card');
         cards.forEach(c => {
           if (c.getAttribute('data-country') === info.accountCountry) {
@@ -1312,12 +1281,11 @@ export const settingsUiPlugin = {
     }, 2800);
   },
 
-  // 3. ПЕРЕНОС КНОПКИ В ПРАВЫЙ ВЕРХНИЙ УГОЛ (РЯДОМ С АВАТАРОМ ПРОФИЛЯ)
   injectTopBarButton() {
     const self = this;
 
     function tryInject() {
-      // 1. Очищаем любые старые/случайные кнопки из левой части шапки и истории
+      
       const strayLeft = document.querySelectorAll(
         '.main-topBar-historyButtons button[id*="mod"], .main-topBar-historyButtons [class*="mod-topbar"], .main-topBar-left button[id*="mod"], .main-topBar-left [class*="mod-topbar"], .main-topBar-historyButtons #mod-topbar-btn, .main-topBar-historyButtons #mod-topbar-settings-btn'
       );
@@ -1326,7 +1294,6 @@ export const settingsUiPlugin = {
       const oldSettingsBtn = document.getElementById('mod-topbar-settings-btn');
       if (oldSettingsBtn) oldSettingsBtn.remove();
 
-      // 2. Если правильная кнопка уже в правом блоке — ничего не трогаем
       const existingBtn = document.getElementById('mod-topbar-btn');
       if (existingBtn) {
         if (existingBtn.closest('.main-topBar-historyButtons, .main-topBar-left, [class*="historyButtons"]')) {
@@ -1336,7 +1303,6 @@ export const settingsUiPlugin = {
         }
       }
 
-      // 3. Ищем правый блок инструментов (аватар пользователя или правый контейнер шапки)
       const userWidget = document.querySelector('[data-testid="user-widget-link"]') ||
                          document.querySelector('[data-testid="username-button"]') ||
                          document.querySelector('.main-userWidget-box') ||
@@ -1358,7 +1324,6 @@ export const settingsUiPlugin = {
       btn.title = 'Настройки spmod (Ctrl + Shift + M)';
       btn.setAttribute('aria-label', 'Настройки spmod');
 
-      // Чистая SVG иконка шестеренки Spotify Encore
       btn.innerHTML = `
         <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
           <path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58a.49.49 0 0 0 .12-.61l-1.92-3.32a.488.488 0 0 0-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54a.484.484 0 0 0-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58a.49.49 0 0 0-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/>
@@ -1388,8 +1353,6 @@ export const settingsUiPlugin = {
     this.topBarObserver = new MutationObserver(tryInject);
     this.topBarObserver.observe(document.body, { childList: true, subtree: true });
   },
-
-
 
   bindKeyboardShortcuts() {
     if (this._keyHandler) {

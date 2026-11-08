@@ -1,9 +1,6 @@
-/* ============================================================
-   Spotify Encore Design System - Mod Settings & Controls
-   Strict Spotify Desktop Aesthetic (Pure SVG & CSS, Zero Emojis)
-   ============================================================ */
 
-/* 1. Кнопка настроек мода в правой верхней панели (возле профиля) */
+
+
 .mod-topbar-button {
   display: inline-flex;
   align-items: center;
@@ -49,7 +46,7 @@
   transform: rotate(360deg);
 }
 
-/* 2. Модальный оверлей */
+
 .mod-modal-overlay {
   position: fixed;
   top: 0;
@@ -84,7 +81,7 @@
   to { opacity: 0; }
 }
 
-/* 3. Окно настроек */
+
 .mod-modal-dialog {
   width: 780px;
   max-width: 92vw;
@@ -109,7 +106,7 @@
   to { opacity: 0; transform: scale(0.96); }
 }
 
-/* 4. Шапка модального окна */
+
 .mod-modal-header {
   display: flex;
   align-items: center;
@@ -160,7 +157,7 @@
   transform: scale(1.05);
 }
 
-/* 5. Навигационные вкладки в нативном стиле Encore Pills */
+
 .mod-tabs-nav {
   display: flex;
   align-items: center;
@@ -214,7 +211,7 @@
   transition: fill 0.15s ease;
 }
 
-/* 6. Тело окна и контент вкладок */
+
 .mod-modal-body {
   padding: 20px 24px;
   overflow-y: auto;
@@ -242,7 +239,7 @@
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* Карточки секций */
+
 .mod-card {
   padding: 16px 18px;
   border-radius: 8px;
@@ -280,7 +277,7 @@
   line-height: 1.5;
 }
 
-/* Информационный коллаут */
+
 .mod-callout {
   padding: 12px 16px;
   border-radius: 8px;
@@ -299,7 +296,7 @@
   margin-top: 1px;
 }
 
-/* Кнопки Encore */
+
 .mod-btn {
   display: inline-flex;
   align-items: center;
@@ -353,7 +350,7 @@
   background-color: rgba(241, 94, 108, 0.2);
 }
 
-/* Бейджи-пилюли Encore */
+
 .mod-pill-badge {
   display: inline-flex;
   align-items: center;
@@ -366,7 +363,7 @@
   color: #ffffff;
 }
 
-/* Поле пути */
+
 .mod-path-box {
   background-color: #121212;
   border: 1px solid rgba(255, 255, 255, 0.08);
@@ -378,7 +375,7 @@
   word-break: break-all;
 }
 
-/* Поле ввода */
+
 .mod-input {
   background-color: #121212;
   border: 1px solid rgba(255, 255, 255, 0.12);
@@ -395,7 +392,7 @@
   border-color: #1ed760;
 }
 
-/* Фильтры по категориям в стиле нативных пиллов Spotify */
+
 .mod-country-filters {
   display: flex;
   gap: 6px;
@@ -424,7 +421,7 @@
   color: #000000;
 }
 
-/* Пресеты серверов */
+
 .mod-preset-item {
   display: flex;
   align-items: center;
@@ -465,7 +462,7 @@
   font-family: Consolas, monospace;
 }
 
-/* Статус проверки прокси */
+
 .mod-proxy-badge {
   display: inline-flex;
   align-items: center;
@@ -494,7 +491,7 @@
   color: #d1d1d1;
 }
 
-/* Элементы функций */
+
 .mod-setting-item {
   display: flex;
   align-items: center;
@@ -524,7 +521,7 @@
   margin-top: 2px;
 }
 
-/* Тумблер Spotify */
+
 .mod-switch {
   position: relative;
   display: inline-block;
@@ -572,7 +569,7 @@
   transform: translateX(20px);
 }
 
-/* Подвал окна */
+
 .mod-modal-footer {
   display: flex;
   align-items: center;
@@ -613,11 +610,9 @@
   font-family: monospace;
 }
 
-/* ============================================================
-   Блок обхода 14 дней и выбор региона Spotify Encore
-   ============================================================ */
 
-/* Баннер статуса обхода Encore */
+
+
 .mod-bypass-banner {
   background-color: #181818;
   border: 1px solid rgba(255, 255, 255, 0.08);
@@ -713,7 +708,7 @@
   color: #a7a7a7;
 }
 
-/* Интерактивная сетка регионов */
+
 .mod-region-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -806,7 +801,7 @@
   line-height: 1.35;
 }
 
-/* Пошаговая инструкция для человека */
+
 .mod-steps-list {
   display: flex;
   flex-direction: column;

@@ -1,11 +1,6 @@
-/* ============================================================
-   Spotify Mod - Advanced CSS Adblock (Leaf-Level Scoped)
-   Hides banners, upgrade prompts, sponsored slots, and visual clutter
-   Eliminates container :has() to preserve right sidebar & Now Playing Bar
-   Keeps user profile menu, context menus, and navigation fully functional
-   ============================================================ */
 
-/* 1. Кнопки Upgrade to Premium в шапке и панелях */
+
+
 .Root__top-bar [data-testid="upgrade-button"],
 button[data-testid="upgrade-button"],
 a[data-testid="upgrade-button"],
@@ -29,7 +24,7 @@ a[aria-label*="Улучшить"]:not([data-testid*="user"]) {
   padding: 0 !important;
 }
 
-/* 2. Leaderboard banners (between navigation and player) */
+
 #leaderboard-ad-element,
 .uAHPSe7bihFdDS76WWIg,
 .VMAxhgsNK7QdtS6kLrYW,
@@ -45,7 +40,7 @@ a[aria-label*="Улучшить"]:not([data-testid*="user"]) {
   overflow: hidden !important;
 }
 
-/* 3. Homepage Takeover & In-Feed Banners & General Ad Containers */
+
 div[data-testid="ad-banner"],
 div[data-testid="billboard-ad"],
 div[data-testid="leaderboard-ad"],
@@ -75,7 +70,7 @@ div[data-testid*="ad-slot"],
   overflow: hidden !important;
 }
 
-/* 4. Playlist & Show Leavebehinds (Sponsored cards & Recent Ads) */
+
 [data-testid="leavebehinds-wrapper"],
 [data-testid="leavebehind"],
 [data-testid="leavebehinds-list-wrapper"],
@@ -93,7 +88,7 @@ div[data-testid="download-cta-banner"],
   overflow: hidden !important;
 }
 
-/* 5. Desktop Update Notification Banner */
+
 [data-testid="desktop-update-banner"],
 div[data-testid="desktop-update-banner"],
 .riCDTx8wwIkR8ilEuxOA,
@@ -105,7 +100,7 @@ div[data-testid="desktop-update-banner"],
   padding: 0 !important;
 }
 
-/* 6. Premium Upsell Page & Modals */
+
 .ZzU_KGHiP55yEoQV7TkV,
 iframe[src*="sponsored-recommendations.spotify.com"],
 [data-testid*="upsell-tooltip"],
@@ -122,7 +117,7 @@ div[class*="encore-announcement"]:not(:has([role="menu"])) {
   visibility: hidden !important;
 }
 
-/* 7. Context menu items (Download / Premium) */
+
 ul[role="menu"] li:has(button[aria-label*="Скачать"]),
 ul[role="menu"] li:has(button[aria-label*="Download"]),
 ul[role="menu"] li:has(a[href*="premium"]),
@@ -130,7 +125,7 @@ ul[role="menu"] button:has(svg path[d*="M12 3a9"]):not(#mod-player-download-btn)
   display: none !important;
 }
 
-/* 8. Scoped Ad Break Overlays (NEVER touches aside or now-playing-widget containers) */
+
 [data-testid="ad-break-container"],
 [class*="AdBreak"],
 [class*="ad-break"],
@@ -146,7 +141,7 @@ ul[role="menu"] button:has(svg path[d*="M12 3a9"]):not(#mod-player-download-btn)
   width: 0 !important;
 }
 
-/* 9. Video ad overlay suppression during ad playback */
+
 body.mod-ad-playing [data-testid="video-player-parking-surface"],
 body.mod-ad-playing [data-testid="video-ad-overlay"] {
   opacity: 0 !important;

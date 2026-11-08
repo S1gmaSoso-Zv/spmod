@@ -1,7 +1,4 @@
-/**
- * Settings UI Component - Spotify Encore Design System
- * Modal Overlay (Option A), TopBar Action Button, and Global Hotkey (Ctrl + Shift + M)
- */
+
 export const settingsUI = {
   registry: null,
   observer: null,
@@ -39,7 +36,6 @@ export const settingsUI = {
     dialog.setAttribute('aria-modal', 'true');
     dialog.setAttribute('aria-labelledby', 'mod-modal-title');
 
-    // 1. Header
     const header = document.createElement('div');
     header.className = 'mod-modal-header';
 
@@ -72,7 +68,6 @@ export const settingsUI = {
     header.appendChild(titleGroup);
     header.appendChild(closeBtn);
 
-    // 2. Body: список доступных модулей
     const body = document.createElement('div');
     body.className = 'mod-modal-body';
 
@@ -95,7 +90,6 @@ export const settingsUI = {
       info.appendChild(name);
       info.appendChild(desc);
 
-      // Свитчер
       const switchLabel = document.createElement('label');
       switchLabel.className = 'mod-switch';
 
@@ -117,7 +111,6 @@ export const settingsUI = {
       body.appendChild(item);
     });
 
-    // 3. Footer
     const footer = document.createElement('div');
     footer.className = 'mod-modal-footer';
 
@@ -140,13 +133,11 @@ export const settingsUI = {
     footer.appendChild(badge);
     footer.appendChild(shortcut);
 
-    // Сборка диалога
     dialog.appendChild(header);
     dialog.appendChild(body);
     dialog.appendChild(footer);
     overlay.appendChild(dialog);
 
-    // Закрытие по клику на фон
     overlay.addEventListener('click', (e) => {
       if (e.target === overlay) {
         this.close();
@@ -155,7 +146,6 @@ export const settingsUI = {
 
     document.body.appendChild(overlay);
 
-    // Подсветка кнопки в шапке
     const topBarBtn = document.getElementById('mod-topbar-settings-btn');
     if (topBarBtn) topBarBtn.classList.add('active');
   },
@@ -177,7 +167,7 @@ export const settingsUI = {
 
   initHotkey() {
     window.addEventListener('keydown', (e) => {
-      // Ctrl + Shift + M или Cmd + Shift + M
+      
       const isM = e.key === 'M' || e.key === 'm' || e.code === 'KeyM' || e.keyCode === 77;
       if ((e.ctrlKey || e.metaKey) && e.shiftKey && isM) {
         e.preventDefault();
@@ -186,7 +176,6 @@ export const settingsUI = {
         return;
       }
 
-      // Escape закрывает модалку
       if (e.key === 'Escape' || e.code === 'Escape' || e.keyCode === 27) {
         if (this.isOpen()) {
           e.preventDefault();
@@ -221,7 +210,6 @@ export const settingsUI = {
   attachTopBarButton() {
     if (document.getElementById('mod-topbar-settings-btn')) return;
 
-    // 1. Поиск профиля пользователя / виджета в шапке
     const userWidget = document.querySelector(
       '[data-testid="top-bar-user-widget"], button[data-testid="user-widget-link"], [data-testid="username-button"], .main-userWidget-box, [class*="userWidget"]'
     );
@@ -232,7 +220,6 @@ export const settingsUI = {
       return;
     }
 
-    // 2. Поиск скрытой кнопки Upgrade (вставляем перед ней или вместо нее)
     const upgradeBtn = document.querySelector('[data-testid="action-bar-button-upgrade"], button[data-testid="upgrade-button"]');
     if (upgradeBtn && upgradeBtn.parentElement) {
       const btn = this.createTopBarButton();
@@ -241,7 +228,6 @@ export const settingsUI = {
       return;
     }
 
-    // 3. Поиск блока action buttons в header
     const actionButtons = document.querySelector('.main-topBar-actionButtons, header [class*="actionButtons"]');
     if (actionButtons) {
       const btn = this.createTopBarButton();
@@ -250,7 +236,6 @@ export const settingsUI = {
       return;
     }
 
-    // 4. Fallback в контейнер header
     const header = document.querySelector('.main-topBar-container, [data-testid="top-bar"], header');
     if (header) {
       const btn = this.createTopBarButton();
@@ -262,7 +247,6 @@ export const settingsUI = {
   initTopBarButton() {
     this.attachTopBarButton();
 
-    // Следим за изменениями DOM (переходы по страницам Spotify SPA)
     this.observer = new MutationObserver(() => {
       if (!document.getElementById('mod-topbar-settings-btn')) {
         this.attachTopBarButton();
@@ -271,7 +255,6 @@ export const settingsUI = {
 
     this.observer.observe(document.body, { childList: true, subtree: true });
 
-    // Дополнительный интервал на первые 10 секунд загрузки
     let retries = 0;
     const retryTimer = setInterval(() => {
       retries++;

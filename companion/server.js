@@ -10,7 +10,6 @@ const PORT = 43821;
 const HOST = '127.0.0.1';
 const CONFIG_FILE = path.join(__dirname, 'config.json');
 
-// Глобальные обработчики ошибок
 process.on('uncaughtException', (err) => {
   console.error('[Companion] Uncaught Exception:', err);
 });
@@ -243,7 +242,6 @@ const server = http.createServer(async (req, res) => {
   const parsedUrl = url.parse(req.url, true);
   const pathname = parsedUrl.pathname;
 
-  // 1a. Быстрый пинг для watchdog и health check (< 1 мс, без внешнего сканирования)
   if (req.method === 'GET' && pathname === '/ping') {
     return sendJson(res, 200, {
       status: 'ok',
@@ -256,7 +254,6 @@ const server = http.createServer(async (req, res) => {
     });
   }
 
-  // 1b. Полная проверка связи (/health, /status) с детекцией локальных прокси
   if (req.method === 'GET' && (pathname === '/health' || pathname === '/status')) {
     const detected = await detectLocalProxies();
     return sendJson(res, 200, {
@@ -273,14 +270,12 @@ const server = http.createServer(async (req, res) => {
     });
   }
 
-  // 1c. Завершение работы процесса
   if (req.method === 'POST' && pathname === '/shutdown') {
     sendJson(res, 200, { status: 'shutting_down' });
     setTimeout(() => process.exit(0), 100);
     return;
   }
 
-  // 2. Список загрузок
   if (req.method === 'GET' && pathname === '/downloads') {
     return sendJson(res, 200, {
       downloads: downloader.getHistory(),
@@ -293,7 +288,6 @@ const server = http.createServer(async (req, res) => {
     });
   }
 
-  // 3. Открыть папку в Проводнике Windows
   if (req.method === 'POST' && pathname === '/open-folder') {
     let body = '';
     req.on('data', chunk => { body += chunk; });
@@ -309,7 +303,7 @@ const server = http.createServer(async (req, res) => {
             targetDir = resolvedPath;
           }
         } else if (payload.playlist && typeof payload.playlist === 'string') {
-          // Санитизация имени плейлиста: запрещенные символы Windows + защита от traversal (..)
+          
           let clean = payload.playlist.replace(/[\\/:*?"<>|]/g, '_').trim();
           clean = clean.replace(/^\.+/, '').trim();
           if (!clean) clean = 'Playlist';
@@ -523,7 +517,6 @@ $f.Dispose()
     }
   }
 
-  // 13. Аудио-стриминг локальных треков с поддержкой Range (для нативного плеера)
   if (req.method === 'GET' && pathname === '/stream') {
     const filePath = parsedUrl.query.file;
     if (!filePath || !fs.existsSync(filePath)) {
@@ -562,7 +555,6 @@ $f.Dispose()
     return;
   }
 
-  // 14. Пресеты прокси: реально работающие локальные клиенты, системные VPN и шлюзы регионов
   if (req.method === 'GET' && pathname === '/proxy-presets') {
     const detected = await detectLocalProxies();
     const presets = [
@@ -576,7 +568,7 @@ $f.Dispose()
         isLocal: true,
         isDetected: true
       })),
-      // --- Категория 1: Для скачивания (Локальные прокси на ПК) ---
+      
       {
         id: 'local-xray-10808',
         name: 'Xray / V2Ray / sing-box (SOCKS5)',
@@ -622,7 +614,7 @@ $f.Dispose()
         description: 'Локальный SOCKS5 прокси официального клиента Cloudflare WARP.',
         isLocal: true
       },
-      // --- Категория 2: Для Spotify (Обход 14 дней для стран Европы, Балтии и США) ---
+      
       {
         id: 'spotify-direct-vpn',
         name: 'Системный VPN / Прямое подключение',
@@ -691,7 +683,6 @@ $f.Dispose()
     return sendJson(res, 200, { presets, detectedCount: detected.length, current: config });
   }
 
-  // 15. Тест прокси
   if (req.method === 'POST' && pathname === '/test-proxy') {
     let body = '';
     req.on('data', chunk => { body += chunk; });
@@ -709,7 +700,6 @@ $f.Dispose()
     return;
   }
 
-  // 16. Сохранение прокси
   if (req.method === 'POST' && pathname === '/proxy-config') {
     let body = '';
     req.on('data', chunk => { body += chunk; });
@@ -738,12 +728,10 @@ $f.Dispose()
     return;
   }
 
-  // 17. Статус 14-дневного обхода региона Spotify
   if (req.method === 'GET' && pathname === '/region-bypass-status') {
     return sendJson(res, 200, getRegionBypassInfo());
   }
 
-  // 18. Сохранение региона аккаунта Spotify
   if (req.method === 'POST' && pathname === '/set-account-region') {
     let body = '';
     req.on('data', chunk => { body += chunk; });
@@ -761,7 +749,6 @@ $f.Dispose()
     return;
   }
 
-  // 19. Принудительное прохождение проверки региона прямо сейчас
   if (req.method === 'POST' && pathname === '/trigger-region-bypass') {
     const info = getRegionBypassInfo();
     console.log(`[Companion] Testing Spotify region bypass for ${info.accountCountry}...`);
@@ -770,13 +757,11 @@ $f.Dispose()
       let successfulRes = null;
       let usedProxy = null;
 
-      // Приоритет 1: Пользовательский настроенный прокси
       const testList = [];
       if (config.proxyUrl) {
         testList.push({ url: config.proxyUrl, label: 'Настроенный прокси' });
       }
 
-      // Приоритет 2: Локально запущенные на ПК прокси (v2ray, Xray, Clash, WARP и др.)
       const localDetected = await detectLocalProxies();
       for (const d of localDetected) {
         if (!testList.some(item => item.url === d.url)) {
@@ -784,15 +769,12 @@ $f.Dispose()
         }
       }
 
-      // Приоритет 3: Региональные узлы под выбранную страну
       const regionalCandidates = REGION_PROXIES[info.accountCountry] || REGION_PROXIES.NL;
       for (const candUrl of regionalCandidates) {
         if (!testList.some(item => item.url === candUrl)) {
           testList.push({ url: candUrl, label: `Региональный узел (${info.accountCountry})` });
         }
       }
-
-
 
       for (const item of testList) {
         console.log(`[Companion] Checking bypass node: ${item.url}...`);
@@ -804,7 +786,6 @@ $f.Dispose()
         }
       }
 
-      // Если прокси не ответил, проверяем прямое соединение с сервером Spotify auth
       if (!successfulRes) {
         const directOk = await testTcpPort('spclient.wg.spotify.com', 443, 3000);
         if (directOk) {
@@ -841,7 +822,6 @@ $f.Dispose()
   return sendJson(res, 404, { error: 'Not found' });
 });
 
-// Автоматический периодический фоновый обход раз в 12-14 дней
 setInterval(async () => {
   try {
     const info = getRegionBypassInfo();
@@ -855,7 +835,7 @@ setInterval(async () => {
       }
     }
   } catch (e) {}
-}, 1000 * 60 * 60 * 6); // каждые 6 часов
+}, 1000 * 60 * 60 * 6); 
 
 server.on('error', (err) => {
   if (err.code === 'EADDRINUSE') {
@@ -871,7 +851,6 @@ server.listen(PORT, HOST, async () => {
   console.log(`[Companion] Server listening on http://${HOST}:${PORT}`);
   console.log(`[Companion] Downloads directory: ${downloader.getDownloadDir()}`);
 
-  // Auto-detect active local proxies on boot
   try {
     const proxies = await detectLocalProxies();
     if (proxies.length > 0) {

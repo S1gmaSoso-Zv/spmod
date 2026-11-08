@@ -5,7 +5,6 @@ import { offlinePlugin } from './plugins/offlineMode.js';
 import { devToolsPlugin } from './plugins/devTools.js';
 import { settingsUI } from './ui/settingsModal.js';
 
-// Очистка следов старых модов (extera и т.д.)
 (function purgeLegacyModArtifacts() {
   const legacyKeys = [
     'extera_v5_config',
@@ -22,30 +21,25 @@ import { settingsUI } from './ui/settingsModal.js';
     } catch (e) {}
   });
 
-  // Удаление любых старых стилей в DOM
   try {
     const oldStyles = document.querySelectorAll('style[id*="extera"], style[id*="spicetify"], link[href*="extera"]');
     oldStyles.forEach(s => s.remove());
   } catch (e) {}
 })();
 
-// Входная точка мода
 (function() {
   console.log('[Mod] Bootstrapping v0.3.0 (Settings UI & Encore Modal)...');
 
-  // Регистрация модулей
   registry.register(visualAdblockPlugin);
   registry.register(adblockPlugin);
   registry.register(offlinePlugin);
   registry.register(devToolsPlugin);
 
-  // Ожидание готовности DOM Spotify
   function onReady() {
     console.log('[Mod] Spotify DOM Ready. Initializing modules & Settings UI...');
     registry.initAll();
     settingsUI.init(registry);
 
-    // Экспорт глобального объекта для отладки через консоль F12
     window.__MOD__ = {
       registry,
       settingsUI,

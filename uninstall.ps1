@@ -1,4 +1,4 @@
-# uninstall.ps1 - Complete 1-click uninstaller for spmod
+
 [CmdletBinding()]
 param()
 
@@ -8,12 +8,10 @@ Write-Host "=========================================" -ForegroundColor Cyan
 Write-Host "           spmod Uninstaller             " -ForegroundColor Cyan
 Write-Host "=========================================" -ForegroundColor Cyan
 
-# 1. Stop Spotify and Companion Daemon
 Write-Host "`n[1/4] Stopping processes..." -ForegroundColor Yellow
 Stop-Process -Name Spotify -Force -ErrorAction SilentlyContinue
 Stop-Process -Name SpotifyCompanionDaemon -Force -ErrorAction SilentlyContinue
 
-# Kill port 43821 if still bound
 try {
     $netstat = netstat -ano | Select-String ":43821.+LISTENING"
     foreach ($line in $netstat) {
@@ -25,7 +23,6 @@ try {
     }
 } catch {}
 
-# 2. Remove Windows Startup Shortcut
 Write-Host "[2/4] Removing Startup shortcut..." -ForegroundColor Yellow
 $startupFolder = [Environment]::GetFolderPath("Startup")
 foreach ($lnk in @("spmod.lnk", "SpotifyModCompanion.lnk")) {
@@ -36,7 +33,6 @@ foreach ($lnk in @("spmod.lnk", "SpotifyModCompanion.lnk")) {
     }
 }
 
-# 3. Restore pristine xpui.spa from backup
 Write-Host "[3/4] Restoring original Spotify xpui.spa..." -ForegroundColor Yellow
 $spotifyDirs = @(
     "$env:APPDATA\Spotify",
@@ -61,7 +57,6 @@ if (-not $restored) {
     Write-Host "      No xpui.spa.bak found. If Spotify has issues, run Spotify installer to refresh." -ForegroundColor Yellow
 }
 
-# 4. Clear CEF Cache
 Write-Host "[4/4] Clearing browser cache..." -ForegroundColor Yellow
 $cache = "$env:LOCALAPPDATA\Spotify\Browser\Cache"
 if (Test-Path $cache) {

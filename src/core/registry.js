@@ -1,7 +1,4 @@
-/**
- * Core Plugin Registry
- * Handles modular extensions, lifecycle, and dynamic toggling.
- */
+
 class PluginRegistry {
   constructor() {
     this.plugins = new Map();

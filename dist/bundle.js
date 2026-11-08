@@ -1,12 +1,7 @@
-/**
- * Spotify Mod Bundle v0.5.0 (Offline Download & Polished UI)
- * Generated: 2026-11-08T07:09:51.835Z
- * Zero-dependency build
- */
+
 (function() {
   'use strict';
 
-  // --- Очистка следов старых сторонних модов ---
   (function purgeLegacyArtifacts() {
     const legacyKeys = [
       'extera_v5_config',
@@ -28,7 +23,6 @@
     } catch (e) {}
   })();
 
-  // --- Внедрение стилей темы, Adblock, UI и Downloader ---
   function injectStyles() {
     const styleId = 'mod-bundled-styles';
     let style = document.getElementById(styleId);
@@ -37,14 +31,9 @@
       style.id = styleId;
       (document.head || document.documentElement).appendChild(style);
     }
-    style.textContent = "\n/* --- theme.css --- */\n/* Базовые переменные кастомизации мода */\n:root {\n  --mod-accent: #1db954;\n  --mod-bg-overlay: rgba(0, 0, 0, 0.7);\n  --mod-font-family: var(--encore-body-font-stack, var(--font-family, inherit));\n}\n\n/* Метка версии мода в консоли/DOM */\n#mod-root {\n  display: contents;\n}\n\n/* --- adblock.css --- */\n/* ============================================================\n   Spotify Mod - Advanced CSS Adblock (Leaf-Level Scoped)\n   Hides banners, upgrade prompts, sponsored slots, and visual clutter\n   Eliminates container :has() to preserve right sidebar & Now Playing Bar\n   Keeps user profile menu, context menus, and navigation fully functional\n   ============================================================ */\n\n/* 1. Кнопки Upgrade to Premium в шапке и панелях */\n.Root__top-bar [data-testid=\"upgrade-button\"],\nbutton[data-testid=\"upgrade-button\"],\na[data-testid=\"upgrade-button\"],\n[data-testid=\"top-bar-upgrade-button\"],\n[data-testid=\"action-bar-button-upgrade\"],\n.main-topBar-UpgradeButton,\n[data-testid=\"user-widget-dropdown-menu\"] [data-testid=\"loggedin_upgrade_menu\"],\n[id*=\"loggedin_upgrade_menu\"],\na[href*=\"spotify.com/premium\"]:not([data-testid=\"user-widget-link\"]),\na[href*=\"spotify.com/purchase\"]:not([data-testid=\"user-widget-link\"]),\nbutton[aria-label*=\"Upgrade\"]:not([data-testid*=\"user\"]),\nbutton[aria-label*=\"Улучшить\"]:not([data-testid*=\"user\"]),\na[aria-label*=\"Upgrade\"]:not([data-testid*=\"user\"]),\na[aria-label*=\"Улучшить\"]:not([data-testid*=\"user\"]) {\n  display: none !important;\n  opacity: 0 !important;\n  pointer-events: none !important;\n  width: 0 !important;\n  height: 0 !important;\n  margin: 0 !important;\n  padding: 0 !important;\n}\n\n/* 2. Leaderboard banners (between navigation and player) */\n#leaderboard-ad-element,\n.uAHPSe7bihFdDS76WWIg,\n.VMAxhgsNK7QdtS6kLrYW,\n[data-testid=\"hpto-parent-container\"],\n.GBFjEce25V0Iu4r0ElZX,\n.main-leaderboardComponent-container,\n[data-testid=\"test-ref-div\"] {\n  display: none !important;\n  height: 0 !important;\n  min-height: 0 !important;\n  margin: 0 !important;\n  padding: 0 !important;\n  overflow: hidden !important;\n}\n\n/* 3. Homepage Takeover & In-Feed Banners & General Ad Containers */\ndiv[data-testid=\"ad-banner\"],\ndiv[data-testid=\"billboard-ad\"],\ndiv[data-testid=\"leaderboard-ad\"],\ndiv[data-testid=\"in-feed-ad\"],\n[data-testid=\"test-ad-container\"],\n[data-testid=\"home-upsell-card\"],\n.home-ads-container,\n[class*=\"home-ads-container\"],\n.b1RJ1EmDQKXxEdRfS3VV,\n.y8zgGn9TRryk8aSMwRag,\n.main-home-upsell,\n.main-billboardComponent-container,\n.banner-ad-container,\n.ad-iframe,\n.ad-placeholder,\n.sponsor-container,\n[class*=\"ad-container\"],\ndiv[data-testid*=\"upsell\"],\ndiv[data-testid*=\"ad-slot\"],\n[data-testid=\"home-ad-card\"],\n.GdrmVD6TSeSu2IGKWHm7 {\n  display: none !important;\n  height: 0 !important;\n  min-height: 0 !important;\n  margin: 0 !important;\n  padding: 0 !important;\n  overflow: hidden !important;\n}\n\n/* 4. Playlist & Show Leavebehinds (Sponsored cards & Recent Ads) */\n[data-testid=\"leavebehinds-wrapper\"],\n[data-testid=\"leavebehind\"],\n[data-testid=\"leavebehinds-list-wrapper\"],\n[data-testid=\"leavebehinds-see-all\"],\ndiv[data-testid=\"feed-upsell-banner\"],\ndiv[data-testid=\"download-cta-banner\"],\n[class*=\"SponsoredPlaceholder\"],\n[class*=\"sponsored-container\"],\n[class*=\"AdvertContainer\"] {\n  display: none !important;\n  height: 0 !important;\n  min-height: 0 !important;\n  margin: 0 !important;\n  padding: 0 !important;\n  overflow: hidden !important;\n}\n\n/* 5. Desktop Update Notification Banner */\n[data-testid=\"desktop-update-banner\"],\ndiv[data-testid=\"desktop-update-banner\"],\n.riCDTx8wwIkR8ilEuxOA,\n.desktop-update-notification,\n[class*=\"UpsellBanner\"] {\n  display: none !important;\n  height: 0 !important;\n  margin: 0 !important;\n  padding: 0 !important;\n}\n\n/* 6. Premium Upsell Page & Modals */\n.ZzU_KGHiP55yEoQV7TkV,\niframe[src*=\"sponsored-recommendations.spotify.com\"],\n[data-testid*=\"upsell-tooltip\"],\n[data-testid*=\"premium-upsell\"],\ndiv[class*=\"upsellTooltip\"],\ndiv[data-theme=\"encore-blue-set\"]:not(:has([role=\"menu\"])),\ndiv[data-theme=\"encore-blue\"]:not(:has([role=\"menu\"])),\ndiv[class*=\"tippy-box\"][data-theme*=\"blue\"]:not(:has([role=\"menu\"])),\ndiv[class*=\"tippy-box\"][data-theme*=\"announcement\"]:not(:has([role=\"menu\"])),\ndiv[class*=\"encore-announcement\"]:not(:has([role=\"menu\"])) {\n  display: none !important;\n  opacity: 0 !important;\n  pointer-events: none !important;\n  visibility: hidden !important;\n}\n\n/* 7. Context menu items (Download / Premium) */\nul[role=\"menu\"] li:has(button[aria-label*=\"Скачать\"]),\nul[role=\"menu\"] li:has(button[aria-label*=\"Download\"]),\nul[role=\"menu\"] li:has(a[href*=\"premium\"]),\nul[role=\"menu\"] button:has(svg path[d*=\"M12 3a9\"]):not(#mod-player-download-btn) {\n  display: none !important;\n}\n\n/* 8. Scoped Ad Break Overlays (NEVER touches aside or now-playing-widget containers) */\n[data-testid=\"ad-break-container\"],\n[class*=\"AdBreak\"],\n[class*=\"ad-break\"],\n[data-testid=\"video-ad-overlay\"],\n.main-adBreak-container,\n[data-testid=\"skippable-ad-circle-timer\"],\n[data-testid=\"skippable-ad-delay\"],\n.A_dgCpuNz1P_9_RPygVC,\n[data-testid=\"video-player-parking-surface\"] {\n  display: none !important;\n  pointer-events: none !important;\n  height: 0 !important;\n  width: 0 !important;\n}\n\n/* 9. Video ad overlay suppression during ad playback */\nbody.mod-ad-playing [data-testid=\"video-player-parking-surface\"],\nbody.mod-ad-playing [data-testid=\"video-ad-overlay\"] {\n  opacity: 0 !important;\n  pointer-events: none !important;\n}\n\n/* --- modal.css --- */\n/* ============================================================\n   Spotify Encore Design System - Mod Settings & Controls\n   Strict Spotify Desktop Aesthetic (Pure SVG & CSS, Zero Emojis)\n   ============================================================ */\n\n/* 1. Кнопка настроек мода в правой верхней панели (возле профиля) */\n.mod-topbar-button {\n  display: inline-flex;\n  align-items: center;\n  justify-content: center;\n  width: 32px;\n  height: 32px;\n  background-color: rgba(0, 0, 0, 0.54);\n  color: #b3b3b3;\n  border: none;\n  border-radius: 50%;\n  cursor: pointer;\n  margin-right: 8px;\n  margin-left: 4px;\n  transition: transform 0.2s cubic-bezier(0.3, 0, 0, 1), color 0.15s ease, background-color 0.15s ease;\n  position: relative;\n  flex-shrink: 0;\n  vertical-align: middle;\n  padding: 0;\n}\n\n.mod-topbar-button:hover {\n  background-color: rgba(255, 255, 255, 0.12);\n  color: #ffffff;\n  transform: scale(1.06);\n}\n\n.mod-topbar-button:active,\n.mod-topbar-button.active {\n  background-color: rgba(255, 255, 255, 0.18);\n  color: #ffffff;\n  transform: scale(0.96);\n}\n\n.mod-topbar-button svg {\n  width: 18px;\n  height: 18px;\n  display: block;\n  fill: currentColor;\n  transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);\n}\n\n.mod-topbar-button.spinning svg {\n  transform: rotate(360deg);\n}\n\n/* 2. Модальный оверлей */\n.mod-modal-overlay {\n  position: fixed;\n  top: 0;\n  left: 0;\n  right: 0;\n  bottom: 0;\n  background-color: rgba(0, 0, 0, 0.72);\n  backdrop-filter: blur(8px);\n  -webkit-backdrop-filter: blur(8px);\n  z-index: 999999;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  animation: modFadeIn 0.15s cubic-bezier(0.3, 0, 0, 1);\n}\n\n.mod-modal-overlay.closing {\n  animation: modFadeOut 0.15s cubic-bezier(0, 0, 0.2, 1) forwards;\n}\n\n.mod-modal-overlay.closing .mod-modal-dialog {\n  animation: modScaleDown 0.15s cubic-bezier(0, 0, 0.2, 1) forwards;\n}\n\n@keyframes modFadeIn {\n  from { opacity: 0; }\n  to { opacity: 1; }\n}\n\n@keyframes modFadeOut {\n  from { opacity: 1; }\n  to { opacity: 0; }\n}\n\n/* 3. Окно настроек */\n.mod-modal-dialog {\n  width: 780px;\n  max-width: 92vw;\n  max-height: 84vh;\n  background-color: #121212;\n  border-radius: 12px;\n  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.65), 0 0 0 1px rgba(255, 255, 255, 0.08);\n  display: flex;\n  flex-direction: column;\n  overflow: hidden;\n  font-family: var(--mod-font-family, inherit);\n  animation: modScaleUp 0.18s cubic-bezier(0.16, 1, 0.3, 1);\n}\n\n@keyframes modScaleUp {\n  from { opacity: 0; transform: scale(0.97); }\n  to { opacity: 1; transform: scale(1); }\n}\n\n@keyframes modScaleDown {\n  from { opacity: 1; transform: scale(1); }\n  to { opacity: 0; transform: scale(0.96); }\n}\n\n/* 4. Шапка модального окна */\n.mod-modal-header {\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  padding: 20px 24px 14px 24px;\n  background-color: #121212;\n  border-bottom: 1px solid rgba(255, 255, 255, 0.08);\n}\n\n.mod-modal-title-group {\n  display: flex;\n  flex-direction: column;\n}\n\n.mod-modal-title {\n  margin: 0;\n  font-family: var(--encore-title-font-stack, var(--font-family, inherit));\n  font-size: 20px;\n  font-weight: 700;\n  color: #ffffff;\n  letter-spacing: -0.04em;\n}\n\n.mod-modal-subtitle {\n  font-size: 13px;\n  color: #b3b3b3;\n  margin-top: 3px;\n}\n\n.mod-modal-close-btn {\n  background: transparent;\n  border: none;\n  color: #b3b3b3;\n  width: 32px;\n  height: 32px;\n  border-radius: 50%;\n  cursor: pointer;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  transition: all 0.15s ease;\n  padding: 0;\n}\n\n.mod-modal-close-btn:hover {\n  background-color: rgba(255, 255, 255, 0.1);\n  color: #ffffff;\n  transform: scale(1.05);\n}\n\n/* 5. Навигационные вкладки в нативном стиле Encore Pills */\n.mod-tabs-nav {\n  display: flex;\n  align-items: center;\n  background-color: #121212;\n  padding: 12px 24px;\n  border-bottom: 1px solid rgba(255, 255, 255, 0.08);\n  gap: 8px;\n  overflow-x: hidden;\n  flex-wrap: nowrap;\n}\n\n.mod-tab-btn {\n  background-color: rgba(255, 255, 255, 0.07);\n  border: none;\n  color: #ffffff;\n  padding: 8px 16px;\n  font-size: 13px;\n  font-weight: 700;\n  border-radius: 9999px;\n  cursor: pointer;\n  display: inline-flex;\n  align-items: center;\n  gap: 8px;\n  transition: all 0.2s cubic-bezier(0.2, 0, 0, 1);\n  white-space: nowrap;\n  user-select: none;\n}\n\n.mod-tab-btn:hover {\n  background-color: rgba(255, 255, 255, 0.12);\n  transform: scale(1.02);\n}\n\n.mod-tab-btn:active {\n  transform: scale(0.97);\n}\n\n.mod-tab-btn.active {\n  background-color: #ffffff;\n  color: #000000;\n}\n\n.mod-tab-btn.active svg {\n  fill: #000000;\n}\n\n.mod-tab-btn svg {\n  width: 16px;\n  height: 16px;\n  fill: currentColor;\n  transition: fill 0.15s ease;\n}\n\n/* 6. Тело окна и контент вкладок */\n.mod-modal-body {\n  padding: 20px 24px;\n  overflow-y: auto;\n  overflow-x: hidden;\n  display: flex;\n  flex-direction: column;\n  gap: 12px;\n  max-height: calc(84vh - 140px);\n}\n\n.mod-tab-content {\n  display: none;\n  flex-direction: column;\n  gap: 12px;\n  animation: modFadeIn 0.15s ease;\n}\n\n.mod-tab-content.active {\n  display: flex;\n  animation: modTabEnter 0.18s cubic-bezier(0, 0, 0.2, 1);\n}\n\n@keyframes modTabEnter {\n  from { opacity: 0; transform: translateY(4px); }\n  to { opacity: 1; transform: translateY(0); }\n}\n\n/* Карточки секций */\n.mod-card {\n  padding: 16px 18px;\n  border-radius: 8px;\n  background-color: #181818;\n  border: 1px solid rgba(255, 255, 255, 0.08);\n  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.65);\n  display: flex;\n  flex-direction: column;\n  gap: 10px;\n  transition: background-color 0.15s ease, border-color 0.15s ease;\n}\n\n.mod-card:hover {\n  background-color: #1e1e1e;\n  border-color: rgba(255, 255, 255, 0.12);\n}\n\n.mod-card-header {\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n}\n\n.mod-card-title {\n  font-family: var(--encore-title-font-stack, var(--font-family, inherit));\n  font-size: 15px;\n  font-weight: 700;\n  color: #ffffff;\n  letter-spacing: -0.02em;\n}\n\n.mod-card-desc {\n  font-size: 13px;\n  color: #b3b3b3;\n  line-height: 1.5;\n}\n\n/* Информационный коллаут */\n.mod-callout {\n  padding: 12px 16px;\n  border-radius: 8px;\n  background: rgba(30, 215, 96, 0.06);\n  border: 1px solid rgba(30, 215, 96, 0.2);\n  color: #d1d1d1;\n  font-size: 12px;\n  line-height: 1.45;\n  display: flex;\n  gap: 10px;\n  align-items: flex-start;\n}\n\n.mod-callout svg {\n  flex-shrink: 0;\n  margin-top: 1px;\n}\n\n/* Кнопки Encore */\n.mod-btn {\n  display: inline-flex;\n  align-items: center;\n  justify-content: center;\n  gap: 6px;\n  padding: 7px 14px;\n  border-radius: 9999px;\n  font-size: 12px;\n  font-weight: 700;\n  border: none;\n  cursor: pointer;\n  transition: transform 0.15s ease, background-color 0.15s ease, color 0.15s ease;\n  user-select: none;\n}\n\n.mod-btn:hover {\n  transform: scale(1.03);\n}\n\n.mod-btn:active {\n  transform: scale(0.97);\n}\n\n.mod-btn-primary {\n  background-color: #1ed760;\n  color: #000000;\n}\n\n.mod-btn-primary:hover {\n  background-color: #1fdf64;\n}\n\n.mod-btn-secondary {\n  background-color: rgba(255, 255, 255, 0.08);\n  color: #ffffff;\n  border: 1px solid rgba(255, 255, 255, 0.12);\n}\n\n.mod-btn-secondary:hover {\n  background-color: rgba(255, 255, 255, 0.15);\n  border-color: rgba(255, 255, 255, 0.2);\n}\n\n.mod-btn-danger {\n  background-color: rgba(241, 94, 108, 0.12);\n  color: #f15e6c;\n  border: 1px solid rgba(241, 94, 108, 0.25);\n}\n\n.mod-btn-danger:hover {\n  background-color: rgba(241, 94, 108, 0.2);\n}\n\n/* Бейджи-пилюли Encore */\n.mod-pill-badge {\n  display: inline-flex;\n  align-items: center;\n  padding: 3px 10px;\n  border-radius: 9999px;\n  font-size: 11px;\n  font-weight: 700;\n  letter-spacing: 0.02em;\n  background: rgba(255, 255, 255, 0.08);\n  color: #ffffff;\n}\n\n/* Поле пути */\n.mod-path-box {\n  background-color: #121212;\n  border: 1px solid rgba(255, 255, 255, 0.08);\n  border-radius: 6px;\n  padding: 8px 12px;\n  font-family: Consolas, monospace;\n  font-size: 11.5px;\n  color: #1ed760;\n  word-break: break-all;\n}\n\n/* Поле ввода */\n.mod-input {\n  background-color: #121212;\n  border: 1px solid rgba(255, 255, 255, 0.12);\n  border-radius: 6px;\n  color: #ffffff;\n  padding: 7px 12px;\n  font-size: 12.5px;\n  outline: none;\n  flex: 1;\n  transition: border-color 0.15s ease;\n}\n\n.mod-input:focus {\n  border-color: #1ed760;\n}\n\n/* Фильтры по категориям в стиле нативных пиллов Spotify */\n.mod-country-filters {\n  display: flex;\n  gap: 6px;\n  flex-wrap: wrap;\n  margin-top: 4px;\n}\n\n.mod-country-filter-btn {\n  background: rgba(255, 255, 255, 0.07);\n  border: none;\n  color: #ffffff;\n  padding: 6px 14px;\n  border-radius: 16px;\n  font-size: 12px;\n  font-weight: 600;\n  cursor: pointer;\n  transition: all 0.15s ease;\n}\n\n.mod-country-filter-btn:hover {\n  background: rgba(255, 255, 255, 0.12);\n}\n\n.mod-country-filter-btn.active {\n  background: #ffffff;\n  color: #000000;\n}\n\n/* Пресеты серверов */\n.mod-preset-item {\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  padding: 10px 14px;\n  border-radius: 6px;\n  background-color: rgba(255, 255, 255, 0.02);\n  border: 1px solid rgba(255, 255, 255, 0.05);\n  transition: background-color 0.15s ease, border-color 0.15s ease;\n}\n\n.mod-preset-item:hover {\n  background-color: rgba(255, 255, 255, 0.05);\n}\n\n.mod-preset-item.active {\n  background-color: rgba(30, 215, 96, 0.06);\n  border-color: rgba(30, 215, 96, 0.35);\n}\n\n.mod-preset-info {\n  display: flex;\n  flex-direction: column;\n}\n\n.mod-preset-name {\n  font-size: 13px;\n  font-weight: 600;\n  color: #ffffff;\n  display: flex;\n  align-items: center;\n  gap: 6px;\n}\n\n.mod-preset-url {\n  font-size: 11px;\n  color: #888888;\n  font-family: Consolas, monospace;\n}\n\n/* Статус проверки прокси */\n.mod-proxy-badge {\n  display: inline-flex;\n  align-items: center;\n  gap: 6px;\n  padding: 6px 12px;\n  border-radius: 6px;\n  font-size: 12px;\n  font-weight: 600;\n}\n\n.mod-proxy-badge.success {\n  background: rgba(30, 215, 96, 0.12);\n  border: 1px solid rgba(30, 215, 96, 0.3);\n  color: #1ed760;\n}\n\n.mod-proxy-badge.error {\n  background: rgba(233, 20, 41, 0.12);\n  border: 1px solid rgba(233, 20, 41, 0.3);\n  color: #f15e6c;\n}\n\n.mod-proxy-badge.testing {\n  background: rgba(255, 255, 255, 0.08);\n  border: 1px solid rgba(255, 255, 255, 0.12);\n  color: #d1d1d1;\n}\n\n/* Элементы функций */\n.mod-setting-item {\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  padding: 10px 14px;\n  background-color: rgba(255, 255, 255, 0.02);\n  border: 1px solid rgba(255, 255, 255, 0.05);\n  border-radius: 8px;\n}\n\n.mod-setting-info {\n  display: flex;\n  flex-direction: column;\n  flex: 1;\n  padding-right: 14px;\n}\n\n.mod-setting-name {\n  font-size: 13.5px;\n  font-weight: 600;\n  color: #ffffff;\n}\n\n.mod-setting-desc {\n  font-size: 11.5px;\n  color: #a7a7a7;\n  margin-top: 2px;\n}\n\n/* Тумблер Spotify */\n.mod-switch {\n  position: relative;\n  display: inline-block;\n  width: 44px;\n  height: 24px;\n  flex-shrink: 0;\n  cursor: pointer;\n}\n\n.mod-switch input {\n  opacity: 0;\n  width: 0;\n  height: 0;\n}\n\n.mod-switch-slider {\n  position: absolute;\n  cursor: pointer;\n  top: 0;\n  left: 0;\n  right: 0;\n  bottom: 0;\n  background-color: #535353;\n  border-radius: 24px;\n  transition: background-color 0.2s cubic-bezier(0.3, 0, 0, 1);\n}\n\n.mod-switch-slider:before {\n  position: absolute;\n  content: \"\";\n  height: 18px;\n  width: 18px;\n  left: 3px;\n  bottom: 3px;\n  background-color: #ffffff;\n  border-radius: 50%;\n  transition: transform 0.2s cubic-bezier(0.3, 0, 0, 1);\n}\n\n.mod-switch input:checked + .mod-switch-slider {\n  background-color: #1ed760;\n}\n\n.mod-switch input:checked + .mod-switch-slider:before {\n  transform: translateX(20px);\n}\n\n/* Подвал окна */\n.mod-modal-footer {\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  padding: 14px 24px;\n  background-color: #121212;\n  border-top: 1px solid rgba(255, 255, 255, 0.08);\n}\n\n.mod-modal-status-badge {\n  display: flex;\n  align-items: center;\n  gap: 8px;\n  font-size: 12px;\n  color: #a7a7a7;\n}\n\n.mod-status-indicator {\n  width: 8px;\n  height: 8px;\n  border-radius: 50%;\n  background-color: #1ed760;\n  box-shadow: 0 0 8px rgba(30, 215, 96, 0.6);\n  flex-shrink: 0;\n}\n\n.mod-status-indicator.offline {\n  background-color: #e91429;\n  box-shadow: 0 0 8px rgba(233, 20, 41, 0.6);\n}\n\n.mod-modal-hotkey-hint {\n  font-size: 11px;\n  color: #6a6a6a;\n  background: rgba(255, 255, 255, 0.05);\n  padding: 3px 7px;\n  border-radius: 4px;\n  font-family: monospace;\n}\n\n/* ============================================================\n   Блок обхода 14 дней и выбор региона Spotify Encore\n   ============================================================ */\n\n/* Баннер статуса обхода Encore */\n.mod-bypass-banner {\n  background-color: #181818;\n  border: 1px solid rgba(255, 255, 255, 0.08);\n  border-radius: 8px;\n  padding: 16px 18px;\n  display: flex;\n  flex-direction: column;\n  gap: 10px;\n  transition: border-color 0.2s ease, background-color 0.2s ease;\n}\n\n.mod-bypass-banner:hover {\n  border-color: rgba(255, 255, 255, 0.14);\n}\n\n.mod-bypass-status-row {\n  display: flex;\n  align-items: center;\n  gap: 10px;\n}\n\n.mod-status-chip {\n  display: inline-flex;\n  align-items: center;\n  gap: 6px;\n  padding: 3px 10px;\n  border-radius: 9999px;\n  font-size: 11px;\n  font-weight: 700;\n  background: rgba(30, 215, 96, 0.12);\n  color: #1ed760;\n  border: 1px solid rgba(30, 215, 96, 0.25);\n  margin-left: auto;\n}\n\n.mod-status-dot {\n  width: 6px;\n  height: 6px;\n  border-radius: 50%;\n  background-color: #1ed760;\n  flex-shrink: 0;\n  display: inline-block;\n  vertical-align: middle;\n}\n\n.mod-status-dot.error,\n.mod-status-dot--error {\n  background-color: #f15e6c;\n}\n\n.mod-status-dot.muted,\n.mod-status-dot--muted {\n  background-color: #a7a7a7;\n}\n\n.mod-bypass-indicator {\n  width: 8px;\n  height: 8px;\n  border-radius: 50%;\n  background-color: #1ed760;\n  flex-shrink: 0;\n}\n\n.mod-bypass-title {\n  font-family: var(--encore-title-font-stack, var(--font-family, inherit));\n  font-size: 14px;\n  font-weight: 700;\n  color: #ffffff;\n  letter-spacing: -0.02em;\n}\n\n.mod-bypass-desc {\n  font-size: 12px;\n  color: #b3b3b3;\n  line-height: 1.5;\n}\n\n.mod-bypass-meta {\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  gap: 12px;\n  margin-top: 4px;\n  padding-top: 10px;\n  border-top: 1px solid rgba(255, 255, 255, 0.05);\n}\n\n.mod-bypass-meta-item {\n  display: flex;\n  align-items: center;\n  gap: 8px;\n  font-size: 11.5px;\n  color: #a7a7a7;\n}\n\n/* Интерактивная сетка регионов */\n.mod-region-grid {\n  display: grid;\n  grid-template-columns: repeat(3, 1fr);\n  gap: 8px;\n  margin-top: 6px;\n  max-height: 280px;\n  overflow-y: auto;\n  padding-right: 4px;\n}\n\n.mod-region-card {\n  background-color: #181818;\n  border: 1px solid rgba(255, 255, 255, 0.08);\n  border-radius: 6px;\n  padding: 10px 12px;\n  cursor: pointer;\n  transition: background-color 0.15s ease, border-color 0.15s ease, transform 0.15s ease;\n  display: flex;\n  flex-direction: column;\n  gap: 5px;\n  position: relative;\n  user-select: none;\n}\n\n.mod-region-card:hover {\n  background-color: #242424;\n  border-color: rgba(255, 255, 255, 0.2);\n  transform: translateY(-1px);\n}\n\n.mod-region-card.active {\n  background-color: #222222;\n  border-color: #1ed760;\n  box-shadow: 0 0 0 1px #1ed760;\n}\n\n.mod-region-card-top {\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n}\n\n.mod-country-badge,\n.mod-region-code {\n  display: inline-flex;\n  align-items: center;\n  justify-content: center;\n  min-width: 26px;\n  height: 18px;\n  padding: 0 5px;\n  background: rgba(255, 255, 255, 0.08);\n  border-radius: 4px;\n  font-size: 10px;\n  font-weight: 700;\n  color: #ffffff;\n  letter-spacing: 0.04em;\n}\n\n.mod-region-card.active .mod-country-badge,\n.mod-region-card.active .mod-region-code {\n  background: #1ed760;\n  color: #000000;\n}\n\n.mod-region-radio {\n  width: 14px;\n  height: 14px;\n  border-radius: 50%;\n  border: 1.5px solid #727272;\n  position: relative;\n  transition: all 0.15s ease;\n}\n\n.mod-region-card.active .mod-region-radio {\n  border-color: #1ed760;\n  background-color: #1ed760;\n  box-shadow: inset 0 0 0 3px #181818;\n}\n\n.mod-region-name {\n  font-size: 13px;\n  font-weight: 700;\n  color: #ffffff;\n  line-height: 1.2;\n}\n\n.mod-region-hint {\n  font-size: 11px;\n  color: #888888;\n  line-height: 1.35;\n}\n\n/* Пошаговая инструкция для человека */\n.mod-steps-list {\n  display: flex;\n  flex-direction: column;\n  gap: 10px;\n  margin-top: 6px;\n}\n\n.mod-step-item {\n  display: flex;\n  gap: 12px;\n  align-items: flex-start;\n}\n\n.mod-step-num {\n  width: 22px;\n  height: 22px;\n  border-radius: 50%;\n  background: rgba(255, 255, 255, 0.08);\n  color: #1ed760;\n  font-size: 11px;\n  font-weight: 700;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  flex-shrink: 0;\n  margin-top: 1px;\n}\n\n.mod-step-text {\n  font-size: 12px;\n  color: #d1d1d1;\n  line-height: 1.45;\n  flex: 1;\n}\n\n\n\n/* --- downloader.css --- */\n/* ============================================================\n   Spotify Encore Design System - Offline Downloader Controls\n   Strict Spotify Desktop Aesthetic (Zero Emojis, Pure SVG & CSS)\n   ============================================================ */\n\n/* 1. Кнопка скачивания в шапке плейлиста (нативный круглый стиль 32x32px) */\n.mod-download-btn {\n  display: inline-flex;\n  align-items: center;\n  justify-content: center;\n  width: 32px;\n  height: 32px;\n  background: transparent;\n  color: #b3b3b3;\n  border: none;\n  border-radius: 50%;\n  cursor: pointer;\n  margin-left: 8px;\n  transition: transform 0.15s cubic-bezier(0.3, 0, 0, 1), color 0.15s ease;\n  position: relative;\n  flex-shrink: 0;\n  padding: 0;\n}\n\n.mod-download-btn:hover {\n  color: #ffffff;\n  transform: scale(1.05);\n}\n\n.mod-download-btn:active {\n  transform: scale(0.95);\n}\n\n.mod-download-btn svg {\n  width: 16px;\n  height: 16px;\n  display: block;\n  fill: currentColor;\n}\n\n/* Статус: Скачивание (вращение стрелки) */\n.mod-download-btn.downloading {\n  color: #1ed760;\n  animation: modSpin 1.4s linear infinite;\n}\n\n@keyframes modSpin {\n  0% { transform: rotate(0deg); }\n  100% { transform: rotate(360deg); }\n}\n\n/* Статус: Скачано (зеленая круглая иконка как в Spotify Premium) */\n.mod-download-btn.downloaded {\n  color: #1ed760;\n}\n\n.mod-download-btn.downloaded:hover {\n  color: #1fdf64;\n  transform: scale(1.06);\n}\n\n/* 2. Текстовый счетчик прогресса (чистый шрифт без рамок и вырвиглазных цветов) */\n.mod-action-counter {\n  display: inline-flex;\n  align-items: center;\n  font-size: 12px;\n  font-weight: 500;\n  color: #b3b3b3;\n  margin-left: 8px;\n  margin-right: 4px;\n  white-space: nowrap;\n  letter-spacing: -0.01em;\n  vertical-align: middle;\n  pointer-events: none;\n  user-select: none;\n}\n\n/* 3. Кнопки управления (Пауза, Стоп) в стиле Spotify Encore (круглые 32x32px) */\n.mod-encore-circle-btn {\n  display: inline-flex;\n  align-items: center;\n  justify-content: center;\n  width: 32px;\n  height: 32px;\n  border-radius: 50%;\n  background: transparent;\n  border: none;\n  color: #b3b3b3;\n  cursor: pointer;\n  transition: transform 0.15s cubic-bezier(0.3, 0, 0, 1), color 0.15s ease, background-color 0.15s ease;\n  margin-left: 4px;\n  padding: 0;\n  vertical-align: middle;\n}\n\n.mod-encore-circle-btn:hover {\n  color: #ffffff;\n  background-color: rgba(255, 255, 255, 0.08);\n  transform: scale(1.06);\n}\n\n.mod-encore-circle-btn:active {\n  transform: scale(0.95);\n}\n\n.mod-encore-circle-btn svg {\n  width: 14px;\n  height: 14px;\n  display: block;\n  fill: currentColor;\n}\n\n.mod-encore-circle-btn.danger:hover {\n  color: #f15e6c;\n  background-color: rgba(241, 94, 108, 0.1);\n}\n\n/* 4. Выпадающее контекстное меню для скачанного плейлиста (Encore Context Menu) */\n.mod-encore-menu {\n  position: absolute;\n  top: 100%;\n  left: 0;\n  margin-top: 6px;\n  background-color: #282828;\n  border-radius: 6px;\n  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.08);\n  padding: 4px;\n  min-width: 210px;\n  z-index: 999999;\n  display: flex;\n  flex-direction: column;\n  animation: modMenuFade 0.15s cubic-bezier(0.3, 0, 0, 1);\n}\n\n@keyframes modMenuFade {\n  from { opacity: 0; transform: translateY(-4px); }\n  to { opacity: 1; transform: translateY(0); }\n}\n\n.mod-encore-menu-item {\n  display: flex;\n  align-items: center;\n  gap: 10px;\n  padding: 9px 12px;\n  border-radius: 4px;\n  color: #eaeaea;\n  font-size: 13px;\n  font-weight: 500;\n  background: transparent;\n  border: none;\n  cursor: pointer;\n  text-align: left;\n  width: 100%;\n  transition: background-color 0.12s ease, color 0.12s ease;\n}\n\n.mod-encore-menu-item:hover {\n  background-color: rgba(255, 255, 255, 0.1);\n  color: #ffffff;\n}\n\n.mod-encore-menu-item.danger {\n  color: #f15e6c;\n}\n\n.mod-encore-menu-item.danger:hover {\n  background-color: rgba(241, 94, 108, 0.15);\n  color: #ff6b7a;\n}\n\n.mod-encore-menu-item svg {\n  width: 16px;\n  height: 16px;\n  fill: currentColor;\n  flex-shrink: 0;\n}\n";
+    style.textContent = "\n/* --- theme.css --- */\n\n:root {\n  --mod-accent: #1db954;\n  --mod-bg-overlay: rgba(0, 0, 0, 0.7);\n  --mod-font-family: var(--encore-body-font-stack, var(--font-family, inherit));\n}\n\n\n#mod-root {\n  display: contents;\n}\n\n/* --- adblock.css --- */\n\n\n\n.Root__top-bar [data-testid=\"upgrade-button\"],\nbutton[data-testid=\"upgrade-button\"],\na[data-testid=\"upgrade-button\"],\n[data-testid=\"top-bar-upgrade-button\"],\n[data-testid=\"action-bar-button-upgrade\"],\n.main-topBar-UpgradeButton,\n[data-testid=\"user-widget-dropdown-menu\"] [data-testid=\"loggedin_upgrade_menu\"],\n[id*=\"loggedin_upgrade_menu\"],\na[href*=\"spotify.com/premium\"]:not([data-testid=\"user-widget-link\"]),\na[href*=\"spotify.com/purchase\"]:not([data-testid=\"user-widget-link\"]),\nbutton[aria-label*=\"Upgrade\"]:not([data-testid*=\"user\"]),\nbutton[aria-label*=\"Улучшить\"]:not([data-testid*=\"user\"]),\na[aria-label*=\"Upgrade\"]:not([data-testid*=\"user\"]),\na[aria-label*=\"Улучшить\"]:not([data-testid*=\"user\"]) {\n  display: none !important;\n  opacity: 0 !important;\n  pointer-events: none !important;\n  width: 0 !important;\n  height: 0 !important;\n  margin: 0 !important;\n  padding: 0 !important;\n}\n\n\n#leaderboard-ad-element,\n.uAHPSe7bihFdDS76WWIg,\n.VMAxhgsNK7QdtS6kLrYW,\n[data-testid=\"hpto-parent-container\"],\n.GBFjEce25V0Iu4r0ElZX,\n.main-leaderboardComponent-container,\n[data-testid=\"test-ref-div\"] {\n  display: none !important;\n  height: 0 !important;\n  min-height: 0 !important;\n  margin: 0 !important;\n  padding: 0 !important;\n  overflow: hidden !important;\n}\n\n\ndiv[data-testid=\"ad-banner\"],\ndiv[data-testid=\"billboard-ad\"],\ndiv[data-testid=\"leaderboard-ad\"],\ndiv[data-testid=\"in-feed-ad\"],\n[data-testid=\"test-ad-container\"],\n[data-testid=\"home-upsell-card\"],\n.home-ads-container,\n[class*=\"home-ads-container\"],\n.b1RJ1EmDQKXxEdRfS3VV,\n.y8zgGn9TRryk8aSMwRag,\n.main-home-upsell,\n.main-billboardComponent-container,\n.banner-ad-container,\n.ad-iframe,\n.ad-placeholder,\n.sponsor-container,\n[class*=\"ad-container\"],\ndiv[data-testid*=\"upsell\"],\ndiv[data-testid*=\"ad-slot\"],\n[data-testid=\"home-ad-card\"],\n.GdrmVD6TSeSu2IGKWHm7 {\n  display: none !important;\n  height: 0 !important;\n  min-height: 0 !important;\n  margin: 0 !important;\n  padding: 0 !important;\n  overflow: hidden !important;\n}\n\n\n[data-testid=\"leavebehinds-wrapper\"],\n[data-testid=\"leavebehind\"],\n[data-testid=\"leavebehinds-list-wrapper\"],\n[data-testid=\"leavebehinds-see-all\"],\ndiv[data-testid=\"feed-upsell-banner\"],\ndiv[data-testid=\"download-cta-banner\"],\n[class*=\"SponsoredPlaceholder\"],\n[class*=\"sponsored-container\"],\n[class*=\"AdvertContainer\"] {\n  display: none !important;\n  height: 0 !important;\n  min-height: 0 !important;\n  margin: 0 !important;\n  padding: 0 !important;\n  overflow: hidden !important;\n}\n\n\n[data-testid=\"desktop-update-banner\"],\ndiv[data-testid=\"desktop-update-banner\"],\n.riCDTx8wwIkR8ilEuxOA,\n.desktop-update-notification,\n[class*=\"UpsellBanner\"] {\n  display: none !important;\n  height: 0 !important;\n  margin: 0 !important;\n  padding: 0 !important;\n}\n\n\n.ZzU_KGHiP55yEoQV7TkV,\niframe[src*=\"sponsored-recommendations.spotify.com\"],\n[data-testid*=\"upsell-tooltip\"],\n[data-testid*=\"premium-upsell\"],\ndiv[class*=\"upsellTooltip\"],\ndiv[data-theme=\"encore-blue-set\"]:not(:has([role=\"menu\"])),\ndiv[data-theme=\"encore-blue\"]:not(:has([role=\"menu\"])),\ndiv[class*=\"tippy-box\"][data-theme*=\"blue\"]:not(:has([role=\"menu\"])),\ndiv[class*=\"tippy-box\"][data-theme*=\"announcement\"]:not(:has([role=\"menu\"])),\ndiv[class*=\"encore-announcement\"]:not(:has([role=\"menu\"])) {\n  display: none !important;\n  opacity: 0 !important;\n  pointer-events: none !important;\n  visibility: hidden !important;\n}\n\n\nul[role=\"menu\"] li:has(button[aria-label*=\"Скачать\"]),\nul[role=\"menu\"] li:has(button[aria-label*=\"Download\"]),\nul[role=\"menu\"] li:has(a[href*=\"premium\"]),\nul[role=\"menu\"] button:has(svg path[d*=\"M12 3a9\"]):not(#mod-player-download-btn) {\n  display: none !important;\n}\n\n\n[data-testid=\"ad-break-container\"],\n[class*=\"AdBreak\"],\n[class*=\"ad-break\"],\n[data-testid=\"video-ad-overlay\"],\n.main-adBreak-container,\n[data-testid=\"skippable-ad-circle-timer\"],\n[data-testid=\"skippable-ad-delay\"],\n.A_dgCpuNz1P_9_RPygVC,\n[data-testid=\"video-player-parking-surface\"] {\n  display: none !important;\n  pointer-events: none !important;\n  height: 0 !important;\n  width: 0 !important;\n}\n\n\nbody.mod-ad-playing [data-testid=\"video-player-parking-surface\"],\nbody.mod-ad-playing [data-testid=\"video-ad-overlay\"] {\n  opacity: 0 !important;\n  pointer-events: none !important;\n}\n\n/* --- modal.css --- */\n\n\n\n.mod-topbar-button {\n  display: inline-flex;\n  align-items: center;\n  justify-content: center;\n  width: 32px;\n  height: 32px;\n  background-color: rgba(0, 0, 0, 0.54);\n  color: #b3b3b3;\n  border: none;\n  border-radius: 50%;\n  cursor: pointer;\n  margin-right: 8px;\n  margin-left: 4px;\n  transition: transform 0.2s cubic-bezier(0.3, 0, 0, 1), color 0.15s ease, background-color 0.15s ease;\n  position: relative;\n  flex-shrink: 0;\n  vertical-align: middle;\n  padding: 0;\n}\n\n.mod-topbar-button:hover {\n  background-color: rgba(255, 255, 255, 0.12);\n  color: #ffffff;\n  transform: scale(1.06);\n}\n\n.mod-topbar-button:active,\n.mod-topbar-button.active {\n  background-color: rgba(255, 255, 255, 0.18);\n  color: #ffffff;\n  transform: scale(0.96);\n}\n\n.mod-topbar-button svg {\n  width: 18px;\n  height: 18px;\n  display: block;\n  fill: currentColor;\n  transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);\n}\n\n.mod-topbar-button.spinning svg {\n  transform: rotate(360deg);\n}\n\n\n.mod-modal-overlay {\n  position: fixed;\n  top: 0;\n  left: 0;\n  right: 0;\n  bottom: 0;\n  background-color: rgba(0, 0, 0, 0.72);\n  backdrop-filter: blur(8px);\n  -webkit-backdrop-filter: blur(8px);\n  z-index: 999999;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  animation: modFadeIn 0.15s cubic-bezier(0.3, 0, 0, 1);\n}\n\n.mod-modal-overlay.closing {\n  animation: modFadeOut 0.15s cubic-bezier(0, 0, 0.2, 1) forwards;\n}\n\n.mod-modal-overlay.closing .mod-modal-dialog {\n  animation: modScaleDown 0.15s cubic-bezier(0, 0, 0.2, 1) forwards;\n}\n\n@keyframes modFadeIn {\n  from { opacity: 0; }\n  to { opacity: 1; }\n}\n\n@keyframes modFadeOut {\n  from { opacity: 1; }\n  to { opacity: 0; }\n}\n\n\n.mod-modal-dialog {\n  width: 780px;\n  max-width: 92vw;\n  max-height: 84vh;\n  background-color: #121212;\n  border-radius: 12px;\n  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.65), 0 0 0 1px rgba(255, 255, 255, 0.08);\n  display: flex;\n  flex-direction: column;\n  overflow: hidden;\n  font-family: var(--mod-font-family, inherit);\n  animation: modScaleUp 0.18s cubic-bezier(0.16, 1, 0.3, 1);\n}\n\n@keyframes modScaleUp {\n  from { opacity: 0; transform: scale(0.97); }\n  to { opacity: 1; transform: scale(1); }\n}\n\n@keyframes modScaleDown {\n  from { opacity: 1; transform: scale(1); }\n  to { opacity: 0; transform: scale(0.96); }\n}\n\n\n.mod-modal-header {\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  padding: 20px 24px 14px 24px;\n  background-color: #121212;\n  border-bottom: 1px solid rgba(255, 255, 255, 0.08);\n}\n\n.mod-modal-title-group {\n  display: flex;\n  flex-direction: column;\n}\n\n.mod-modal-title {\n  margin: 0;\n  font-family: var(--encore-title-font-stack, var(--font-family, inherit));\n  font-size: 20px;\n  font-weight: 700;\n  color: #ffffff;\n  letter-spacing: -0.04em;\n}\n\n.mod-modal-subtitle {\n  font-size: 13px;\n  color: #b3b3b3;\n  margin-top: 3px;\n}\n\n.mod-modal-close-btn {\n  background: transparent;\n  border: none;\n  color: #b3b3b3;\n  width: 32px;\n  height: 32px;\n  border-radius: 50%;\n  cursor: pointer;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  transition: all 0.15s ease;\n  padding: 0;\n}\n\n.mod-modal-close-btn:hover {\n  background-color: rgba(255, 255, 255, 0.1);\n  color: #ffffff;\n  transform: scale(1.05);\n}\n\n\n.mod-tabs-nav {\n  display: flex;\n  align-items: center;\n  background-color: #121212;\n  padding: 12px 24px;\n  border-bottom: 1px solid rgba(255, 255, 255, 0.08);\n  gap: 8px;\n  overflow-x: hidden;\n  flex-wrap: nowrap;\n}\n\n.mod-tab-btn {\n  background-color: rgba(255, 255, 255, 0.07);\n  border: none;\n  color: #ffffff;\n  padding: 8px 16px;\n  font-size: 13px;\n  font-weight: 700;\n  border-radius: 9999px;\n  cursor: pointer;\n  display: inline-flex;\n  align-items: center;\n  gap: 8px;\n  transition: all 0.2s cubic-bezier(0.2, 0, 0, 1);\n  white-space: nowrap;\n  user-select: none;\n}\n\n.mod-tab-btn:hover {\n  background-color: rgba(255, 255, 255, 0.12);\n  transform: scale(1.02);\n}\n\n.mod-tab-btn:active {\n  transform: scale(0.97);\n}\n\n.mod-tab-btn.active {\n  background-color: #ffffff;\n  color: #000000;\n}\n\n.mod-tab-btn.active svg {\n  fill: #000000;\n}\n\n.mod-tab-btn svg {\n  width: 16px;\n  height: 16px;\n  fill: currentColor;\n  transition: fill 0.15s ease;\n}\n\n\n.mod-modal-body {\n  padding: 20px 24px;\n  overflow-y: auto;\n  overflow-x: hidden;\n  display: flex;\n  flex-direction: column;\n  gap: 12px;\n  max-height: calc(84vh - 140px);\n}\n\n.mod-tab-content {\n  display: none;\n  flex-direction: column;\n  gap: 12px;\n  animation: modFadeIn 0.15s ease;\n}\n\n.mod-tab-content.active {\n  display: flex;\n  animation: modTabEnter 0.18s cubic-bezier(0, 0, 0.2, 1);\n}\n\n@keyframes modTabEnter {\n  from { opacity: 0; transform: translateY(4px); }\n  to { opacity: 1; transform: translateY(0); }\n}\n\n\n.mod-card {\n  padding: 16px 18px;\n  border-radius: 8px;\n  background-color: #181818;\n  border: 1px solid rgba(255, 255, 255, 0.08);\n  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.65);\n  display: flex;\n  flex-direction: column;\n  gap: 10px;\n  transition: background-color 0.15s ease, border-color 0.15s ease;\n}\n\n.mod-card:hover {\n  background-color: #1e1e1e;\n  border-color: rgba(255, 255, 255, 0.12);\n}\n\n.mod-card-header {\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n}\n\n.mod-card-title {\n  font-family: var(--encore-title-font-stack, var(--font-family, inherit));\n  font-size: 15px;\n  font-weight: 700;\n  color: #ffffff;\n  letter-spacing: -0.02em;\n}\n\n.mod-card-desc {\n  font-size: 13px;\n  color: #b3b3b3;\n  line-height: 1.5;\n}\n\n\n.mod-callout {\n  padding: 12px 16px;\n  border-radius: 8px;\n  background: rgba(30, 215, 96, 0.06);\n  border: 1px solid rgba(30, 215, 96, 0.2);\n  color: #d1d1d1;\n  font-size: 12px;\n  line-height: 1.45;\n  display: flex;\n  gap: 10px;\n  align-items: flex-start;\n}\n\n.mod-callout svg {\n  flex-shrink: 0;\n  margin-top: 1px;\n}\n\n\n.mod-btn {\n  display: inline-flex;\n  align-items: center;\n  justify-content: center;\n  gap: 6px;\n  padding: 7px 14px;\n  border-radius: 9999px;\n  font-size: 12px;\n  font-weight: 700;\n  border: none;\n  cursor: pointer;\n  transition: transform 0.15s ease, background-color 0.15s ease, color 0.15s ease;\n  user-select: none;\n}\n\n.mod-btn:hover {\n  transform: scale(1.03);\n}\n\n.mod-btn:active {\n  transform: scale(0.97);\n}\n\n.mod-btn-primary {\n  background-color: #1ed760;\n  color: #000000;\n}\n\n.mod-btn-primary:hover {\n  background-color: #1fdf64;\n}\n\n.mod-btn-secondary {\n  background-color: rgba(255, 255, 255, 0.08);\n  color: #ffffff;\n  border: 1px solid rgba(255, 255, 255, 0.12);\n}\n\n.mod-btn-secondary:hover {\n  background-color: rgba(255, 255, 255, 0.15);\n  border-color: rgba(255, 255, 255, 0.2);\n}\n\n.mod-btn-danger {\n  background-color: rgba(241, 94, 108, 0.12);\n  color: #f15e6c;\n  border: 1px solid rgba(241, 94, 108, 0.25);\n}\n\n.mod-btn-danger:hover {\n  background-color: rgba(241, 94, 108, 0.2);\n}\n\n\n.mod-pill-badge {\n  display: inline-flex;\n  align-items: center;\n  padding: 3px 10px;\n  border-radius: 9999px;\n  font-size: 11px;\n  font-weight: 700;\n  letter-spacing: 0.02em;\n  background: rgba(255, 255, 255, 0.08);\n  color: #ffffff;\n}\n\n\n.mod-path-box {\n  background-color: #121212;\n  border: 1px solid rgba(255, 255, 255, 0.08);\n  border-radius: 6px;\n  padding: 8px 12px;\n  font-family: Consolas, monospace;\n  font-size: 11.5px;\n  color: #1ed760;\n  word-break: break-all;\n}\n\n\n.mod-input {\n  background-color: #121212;\n  border: 1px solid rgba(255, 255, 255, 0.12);\n  border-radius: 6px;\n  color: #ffffff;\n  padding: 7px 12px;\n  font-size: 12.5px;\n  outline: none;\n  flex: 1;\n  transition: border-color 0.15s ease;\n}\n\n.mod-input:focus {\n  border-color: #1ed760;\n}\n\n\n.mod-country-filters {\n  display: flex;\n  gap: 6px;\n  flex-wrap: wrap;\n  margin-top: 4px;\n}\n\n.mod-country-filter-btn {\n  background: rgba(255, 255, 255, 0.07);\n  border: none;\n  color: #ffffff;\n  padding: 6px 14px;\n  border-radius: 16px;\n  font-size: 12px;\n  font-weight: 600;\n  cursor: pointer;\n  transition: all 0.15s ease;\n}\n\n.mod-country-filter-btn:hover {\n  background: rgba(255, 255, 255, 0.12);\n}\n\n.mod-country-filter-btn.active {\n  background: #ffffff;\n  color: #000000;\n}\n\n\n.mod-preset-item {\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  padding: 10px 14px;\n  border-radius: 6px;\n  background-color: rgba(255, 255, 255, 0.02);\n  border: 1px solid rgba(255, 255, 255, 0.05);\n  transition: background-color 0.15s ease, border-color 0.15s ease;\n}\n\n.mod-preset-item:hover {\n  background-color: rgba(255, 255, 255, 0.05);\n}\n\n.mod-preset-item.active {\n  background-color: rgba(30, 215, 96, 0.06);\n  border-color: rgba(30, 215, 96, 0.35);\n}\n\n.mod-preset-info {\n  display: flex;\n  flex-direction: column;\n}\n\n.mod-preset-name {\n  font-size: 13px;\n  font-weight: 600;\n  color: #ffffff;\n  display: flex;\n  align-items: center;\n  gap: 6px;\n}\n\n.mod-preset-url {\n  font-size: 11px;\n  color: #888888;\n  font-family: Consolas, monospace;\n}\n\n\n.mod-proxy-badge {\n  display: inline-flex;\n  align-items: center;\n  gap: 6px;\n  padding: 6px 12px;\n  border-radius: 6px;\n  font-size: 12px;\n  font-weight: 600;\n}\n\n.mod-proxy-badge.success {\n  background: rgba(30, 215, 96, 0.12);\n  border: 1px solid rgba(30, 215, 96, 0.3);\n  color: #1ed760;\n}\n\n.mod-proxy-badge.error {\n  background: rgba(233, 20, 41, 0.12);\n  border: 1px solid rgba(233, 20, 41, 0.3);\n  color: #f15e6c;\n}\n\n.mod-proxy-badge.testing {\n  background: rgba(255, 255, 255, 0.08);\n  border: 1px solid rgba(255, 255, 255, 0.12);\n  color: #d1d1d1;\n}\n\n\n.mod-setting-item {\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  padding: 10px 14px;\n  background-color: rgba(255, 255, 255, 0.02);\n  border: 1px solid rgba(255, 255, 255, 0.05);\n  border-radius: 8px;\n}\n\n.mod-setting-info {\n  display: flex;\n  flex-direction: column;\n  flex: 1;\n  padding-right: 14px;\n}\n\n.mod-setting-name {\n  font-size: 13.5px;\n  font-weight: 600;\n  color: #ffffff;\n}\n\n.mod-setting-desc {\n  font-size: 11.5px;\n  color: #a7a7a7;\n  margin-top: 2px;\n}\n\n\n.mod-switch {\n  position: relative;\n  display: inline-block;\n  width: 44px;\n  height: 24px;\n  flex-shrink: 0;\n  cursor: pointer;\n}\n\n.mod-switch input {\n  opacity: 0;\n  width: 0;\n  height: 0;\n}\n\n.mod-switch-slider {\n  position: absolute;\n  cursor: pointer;\n  top: 0;\n  left: 0;\n  right: 0;\n  bottom: 0;\n  background-color: #535353;\n  border-radius: 24px;\n  transition: background-color 0.2s cubic-bezier(0.3, 0, 0, 1);\n}\n\n.mod-switch-slider:before {\n  position: absolute;\n  content: \"\";\n  height: 18px;\n  width: 18px;\n  left: 3px;\n  bottom: 3px;\n  background-color: #ffffff;\n  border-radius: 50%;\n  transition: transform 0.2s cubic-bezier(0.3, 0, 0, 1);\n}\n\n.mod-switch input:checked + .mod-switch-slider {\n  background-color: #1ed760;\n}\n\n.mod-switch input:checked + .mod-switch-slider:before {\n  transform: translateX(20px);\n}\n\n\n.mod-modal-footer {\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  padding: 14px 24px;\n  background-color: #121212;\n  border-top: 1px solid rgba(255, 255, 255, 0.08);\n}\n\n.mod-modal-status-badge {\n  display: flex;\n  align-items: center;\n  gap: 8px;\n  font-size: 12px;\n  color: #a7a7a7;\n}\n\n.mod-status-indicator {\n  width: 8px;\n  height: 8px;\n  border-radius: 50%;\n  background-color: #1ed760;\n  box-shadow: 0 0 8px rgba(30, 215, 96, 0.6);\n  flex-shrink: 0;\n}\n\n.mod-status-indicator.offline {\n  background-color: #e91429;\n  box-shadow: 0 0 8px rgba(233, 20, 41, 0.6);\n}\n\n.mod-modal-hotkey-hint {\n  font-size: 11px;\n  color: #6a6a6a;\n  background: rgba(255, 255, 255, 0.05);\n  padding: 3px 7px;\n  border-radius: 4px;\n  font-family: monospace;\n}\n\n\n\n\n.mod-bypass-banner {\n  background-color: #181818;\n  border: 1px solid rgba(255, 255, 255, 0.08);\n  border-radius: 8px;\n  padding: 16px 18px;\n  display: flex;\n  flex-direction: column;\n  gap: 10px;\n  transition: border-color 0.2s ease, background-color 0.2s ease;\n}\n\n.mod-bypass-banner:hover {\n  border-color: rgba(255, 255, 255, 0.14);\n}\n\n.mod-bypass-status-row {\n  display: flex;\n  align-items: center;\n  gap: 10px;\n}\n\n.mod-status-chip {\n  display: inline-flex;\n  align-items: center;\n  gap: 6px;\n  padding: 3px 10px;\n  border-radius: 9999px;\n  font-size: 11px;\n  font-weight: 700;\n  background: rgba(30, 215, 96, 0.12);\n  color: #1ed760;\n  border: 1px solid rgba(30, 215, 96, 0.25);\n  margin-left: auto;\n}\n\n.mod-status-dot {\n  width: 6px;\n  height: 6px;\n  border-radius: 50%;\n  background-color: #1ed760;\n  flex-shrink: 0;\n  display: inline-block;\n  vertical-align: middle;\n}\n\n.mod-status-dot.error,\n.mod-status-dot--error {\n  background-color: #f15e6c;\n}\n\n.mod-status-dot.muted,\n.mod-status-dot--muted {\n  background-color: #a7a7a7;\n}\n\n.mod-bypass-indicator {\n  width: 8px;\n  height: 8px;\n  border-radius: 50%;\n  background-color: #1ed760;\n  flex-shrink: 0;\n}\n\n.mod-bypass-title {\n  font-family: var(--encore-title-font-stack, var(--font-family, inherit));\n  font-size: 14px;\n  font-weight: 700;\n  color: #ffffff;\n  letter-spacing: -0.02em;\n}\n\n.mod-bypass-desc {\n  font-size: 12px;\n  color: #b3b3b3;\n  line-height: 1.5;\n}\n\n.mod-bypass-meta {\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  gap: 12px;\n  margin-top: 4px;\n  padding-top: 10px;\n  border-top: 1px solid rgba(255, 255, 255, 0.05);\n}\n\n.mod-bypass-meta-item {\n  display: flex;\n  align-items: center;\n  gap: 8px;\n  font-size: 11.5px;\n  color: #a7a7a7;\n}\n\n\n.mod-region-grid {\n  display: grid;\n  grid-template-columns: repeat(3, 1fr);\n  gap: 8px;\n  margin-top: 6px;\n  max-height: 280px;\n  overflow-y: auto;\n  padding-right: 4px;\n}\n\n.mod-region-card {\n  background-color: #181818;\n  border: 1px solid rgba(255, 255, 255, 0.08);\n  border-radius: 6px;\n  padding: 10px 12px;\n  cursor: pointer;\n  transition: background-color 0.15s ease, border-color 0.15s ease, transform 0.15s ease;\n  display: flex;\n  flex-direction: column;\n  gap: 5px;\n  position: relative;\n  user-select: none;\n}\n\n.mod-region-card:hover {\n  background-color: #242424;\n  border-color: rgba(255, 255, 255, 0.2);\n  transform: translateY(-1px);\n}\n\n.mod-region-card.active {\n  background-color: #222222;\n  border-color: #1ed760;\n  box-shadow: 0 0 0 1px #1ed760;\n}\n\n.mod-region-card-top {\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n}\n\n.mod-country-badge,\n.mod-region-code {\n  display: inline-flex;\n  align-items: center;\n  justify-content: center;\n  min-width: 26px;\n  height: 18px;\n  padding: 0 5px;\n  background: rgba(255, 255, 255, 0.08);\n  border-radius: 4px;\n  font-size: 10px;\n  font-weight: 700;\n  color: #ffffff;\n  letter-spacing: 0.04em;\n}\n\n.mod-region-card.active .mod-country-badge,\n.mod-region-card.active .mod-region-code {\n  background: #1ed760;\n  color: #000000;\n}\n\n.mod-region-radio {\n  width: 14px;\n  height: 14px;\n  border-radius: 50%;\n  border: 1.5px solid #727272;\n  position: relative;\n  transition: all 0.15s ease;\n}\n\n.mod-region-card.active .mod-region-radio {\n  border-color: #1ed760;\n  background-color: #1ed760;\n  box-shadow: inset 0 0 0 3px #181818;\n}\n\n.mod-region-name {\n  font-size: 13px;\n  font-weight: 700;\n  color: #ffffff;\n  line-height: 1.2;\n}\n\n.mod-region-hint {\n  font-size: 11px;\n  color: #888888;\n  line-height: 1.35;\n}\n\n\n.mod-steps-list {\n  display: flex;\n  flex-direction: column;\n  gap: 10px;\n  margin-top: 6px;\n}\n\n.mod-step-item {\n  display: flex;\n  gap: 12px;\n  align-items: flex-start;\n}\n\n.mod-step-num {\n  width: 22px;\n  height: 22px;\n  border-radius: 50%;\n  background: rgba(255, 255, 255, 0.08);\n  color: #1ed760;\n  font-size: 11px;\n  font-weight: 700;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  flex-shrink: 0;\n  margin-top: 1px;\n}\n\n.mod-step-text {\n  font-size: 12px;\n  color: #d1d1d1;\n  line-height: 1.45;\n  flex: 1;\n}\n\n\n\n/* --- downloader.css --- */\n\n\n\n.mod-download-btn {\n  display: inline-flex;\n  align-items: center;\n  justify-content: center;\n  width: 32px;\n  height: 32px;\n  background: transparent;\n  color: #b3b3b3;\n  border: none;\n  border-radius: 50%;\n  cursor: pointer;\n  margin-left: 8px;\n  transition: transform 0.15s cubic-bezier(0.3, 0, 0, 1), color 0.15s ease;\n  position: relative;\n  flex-shrink: 0;\n  padding: 0;\n}\n\n.mod-download-btn:hover {\n  color: #ffffff;\n  transform: scale(1.05);\n}\n\n.mod-download-btn:active {\n  transform: scale(0.95);\n}\n\n.mod-download-btn svg {\n  width: 16px;\n  height: 16px;\n  display: block;\n  fill: currentColor;\n}\n\n\n.mod-download-btn.downloading {\n  color: #1ed760;\n  animation: modSpin 1.4s linear infinite;\n}\n\n@keyframes modSpin {\n  0% { transform: rotate(0deg); }\n  100% { transform: rotate(360deg); }\n}\n\n\n.mod-download-btn.downloaded {\n  color: #1ed760;\n}\n\n.mod-download-btn.downloaded:hover {\n  color: #1fdf64;\n  transform: scale(1.06);\n}\n\n\n.mod-action-counter {\n  display: inline-flex;\n  align-items: center;\n  font-size: 12px;\n  font-weight: 500;\n  color: #b3b3b3;\n  margin-left: 8px;\n  margin-right: 4px;\n  white-space: nowrap;\n  letter-spacing: -0.01em;\n  vertical-align: middle;\n  pointer-events: none;\n  user-select: none;\n}\n\n\n.mod-encore-circle-btn {\n  display: inline-flex;\n  align-items: center;\n  justify-content: center;\n  width: 32px;\n  height: 32px;\n  border-radius: 50%;\n  background: transparent;\n  border: none;\n  color: #b3b3b3;\n  cursor: pointer;\n  transition: transform 0.15s cubic-bezier(0.3, 0, 0, 1), color 0.15s ease, background-color 0.15s ease;\n  margin-left: 4px;\n  padding: 0;\n  vertical-align: middle;\n}\n\n.mod-encore-circle-btn:hover {\n  color: #ffffff;\n  background-color: rgba(255, 255, 255, 0.08);\n  transform: scale(1.06);\n}\n\n.mod-encore-circle-btn:active {\n  transform: scale(0.95);\n}\n\n.mod-encore-circle-btn svg {\n  width: 14px;\n  height: 14px;\n  display: block;\n  fill: currentColor;\n}\n\n.mod-encore-circle-btn.danger:hover {\n  color: #f15e6c;\n  background-color: rgba(241, 94, 108, 0.1);\n}\n\n\n.mod-encore-menu {\n  position: absolute;\n  top: 100%;\n  left: 0;\n  margin-top: 6px;\n  background-color: #282828;\n  border-radius: 6px;\n  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.08);\n  padding: 4px;\n  min-width: 210px;\n  z-index: 999999;\n  display: flex;\n  flex-direction: column;\n  animation: modMenuFade 0.15s cubic-bezier(0.3, 0, 0, 1);\n}\n\n@keyframes modMenuFade {\n  from { opacity: 0; transform: translateY(-4px); }\n  to { opacity: 1; transform: translateY(0); }\n}\n\n.mod-encore-menu-item {\n  display: flex;\n  align-items: center;\n  gap: 10px;\n  padding: 9px 12px;\n  border-radius: 4px;\n  color: #eaeaea;\n  font-size: 13px;\n  font-weight: 500;\n  background: transparent;\n  border: none;\n  cursor: pointer;\n  text-align: left;\n  width: 100%;\n  transition: background-color 0.12s ease, color 0.12s ease;\n}\n\n.mod-encore-menu-item:hover {\n  background-color: rgba(255, 255, 255, 0.1);\n  color: #ffffff;\n}\n\n.mod-encore-menu-item.danger {\n  color: #f15e6c;\n}\n\n.mod-encore-menu-item.danger:hover {\n  background-color: rgba(241, 94, 108, 0.15);\n  color: #ff6b7a;\n}\n\n.mod-encore-menu-item svg {\n  width: 16px;\n  height: 16px;\n  fill: currentColor;\n  flex-shrink: 0;\n}\n";
   }
 
-  // --- Реестр плагинов ---
-  /**
-   * Core Plugin Registry
-   * Handles modular extensions, lifecycle, and dynamic toggling.
-   */
   class PluginRegistry {
     constructor() {
       this.plugins = new Map();
@@ -131,11 +120,6 @@
   
   const registry = new PluginRegistry();
   
-
-  // --- Плагин: Hello ---
-  /**
-   * Sample Plugin: Hello
-   */
   const helloPlugin = {
     id: 'hello',
     name: 'Базовый модуль',
@@ -149,16 +133,6 @@
     }
   };
   
-
-  // --- Плагин: Adblock & Audio Skipper ---
-  /**
-   * Plugin: Adblock & Instant Audio Ad Skipper
-   * - Blocks ad tracking / telemetry network requests (preserves Bearer token)
-   * - Detects audio ads with 0ms latency via Spicetify Player events, DOM observers, and 150ms heartbeat
-   * - Multi-tier instant track advance via Spicetify Player APIs with HTML5 and DOM fallbacks
-   * - Momentary mute safety buffer prevents audio bursts and restores volume seamlessly
-   * - Safety watchdog ensures volume is never permanently stuck muted
-   */
   const adblockPlugin = {
     id: 'adblock',
     name: 'Блокировка аудиорекламы',
@@ -206,7 +180,6 @@
         window.__mod_adblock_network_enabled = false;
         window.__mod_adblock_network_hooked = false;
   
-        // Restore original network functions if hooked
         if (self._originalFetch && window.fetch) {
           window.fetch = self._originalFetch;
         }
@@ -228,7 +201,6 @@
       }
       window.__mod_instant_ad_kill = null;
   
-      // 1. Unregister Spicetify Player event listeners
       if (window.Spicetify && window.Spicetify.Player) {
         try {
           if (typeof window.Spicetify.Player.removeEventListener === 'function') {
@@ -246,13 +218,11 @@
       this._boundSongChange = null;
       this._boundPlayPause = null;
   
-      // 2. Disconnect DOM MutationObserver
       if (this.observer) {
         this.observer.disconnect();
         this.observer = null;
       }
   
-      // 3. Clear polling and retry timers
       if (this.pollTimer) {
         clearInterval(this.pollTimer);
         this.pollTimer = null;
@@ -270,10 +240,8 @@
         this.productStateRetryTimer = null;
       }
   
-      // 4. Clear safety watchdog timers
       this.clearSafetyWatchdog();
   
-      // 5. Restore volume if muted by mod
       this.restoreVolume();
       this.savedVolume = null;
       this.isMutedByMod = false;
@@ -282,7 +250,6 @@
       this.consecutiveSkips = 0;
     },
   
-    // 1. Сетевой фильтр трекинга, рекламы и маяков
     initNetworkInterceptor() {
       if (typeof window === 'undefined' || !window) return;
       if (window.__mod_adblock_network_hooked) return;
@@ -336,7 +303,6 @@
   
         const lower = urlStr.toLowerCase();
   
-        // Строгие исключения для белого списка (музыкальные чанки, профиль, плейлисты, лирика, daemon)
         if (
           lower.includes('audio-fa.scdn.co') ||
           lower.includes('audio-ak.spotify.com') ||
@@ -399,7 +365,6 @@
         return resp;
       }
   
-      // Хук на window.fetch
       if (typeof window.fetch === 'function') {
         if (!self._originalFetch) {
           self._originalFetch = window.fetch;
@@ -422,7 +387,6 @@
             } catch (e) {}
           }
   
-          // Capture Spotify Bearer token for accurate playlist downloading
           try {
             const getAuth = (hdr) => {
               if (!hdr) return null;
@@ -449,7 +413,6 @@
         };
       }
   
-      // Хук на XMLHttpRequest
       if (typeof XMLHttpRequest !== 'undefined' && XMLHttpRequest.prototype) {
         if (!self._originalXhrSetRequestHeader) {
           self._originalXhrSetRequestHeader = XMLHttpRequest.prototype.setRequestHeader;
@@ -541,14 +504,12 @@
         };
       }
   
-      // Ранняя попытка подключить Cosmos и ProductState при доступности
       this.initCosmosInterceptor();
       this.initProductStateOverrides();
   
       console.log('[Mod:Adblock] Root network interceptor installed.');
     },
   
-    // Cosmos IPC перехватчик (sp://ads/)
     initCosmosInterceptor() {
       if (typeof window === 'undefined' || !window) return;
       const self = this;
@@ -584,7 +545,6 @@
           };
         }
   
-        // Нейтрализация таймера рекламных пауз (отрицательное время прослушивания)
         try {
           if (typeof cosmos.post === 'function') {
             cosmos.post('sp://ads/v1/testing/playtime', { value: -1e11 }).catch(() => {});
@@ -613,7 +573,6 @@
       }
     },
   
-    // ProductStateAPI переопределение аккаунта в Premium без рекламы
     initProductStateOverrides() {
       if (typeof window === 'undefined' || !window) return;
       const pairs = { ads: '0', catalogue: 'premium', product: 'premium', type: 'premium' };
@@ -651,7 +610,6 @@
       }
     },
   
-    // 2. Детект и мгновенный пропуск аудиорекламы
     initAudioSkipper() {
       const self = this;
   
@@ -664,7 +622,6 @@
         }
       };
   
-      // 0. Реактивный 0мс асинхронный хук из Redux/MobX селектора плеера (5071.js)
       window.__mod_instant_ad_kill = (player, state) => {
         if (player && !window.__spotify_player) {
           try { window.__spotify_player = player; } catch (e) {}
@@ -683,13 +640,10 @@
         }, 0);
       };
   
-      // А. Слушатели событий Spicetify Player (0мс задержка)
       this.attachSpicetifyListeners(checkAdState);
   
-      // Б. Быстрый фоновый опрос (150мс интервал)
       this.pollTimer = setInterval(checkAdState, 150);
   
-      // В. Наблюдатель за изменениями в DOM плеера
       const target = document && document.body;
       if (typeof MutationObserver !== 'undefined' && target) {
         this.observer = new MutationObserver(() => {
@@ -720,7 +674,6 @@
         }
       }
   
-      // Если Spicetify загружается асинхронно, подключаемся через повторные попытки
       let attempts = 0;
       this.spicetifyRetryTimer = setInterval(() => {
         attempts++;
@@ -760,7 +713,6 @@
         return false;
       };
   
-      // 0. Авторитетная проверка через перехваченное состояние Spotify Player (5071.js)
       if (window.__spotify_state) {
         try {
           const s = window.__spotify_state;
@@ -771,13 +723,12 @@
             ...(s.restrictions?.disallowSeekingReasons || []),
             ...(s.restrictions?.disallow_seeking_reasons || [])
           ];
-          // Точное совпадение строки 'ad_disallow' (НИКОГДА не regex /ad/i, который ошибочно ловит 'loading')
+          
           if (reasons.includes('ad_disallow')) return true;
           if (s.ad && typeof s.ad === 'object' && Object.keys(s.ad).length > 0 && s.ad.type === 'ad') return true;
         } catch (e) {}
       }
   
-      // 1. Авторитетная проверка через метаданные Spicetify Player
       if (window.Spicetify && window.Spicetify.Player) {
         try {
           const data = window.Spicetify.Player.data;
@@ -796,7 +747,6 @@
         } catch (e) {}
       }
   
-      // 2. Проверка ссылки трека и элементов рекламы в DOM
       if (typeof document !== 'undefined' && document && typeof document.querySelector === 'function') {
         try {
           const titleLink = document.querySelector('[data-testid="context-item-info-title"]');
@@ -821,7 +771,6 @@
             }
           }
   
-          // Дополнительные ad-специфичные UI элементы Spotify во время рекламных пауз
           if (
             document.querySelector('[data-testid="skippable-ad-delay"]') ||
             document.querySelector('[data-testid="skippable-ad-skip-button"]') ||
@@ -840,28 +789,25 @@
     },
   
     handleAdDetected() {
-      // Шаг 1: Моментальное глушение звука (буфер безопасности)
+      
       this.muteBuffer();
       try {
         if (document.body) document.body.classList.add('mod-ad-playing');
       } catch (e) {}
   
-      // Определяем текущий URI трека/рекламы для дедупликации
       const track = (window.Spicetify && window.Spicetify.Player && window.Spicetify.Player.data &&
                      (window.Spicetify.Player.data.item || window.Spicetify.Player.data.track)) ||
                     (window.__spotify_state && (window.__spotify_state.item || window.__spotify_state.track));
       const trackUri = (track && typeof track.uri === 'string' && track.uri.length > 0) ? track.uri : null;
   
-      // Мьютекс: если пропуск уже в процессе выполнения, предотвращаем параллельные вызовы
       if (this.isSkipping) return;
   
       const now = Date.now();
-      // Дедупликация: не отправлять повторный пропуск для того же самого рекламного URI в течение 2000мс
+      
       if (trackUri && this.lastSkippedTrackUri === trackUri && (now - this.lastSkipTimestamp < 2000)) {
         return;
       }
   
-      // Дебаунс: минимум 250мс между пропусками и ограничение 5 последовательных пропусков (защита от зацикливания)
       if (now - this.lastSkipTimestamp < 250 || this.consecutiveSkips >= 5) {
         return;
       }
@@ -888,7 +834,6 @@
         domMuteBtn.getAttribute('aria-label') === 'Включить звук'
       );
   
-      // Проверяем, не заглушен ли звук самим пользователем (независимые проверки состояния)
       let alreadyMuted = false;
       if (player && typeof player.getMute === 'function') {
         try { alreadyMuted = Boolean(player.getMute()); } catch (e) {}
@@ -902,12 +847,11 @@
   
       if (alreadyMuted) {
         this.wasAlreadyMuted = true;
-        return; // Пользователь сам выключил звук - сохраняем и не вмешиваемся
+        return; 
       }
   
       this.wasAlreadyMuted = false;
   
-      // Сохраняем исходную ненулевую громкость
       if (player && typeof player.getVolume === 'function') {
         try {
           const v = player.getVolume();
@@ -917,7 +861,6 @@
         } catch (e) {}
       }
   
-      // Уровень 1: Spicetify Player mute API
       let didMute = false;
       if (player && typeof player.mute === 'function') {
         try {
@@ -927,7 +870,6 @@
         } catch (e) {}
       }
   
-      // Уровень 2: Spicetify Player setVolume(0)
       if (!didMute && player && typeof player.setVolume === 'function') {
         try {
           player.setVolume(0);
@@ -936,7 +878,6 @@
         } catch (e) {}
       }
   
-      // Уровень 3: DOM кнопка громкости
       if (!didMute && domMuteBtn && !isDomMuted) {
         try {
           domMuteBtn.click();
@@ -945,7 +886,6 @@
         } catch (e) {}
       }
   
-      // Уровень 4: HTML5 теги audio / video
       try {
         const mediaElements = document.querySelectorAll('audio, video');
         mediaElements.forEach(m => {
@@ -958,14 +898,12 @@
         this.isMutedByMod = true;
       }
   
-      // Запуск сторожевого таймера безопасности (предотвращение залипания громкости)
       this.armSafetyWatchdog();
     },
   
     triggerInstantSkip() {
       console.log('[Mod:Adblock] Audio ad detected! Triggering clean single skip...');
   
-      // Tier 1: Spicetify.Player.skipAd()
       if (window.Spicetify && window.Spicetify.Player && typeof window.Spicetify.Player.skipAd === 'function') {
         try {
           window.Spicetify.Player.skipAd();
@@ -976,7 +914,6 @@
         }
       }
   
-      // Tier 2: Spicetify.Player.next()
       if (window.Spicetify && window.Spicetify.Player && typeof window.Spicetify.Player.next === 'function') {
         try {
           window.Spicetify.Player.next();
@@ -987,7 +924,6 @@
         }
       }
   
-      // Tier 3: Spicetify.Platform.PlayerAPI.skipToNext()
       if (window.Spicetify && window.Spicetify.Platform && window.Spicetify.Platform.PlayerAPI && 
           typeof window.Spicetify.Platform.PlayerAPI.skipToNext === 'function') {
         try {
@@ -999,7 +935,6 @@
         }
       }
   
-      // Tier 4: Spicetify.Player.seek(1) (Fast-forward fallback)
       if (window.Spicetify && window.Spicetify.Player && typeof window.Spicetify.Player.seek === 'function') {
         try {
           window.Spicetify.Player.seek(1);
@@ -1010,7 +945,6 @@
         }
       }
   
-      // Tier 5: Direct native Spotify Player hook from 6590.js / 5071.js
       if (window.__spotify_player && typeof window.__spotify_player.skipToNext === 'function') {
         try {
           window.__spotify_player.skipToNext();
@@ -1021,7 +955,6 @@
         }
       }
   
-      // Tier 6: DOM Skippable Ad Skip Button click (rendered by 4468.js)
       try {
         const adSkipBtn = document.querySelector('button[data-testid="skippable-ad-skip-button"]');
         if (adSkipBtn) {
@@ -1037,7 +970,6 @@
         }
       } catch (e) {}
   
-      // Tier 7: DOM Next Button Force Click & React Props Fallback
       try {
         const nextBtn = document.querySelector('button[data-testid="control-button-skip-forward"]');
         if (nextBtn) {
@@ -1049,7 +981,6 @@
             nextBtn.setAttribute('aria-disabled', 'false');
           }
   
-          // Вызов через React Fiber Props, если доступно
           const reactPropsKey = Object.keys(nextBtn).find(k => k.startsWith('__reactProps$'));
           if (reactPropsKey && nextBtn[reactPropsKey] && typeof nextBtn[reactPropsKey].onClick === 'function') {
             try {
@@ -1081,7 +1012,6 @@
       const player = window.Spicetify && window.Spicetify.Player;
       const domMuteBtn = document.querySelector('button[data-testid="volume-bar-toggle-mute-button"]');
   
-      // 1. Spicetify Player unmute API
       if (player && typeof player.unmute === 'function') {
         try {
           player.unmute();
@@ -1089,7 +1019,6 @@
         } catch (e) {}
       }
   
-      // 2. Spicetify Player setVolume (восстанавливаем кэшированную или нормальную громкость)
       if (player && typeof player.setVolume === 'function') {
         try {
           const targetVol = (typeof this.savedVolume === 'number' && this.savedVolume > 0)
@@ -1100,7 +1029,6 @@
         } catch (e) {}
       }
   
-      // 3. DOM кнопка громкости
       if (domMuteBtn) {
         const isDomMuted = domMuteBtn.getAttribute('aria-label') === 'Unmute' ||
                            domMuteBtn.getAttribute('aria-label') === 'Включить звук';
@@ -1112,7 +1040,6 @@
         }
       }
   
-      // 4. HTML5 media unmute
       try {
         const mediaElements = document.querySelectorAll('audio, video');
         mediaElements.forEach(m => {
@@ -1129,10 +1056,9 @@
     },
   
     armSafetyWatchdog() {
-      // Не сбрасываем уже работающий сторожевой таймер при частых опросах
+      
       if (this.safetyWatchdogTimer) return;
   
-      // Сторожевой таймер безопасности: безусловное восстановление звука через 2000мс
       this.safetyWatchdogTimer = setTimeout(() => {
         this.safetyWatchdogTimer = null;
         if (this.isMutedByMod) {
@@ -1154,26 +1080,12 @@
     }
   };
   
-  // Synchronously initialize the network interceptor immediately upon module evaluation
-  // so that window.fetch and XMLHttpRequest are hooked before any client network traffic starts.
   try {
     adblockPlugin.initNetworkInterceptor();
   } catch (e) {
-    // Silent fallback in non-browser or partial testing environments
+    
   }
   
-  
-
-  // --- Плагин: Settings UI ---
-  /**
-   * Plugin: Settings UI (Spotify Encore Native Design v2.0)
-   * - 4 clean tabs: Регион и Обход (14 дней) | Офлайн-загрузки | Прокси и Сеть | Функции мода
-   * - Native 32x32px circular button in top-right header (next to profile avatar)
-   * - Integration with native Profile dropdown menu ("Настройки мода")
-   * - Automatic Spotify account country detection & 14-day bypass scheduler
-   * - Live step-by-step progress for downloads (search, stream, percent)
-   * - Zero emojis in icons, pure SVG, smooth Spotify Encore animations
-   */
   const settingsUiPlugin = {
     id: 'settings-ui',
     name: 'Интерфейс настроек',
@@ -1230,7 +1142,7 @@
         description: 'Для пользователей официального клиента Cloudflare WARP на ПК.',
         isLocal: true
       },
-      // Узлы категории Spotify
+      
       {
         id: 'spotify-direct',
         name: 'Системный VPN / Прямое соединение',
@@ -1342,12 +1254,10 @@
       }
     },
   
-    // 1. АВТООПРЕДЕЛЕНИЕ СТРАНЫ ПРОФИЛЯ SPOTIFY
     async detectSpotifyCountry() {
       try {
         let country = null;
   
-        // Способ 1: Через внутренний API сессии Spicetify / Spotify Platform
         if (window.Spicetify && window.Spicetify.Platform && window.Spicetify.Platform.UserAPI) {
           try {
             const user = await window.Spicetify.Platform.UserAPI.getUser();
@@ -1355,12 +1265,10 @@
           } catch (e) {}
         }
   
-        // Способ 2: Глобальный флаг из перехваченных сессий
         if (!country && window.__spotify_user_country) {
           country = window.__spotify_user_country.toUpperCase();
         }
   
-        // Способ 3: Через Web API с внутренним Bearer токеном
         if (!country && window.Spicetify && window.Spicetify.Platform && window.Spicetify.Platform.AuthorizationAPI) {
           try {
             const token = await window.Spicetify.Platform.AuthorizationAPI.getValidAccessToken();
@@ -1374,7 +1282,6 @@
           } catch (e) {}
         }
   
-        // Способ 4: Через перехваченный Bearer токен в CEF
         if (!country && window.__spotify_bearer_token) {
           try {
             const res = await fetch('https://api.spotify.com/v1/me', {
@@ -1389,7 +1296,7 @@
           this.detectedCountry = country;
           try { localStorage.setItem('mod:selected_country', country); } catch (e) {}
           console.log('[Mod:UI] Detected Spotify account country:', country);
-          // Синхронизируем с Companion
+          
           fetch('http://127.0.0.1:43821/set-account-region', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -1399,7 +1306,6 @@
       } catch (err) {}
     },
   
-    // 2. СОЗДАНИЕ МОДАЛЬНОГО ОКНА НАСТРОЕК В СТИЛЕ SPOTIFY ENCORE
     createModal() {
       const existing = document.getElementById('mod-settings-modal');
       if (existing) {
@@ -1752,13 +1658,11 @@
       document.body.appendChild(overlay);
       this.modalEl = overlay;
   
-      // Закрытие окна
       overlay.querySelector('#mod-modal-close').addEventListener('click', () => this.close());
       overlay.addEventListener('click', (e) => {
         if (e.target === overlay) this.close();
       });
   
-      // Переключение вкладок
       const tabBtns = overlay.querySelectorAll('.mod-tab-btn');
       tabBtns.forEach(btn => {
         btn.addEventListener('click', () => {
@@ -1767,7 +1671,6 @@
         });
       });
   
-      // Карточки выбора региона
       const regionCards = overlay.querySelectorAll('.mod-region-card');
       regionCards.forEach(card => {
         card.addEventListener('click', async () => {
@@ -1792,12 +1695,10 @@
         });
       });
   
-      // Кнопка: Открыть профиль Spotify
       overlay.querySelector('#mod-open-spotify-profile-action').addEventListener('click', () => {
         window.open('https://www.spotify.com/account/profile', '_blank');
       });
   
-      // Кнопка: Подтвердить вход сейчас
       const triggerBypassBtn = overlay.querySelector('#mod-trigger-bypass-btn');
       const bypassResultEl = overlay.querySelector('#mod-bypass-action-result');
       triggerBypassBtn.addEventListener('click', async () => {
@@ -1836,7 +1737,6 @@
         }
       });
   
-      // Тумблер авто-обхода
       const autoBypassToggle = overlay.querySelector('#mod-toggle-autobypass');
       autoBypassToggle.addEventListener('change', async () => {
         try {
@@ -1849,7 +1749,6 @@
         } catch (e) {}
       });
   
-      // Открыть папку в Проводнике
       const openFolderBtn = overlay.querySelector('#mod-open-folder-btn');
       openFolderBtn.addEventListener('click', async () => {
         const dirVal = (overlay.querySelector('#mod-path-input')?.value || '').trim();
@@ -1877,7 +1776,6 @@
         }
       });
   
-      // Диалог выбора папки Windows
       const browseBtn = overlay.querySelector('#mod-browse-folder-btn');
       const pathInput = overlay.querySelector('#mod-path-input');
       const savePathBtn = overlay.querySelector('#mod-save-path-btn');
@@ -1902,7 +1800,6 @@
         }
       });
   
-      // Сохранить введенный путь вручную
       savePathBtn.addEventListener('click', async () => {
         const dir = pathInput.value.trim();
         if (!dir) return;
@@ -1921,7 +1818,6 @@
         }
       });
   
-      // Кнопки Пауза / Стоп в модальном окне
       const pauseBtn = overlay.querySelector('#mod-modal-pause-btn');
       const stopBtn = overlay.querySelector('#mod-modal-stop-btn');
   
@@ -1953,7 +1849,6 @@
         }
       });
   
-      // Фильтры категорий серверов
       const categoryBtns = overlay.querySelectorAll('.mod-country-filter-btn');
       categoryBtns.forEach(btn => {
         btn.addEventListener('click', () => {
@@ -1966,7 +1861,6 @@
         });
       });
   
-      // Проверка прокси
       const proxyInput = overlay.querySelector('#mod-proxy-input');
       const proxyTestBtn = overlay.querySelector('#mod-proxy-test-btn');
       const proxySaveBtn = overlay.querySelector('#mod-proxy-save-btn');
@@ -2006,7 +1900,6 @@
         }
       });
   
-      // Сохранить прокси
       proxySaveBtn.addEventListener('click', async () => {
         const urlVal = proxyInput.value.trim();
         try {
@@ -2029,7 +1922,6 @@
         }
       });
   
-      // Тумблер Adblock
       const adblockToggle = overlay.querySelector('#mod-toggle-adblock');
       if (adblockToggle && window.__MOD__ && window.__MOD__.registry) {
         adblockToggle.checked = window.__MOD__.registry.isPluginEnabled('adblock', true);
@@ -2097,7 +1989,6 @@
           </div>
         `;
   
-        // Проверка пинга отдельного узла
         const pingBtn = item.querySelector('.mod-preset-ping-btn');
         pingBtn.addEventListener('click', async (e) => {
           e.stopPropagation();
@@ -2125,7 +2016,6 @@
           }
         });
   
-        // Выбор узла
         const selectBtn = item.querySelector('.mod-preset-select-btn');
         selectBtn.addEventListener('click', async () => {
           if (proxyInput) proxyInput.value = p.url;
@@ -2262,7 +2152,6 @@
   
           if (autoToggle) autoToggle.checked = info.autoBypass;
   
-          // Выделяем активную карточку
           const cards = document.querySelectorAll('.mod-region-card');
           cards.forEach(c => {
             if (c.getAttribute('data-country') === info.accountCountry) {
@@ -2479,12 +2368,11 @@
       }, 2800);
     },
   
-    // 3. ПЕРЕНОС КНОПКИ В ПРАВЫЙ ВЕРХНИЙ УГОЛ (РЯДОМ С АВАТАРОМ ПРОФИЛЯ)
     injectTopBarButton() {
       const self = this;
   
       function tryInject() {
-        // 1. Очищаем любые старые/случайные кнопки из левой части шапки и истории
+        
         const strayLeft = document.querySelectorAll(
           '.main-topBar-historyButtons button[id*="mod"], .main-topBar-historyButtons [class*="mod-topbar"], .main-topBar-left button[id*="mod"], .main-topBar-left [class*="mod-topbar"], .main-topBar-historyButtons #mod-topbar-btn, .main-topBar-historyButtons #mod-topbar-settings-btn'
         );
@@ -2493,7 +2381,6 @@
         const oldSettingsBtn = document.getElementById('mod-topbar-settings-btn');
         if (oldSettingsBtn) oldSettingsBtn.remove();
   
-        // 2. Если правильная кнопка уже в правом блоке — ничего не трогаем
         const existingBtn = document.getElementById('mod-topbar-btn');
         if (existingBtn) {
           if (existingBtn.closest('.main-topBar-historyButtons, .main-topBar-left, [class*="historyButtons"]')) {
@@ -2503,7 +2390,6 @@
           }
         }
   
-        // 3. Ищем правый блок инструментов (аватар пользователя или правый контейнер шапки)
         const userWidget = document.querySelector('[data-testid="user-widget-link"]') ||
                            document.querySelector('[data-testid="username-button"]') ||
                            document.querySelector('.main-userWidget-box') ||
@@ -2525,7 +2411,6 @@
         btn.title = 'Настройки spmod (Ctrl + Shift + M)';
         btn.setAttribute('aria-label', 'Настройки spmod');
   
-        // Чистая SVG иконка шестеренки Spotify Encore
         btn.innerHTML = `
           <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
             <path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58a.49.49 0 0 0 .12-.61l-1.92-3.32a.488.488 0 0 0-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54a.484.484 0 0 0-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58a.49.49 0 0 0-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/>
@@ -2556,8 +2441,6 @@
       this.topBarObserver.observe(document.body, { childList: true, subtree: true });
     },
   
-  
-  
     bindKeyboardShortcuts() {
       if (this._keyHandler) {
         window.removeEventListener('keydown', this._keyHandler);
@@ -2575,14 +2458,6 @@
     }
   };
   
-
-  // --- Плагин: Companion Client ---
-  /**
-   * Plugin: Companion Client
-   * - Connects to local Companion Daemon on 127.0.0.1:43821
-   * - Polls health status and updates UI indicator
-   * - Handles offline download requests
-   */
   const companionPlugin = {
     id: 'companion',
     name: 'Локальный Companion (Офлайн & Прокси)',
@@ -2598,7 +2473,6 @@
       this.checkHealth();
       this.pollTimer = setInterval(() => this.checkHealth(), 5000);
   
-      // Экспорт API скачивания в глобальный скоуп мода
       if (window.__MOD__) {
         window.__MOD__.downloadCurrentTrack = () => this.downloadCurrentTrack();
         window.__MOD__.companion = this;
@@ -2622,7 +2496,7 @@
           return data;
         }
       } catch (e) {
-        // Демон не запущен
+        
       }
       this.isConnected = false;
       this.updateStatusUi(false, 'Companion: не запущен');
@@ -2646,7 +2520,6 @@
       }
     },
   
-    // Отправка запроса на скачивание трека
     async downloadTrack(track) {
       if (!this.isConnected) {
         const online = await this.checkHealth();
@@ -2672,7 +2545,6 @@
       }
     },
   
-    // Считывание данных играющего трека
     getCurrentTrackInfo() {
       const titleEl = document.querySelector('[data-testid="context-item-info-title"]');
       const artistEl = document.querySelector('[data-testid="context-item-info-subtitles"]');
@@ -2698,16 +2570,6 @@
     }
   };
   
-
-  // --- Плагин: Downloader UI ---
-  /**
-   * Plugin: Downloader UI & Offline Playback (Spotify Encore Native Design)
-   * - Strict Spotify Encore styling: circular 32x32 buttons, pure SVG, zero emojis
-   * - Real-time state recovery on navigation (no progress loss when switching playlists)
-   * - Context menu on downloaded playlists: Play Offline, Open in Explorer, Delete from Offline
-   * - In-app local audio playback engine with auto-next and shuffle
-   * - Prevents duplicate downloads
-   */
   const downloaderUiPlugin = {
     id: 'downloader-ui',
     name: 'Офлайн скачивание плейлистов и треков',
@@ -2721,7 +2583,6 @@
     syncTimer: null,
     menuEl: null,
   
-    // Внутренний аудио-движок для воспроизведения скачанных треков внутри Spotify
     offlinePlayer: {
       audio: new Audio(),
       playlist: null,
@@ -2758,7 +2619,6 @@
       this.cleanupActionBarControls();
     },
   
-    // 1. БЕЗОПАСНЫЙ ФИЛЬТР ТУЛТИПОВ PREMIUM (НЕ ТРОГАЯ ВЫПАДАЮЩИЕ МЕНЮ)
     initTooltipKiller() {
       const killTooltips = () => {
         const tooltips = document.querySelectorAll(
@@ -2792,7 +2652,6 @@
       this.tooltipKillerObserver.observe(document.body, { childList: true, subtree: true });
     },
   
-    // 2. ПЕРЕХВАТ КНОПКИ СКАЧИВАНИЯ В ШАПКЕ ПЛЕЙЛИСТА
     bindPlaylistDownloadInterceptor() {
       const self = this;
       const handledEvents = [
@@ -2819,7 +2678,6 @@
           const playlistName = self.getCurrentPlaylistName();
           if (!playlistName) return;
   
-          // Защита от повторного запуска скачивания
           if (self.inFlightDownloads.has(playlistName)) {
             self.showToast(`Плейлист «${playlistName}» уже обрабатывается`);
             return;
@@ -2840,7 +2698,6 @@
         }, true);
       });
   
-      // Закрытие контекстного меню по клику вне
       document.addEventListener('click', (e) => {
         if (this.menuEl && !this.menuEl.contains(e.target)) {
           this.closeContextMenu();
@@ -2848,7 +2705,6 @@
       });
     },
   
-    // 3. БЫСТРАЯ СИНХРОНИЗАЦИЯ СОСТОЯНИЯ ПРИ НАВИГАЦИИ (БЕЗ СБРОСОВ)
     startPlaylistSync() {
       const self = this;
   
@@ -2898,7 +2754,7 @@
               self.cleanupActionBarControls();
             }
           } else {
-            // Проверяем глобальную активную работу
+            
             if (data && data.activeJob && data.activeJob.activePlaylist && data.activeJob.activePlaylist.name === playlistName) {
               const p = data.activeJob.activePlaylist;
               self.activeDownloads.set(playlistName, p);
@@ -2912,10 +2768,8 @@
         } catch (e) {}
       };
   
-      // Опрос каждые 800мс
       this.syncTimer = setInterval(syncCurrentView, 800);
   
-      // Мгновенная реакция на смену страницы в DOM
       const mainEl = document.querySelector('main') || document.body;
       const navObserver = new MutationObserver(() => {
         syncCurrentView();
@@ -2923,11 +2777,9 @@
       navObserver.observe(mainEl, { childList: true, subtree: false });
     },
   
-    // 4. ОТОБРАЖЕНИЕ КНОПОК ПАУЗЫ И СТОПА В ШАПКЕ ПЛЕЙЛИСТА (100% ENCORE)
     renderActionBarControls(buttonEl, playlistName, counterText, isPaused) {
       if (!buttonEl || !buttonEl.parentNode) return;
   
-      // 1. Текстовый счетчик
       let counterEl = document.getElementById('mod-action-counter');
       if (!counterEl) {
         counterEl = document.createElement('span');
@@ -2937,7 +2789,6 @@
       }
       counterEl.textContent = counterText;
   
-      // 2. Кнопка Пауза / Возобновить (круглая 32x32px)
       let pauseBtn = document.getElementById('mod-action-pause-btn');
       if (!pauseBtn) {
         pauseBtn = document.createElement('button');
@@ -2966,7 +2817,6 @@
         }
       };
   
-      // 3. Кнопка Отмены (круглая 32x32px с крестиком)
       let stopBtn = document.getElementById('mod-action-stop-btn');
       if (!stopBtn) {
         stopBtn = document.createElement('button');
@@ -3012,7 +2862,6 @@
       if (stopBtn) stopBtn.remove();
     },
   
-    // 5. КОНТЕКСТНОЕ МЕНЮ ДЛЯ СКАЧАННОГО ПЛЕЙЛИСТА
     openContextMenu(buttonEl, playlistName) {
       this.closeContextMenu();
   
@@ -3039,14 +2888,12 @@
       buttonEl.parentNode.appendChild(menu);
       this.menuEl = menu;
   
-      // 1. Воспроизвести офлайн
       menu.querySelector('#mod-menu-play-offline').onclick = async (e) => {
         e.stopPropagation();
         this.closeContextMenu();
         await this.startOfflinePlayback(playlistName);
       };
   
-      // 2. Открыть в Проводнике
       menu.querySelector('#mod-menu-open-folder').onclick = async (e) => {
         e.stopPropagation();
         this.closeContextMenu();
@@ -3071,7 +2918,6 @@
         }
       };
   
-      // 3. Удалить из офлайна
       menu.querySelector('#mod-menu-delete-offline').onclick = async (e) => {
         e.stopPropagation();
         this.closeContextMenu();
@@ -3106,7 +2952,6 @@
       }
     },
   
-    // 6. ОФЛАЙН-ВОСПРОИЗВЕДЕНИЕ СКАЧАННЫХ ТРЕКОВ ВНУТРИ SPOTIFY
     initOfflineAudioEngine() {
       const audio = this.offlinePlayer.audio;
   
@@ -3147,7 +2992,6 @@
       p.currentIndex = index;
       const track = p.tracks[index];
   
-      // Ставим на паузу нативный плеер Spotify если он играет
       try {
         const playBtn = document.querySelector('button[data-testid="control-button-playpause"]');
         if (playBtn && playBtn.getAttribute('aria-label') === 'Пауза' || playBtn && playBtn.getAttribute('aria-label') === 'Pause') {
@@ -3172,7 +3016,6 @@
       }
     },
   
-    // 7. СБОР ТРЕКОВ И СКАЧИВАНИЕ
     async handlePlaylistDownload(buttonEl, playlistName) {
       if (this.inFlightDownloads.has(playlistName)) {
         this.showToast(`Плейлист «${playlistName}» уже обрабатывается`);
@@ -3193,7 +3036,6 @@
           return;
         }
   
-        // Pre-flight check: проверка статуса плейлиста в Companion перед сбором треков
         try {
           const statusRes = await fetch(`http://127.0.0.1:43821/playlist-status?name=${encodeURIComponent(playlistName)}`);
           if (statusRes.ok) {
@@ -3373,7 +3215,6 @@
       return Array.from(trackMap.values());
     },
   
-    // 8. КНОПКА СКАЧИВАНИЯ ТРЕКА В ПАНЕЛИ ПЛЕЕРА (СНИЗУ СПРАВА)
     injectPlayerButton() {
       const self = this;
   
@@ -3515,12 +3356,9 @@
     }
   };
   
-
-  // --- Точка входа и инициализация ---
   console.log('[Mod] Bootstrapping...');
   injectStyles();
   
-  // Регистрация модулей в глобальном реестре
   registry.register(helloPlugin);
   registry.register(adblockPlugin);
   registry.register(settingsUiPlugin);
@@ -3530,7 +3368,6 @@
   function onReady() {
     console.log('[Mod] Spotify DOM Ready. Starting modules...');
     
-    // Экспорт глобального объекта для отладки и UI
     window.__MOD__ = {
       registry: registry,
       version: '0.5.0'

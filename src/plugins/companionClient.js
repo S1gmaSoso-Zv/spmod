@@ -1,9 +1,4 @@
-/**
- * Plugin: Companion Client
- * - Connects to local Companion Daemon on 127.0.0.1:43821
- * - Polls health status and updates UI indicator
- * - Handles offline download requests
- */
+
 export const companionPlugin = {
   id: 'companion',
   name: 'Локальный Companion (Офлайн & Прокси)',
@@ -19,7 +14,6 @@ export const companionPlugin = {
     this.checkHealth();
     this.pollTimer = setInterval(() => this.checkHealth(), 5000);
 
-    // Экспорт API скачивания в глобальный скоуп мода
     if (window.__MOD__) {
       window.__MOD__.downloadCurrentTrack = () => this.downloadCurrentTrack();
       window.__MOD__.companion = this;
@@ -43,7 +37,7 @@ export const companionPlugin = {
         return data;
       }
     } catch (e) {
-      // Демон не запущен
+      
     }
     this.isConnected = false;
     this.updateStatusUi(false, 'Companion: не запущен');
@@ -67,7 +61,6 @@ export const companionPlugin = {
     }
   },
 
-  // Отправка запроса на скачивание трека
   async downloadTrack(track) {
     if (!this.isConnected) {
       const online = await this.checkHealth();
@@ -93,7 +86,6 @@ export const companionPlugin = {
     }
   },
 
-  // Считывание данных играющего трека
   getCurrentTrackInfo() {
     const titleEl = document.querySelector('[data-testid="context-item-info-title"]');
     const artistEl = document.querySelector('[data-testid="context-item-info-subtitles"]');

@@ -1,6 +1,4 @@
-/**
- * Sample Plugin: Hello
- */
+
 export const helloPlugin = {
   id: 'hello',
   name: 'Базовый модуль',

@@ -1,7 +1,4 @@
-/**
- * Plugin: Developer Tools
- * Enhanced logging in DevTools (F12) and access to Spotify internals
- */
+
 export const devToolsPlugin = {
   id: 'devTools',
   name: 'Режим разработчика',

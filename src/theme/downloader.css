@@ -1,9 +1,6 @@
-/* ============================================================
-   Spotify Encore Design System - Offline Downloader Controls
-   Strict Spotify Desktop Aesthetic (Zero Emojis, Pure SVG & CSS)
-   ============================================================ */
 
-/* 1. Кнопка скачивания в шапке плейлиста (нативный круглый стиль 32x32px) */
+
+
 .mod-download-btn {
   display: inline-flex;
   align-items: center;
@@ -38,7 +35,7 @@
   fill: currentColor;
 }
 
-/* Статус: Скачивание (вращение стрелки) */
+
 .mod-download-btn.downloading {
   color: #1ed760;
   animation: modSpin 1.4s linear infinite;
@@ -49,7 +46,7 @@
   100% { transform: rotate(360deg); }
 }
 
-/* Статус: Скачано (зеленая круглая иконка как в Spotify Premium) */
+
 .mod-download-btn.downloaded {
   color: #1ed760;
 }
@@ -59,7 +56,7 @@
   transform: scale(1.06);
 }
 
-/* 2. Текстовый счетчик прогресса (чистый шрифт без рамок и вырвиглазных цветов) */
+
 .mod-action-counter {
   display: inline-flex;
   align-items: center;
@@ -75,7 +72,7 @@
   user-select: none;
 }
 
-/* 3. Кнопки управления (Пауза, Стоп) в стиле Spotify Encore (круглые 32x32px) */
+
 .mod-encore-circle-btn {
   display: inline-flex;
   align-items: center;
@@ -115,7 +112,7 @@
   background-color: rgba(241, 94, 108, 0.1);
 }
 
-/* 4. Выпадающее контекстное меню для скачанного плейлиста (Encore Context Menu) */
+
 .mod-encore-menu {
   position: absolute;
   top: 100%;

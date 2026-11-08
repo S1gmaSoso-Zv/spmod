@@ -8,14 +8,14 @@ namespace SpotifyModCompanion {
     static class Program {
         private const string MutexName = "Local\\SpotifyModCompanionDaemonMutex";
         private const int Port = 43821;
-        private const long MaxLogSizeBytes = 5 * 1024 * 1024; // 5 MB
+        private const long MaxLogSizeBytes = 5 * 1024 * 1024; 
 
         [STAThread]
         static void Main(string[] args) {
             bool createdNew;
             using (Mutex mutex = new Mutex(true, MutexName, out createdNew)) {
                 if (!createdNew) {
-                    // Another daemon instance is already active
+                    
                     return;
                 }
 
@@ -36,7 +36,6 @@ namespace SpotifyModCompanion {
 
                 Log(logFile, "Watchdog daemon started. Supervised script: " + serverScript);
 
-                // Main supervisor loop
                 while (true) {
                     try {
                         if (!IsHealthy()) {
@@ -141,7 +140,6 @@ namespace SpotifyModCompanion {
                 Log(logPath, "node.exe (PID " + p.Id + ") exited with code " + p.ExitCode);
             }
 
-            // If node crashed immediately (< 2s), throttle to prevent tight crash loop
             if ((DateTime.UtcNow - startTime).TotalSeconds < 2) {
                 Thread.Sleep(1500);
             } else {

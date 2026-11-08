@@ -1,7 +1,4 @@
-/**
- * Plugin: Offline Mode
- * Disables background sync to save data and focus on local/cached playback
- */
+
 export const offlinePlugin = {
   id: 'offlineMode',
   name: 'Офлайн-режим',

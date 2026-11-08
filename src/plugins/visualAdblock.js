@@ -1,7 +1,4 @@
-/**
- * Plugin: Visual Adblock (CSS Banners & Promos)
- * Controls hiding of Upgrade buttons, sponsored banners, and upsell modals.
- */
+
 export const visualAdblockPlugin = {
   id: 'visualAdblock',
   name: 'Скрытие баннеров и промо',
@@ -14,7 +11,6 @@ export const visualAdblockPlugin = {
     const styleId = 'mod-adblock-visual-styles';
     let style = document.getElementById(styleId);
 
-    // CSS передается глобально через сборщик или из кеша
     const css = typeof __ADBLOCK_CSS__ !== 'undefined' ? __ADBLOCK_CSS__ : '';
 
     if (!style && css) {

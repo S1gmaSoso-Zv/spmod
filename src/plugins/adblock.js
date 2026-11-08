@@ -1,11 +1,4 @@
-/**
- * Plugin: Adblock & Instant Audio Ad Skipper
- * - Blocks ad tracking / telemetry network requests (preserves Bearer token)
- * - Detects audio ads with 0ms latency via Spicetify Player events, DOM observers, and 150ms heartbeat
- * - Multi-tier instant track advance via Spicetify Player APIs with HTML5 and DOM fallbacks
- * - Momentary mute safety buffer prevents audio bursts and restores volume seamlessly
- * - Safety watchdog ensures volume is never permanently stuck muted
- */
+
 export const adblockPlugin = {
   id: 'adblock',
   name: 'Блокировка аудиорекламы',
@@ -53,7 +46,6 @@ export const adblockPlugin = {
       window.__mod_adblock_network_enabled = false;
       window.__mod_adblock_network_hooked = false;
 
-      // Restore original network functions if hooked
       if (self._originalFetch && window.fetch) {
         window.fetch = self._originalFetch;
       }
@@ -75,7 +67,6 @@ export const adblockPlugin = {
     }
     window.__mod_instant_ad_kill = null;
 
-    // 1. Unregister Spicetify Player event listeners
     if (window.Spicetify && window.Spicetify.Player) {
       try {
         if (typeof window.Spicetify.Player.removeEventListener === 'function') {
@@ -93,13 +84,11 @@ export const adblockPlugin = {
     this._boundSongChange = null;
     this._boundPlayPause = null;
 
-    // 2. Disconnect DOM MutationObserver
     if (this.observer) {
       this.observer.disconnect();
       this.observer = null;
     }
 
-    // 3. Clear polling and retry timers
     if (this.pollTimer) {
       clearInterval(this.pollTimer);
       this.pollTimer = null;
@@ -117,10 +106,8 @@ export const adblockPlugin = {
       this.productStateRetryTimer = null;
     }
 
-    // 4. Clear safety watchdog timers
     this.clearSafetyWatchdog();
 
-    // 5. Restore volume if muted by mod
     this.restoreVolume();
     this.savedVolume = null;
     this.isMutedByMod = false;
@@ -129,7 +116,6 @@ export const adblockPlugin = {
     this.consecutiveSkips = 0;
   },
 
-  // 1. Сетевой фильтр трекинга, рекламы и маяков
   initNetworkInterceptor() {
     if (typeof window === 'undefined' || !window) return;
     if (window.__mod_adblock_network_hooked) return;
@@ -183,7 +169,6 @@ export const adblockPlugin = {
 
       const lower = urlStr.toLowerCase();
 
-      // Строгие исключения для белого списка (музыкальные чанки, профиль, плейлисты, лирика, daemon)
       if (
         lower.includes('audio-fa.scdn.co') ||
         lower.includes('audio-ak.spotify.com') ||
@@ -246,7 +231,6 @@ export const adblockPlugin = {
       return resp;
     }
 
-    // Хук на window.fetch
     if (typeof window.fetch === 'function') {
       if (!self._originalFetch) {
         self._originalFetch = window.fetch;
@@ -269,7 +253,6 @@ export const adblockPlugin = {
           } catch (e) {}
         }
 
-        // Capture Spotify Bearer token for accurate playlist downloading
         try {
           const getAuth = (hdr) => {
             if (!hdr) return null;
@@ -296,7 +279,6 @@ export const adblockPlugin = {
       };
     }
 
-    // Хук на XMLHttpRequest
     if (typeof XMLHttpRequest !== 'undefined' && XMLHttpRequest.prototype) {
       if (!self._originalXhrSetRequestHeader) {
         self._originalXhrSetRequestHeader = XMLHttpRequest.prototype.setRequestHeader;
@@ -388,14 +370,12 @@ export const adblockPlugin = {
       };
     }
 
-    // Ранняя попытка подключить Cosmos и ProductState при доступности
     this.initCosmosInterceptor();
     this.initProductStateOverrides();
 
     console.log('[Mod:Adblock] Root network interceptor installed.');
   },
 
-  // Cosmos IPC перехватчик (sp://ads/)
   initCosmosInterceptor() {
     if (typeof window === 'undefined' || !window) return;
     const self = this;
@@ -431,7 +411,6 @@ export const adblockPlugin = {
         };
       }
 
-      // Нейтрализация таймера рекламных пауз (отрицательное время прослушивания)
       try {
         if (typeof cosmos.post === 'function') {
           cosmos.post('sp://ads/v1/testing/playtime', { value: -1e11 }).catch(() => {});
@@ -460,7 +439,6 @@ export const adblockPlugin = {
     }
   },
 
-  // ProductStateAPI переопределение аккаунта в Premium без рекламы
   initProductStateOverrides() {
     if (typeof window === 'undefined' || !window) return;
     const pairs = { ads: '0', catalogue: 'premium', product: 'premium', type: 'premium' };
@@ -498,7 +476,6 @@ export const adblockPlugin = {
     }
   },
 
-  // 2. Детект и мгновенный пропуск аудиорекламы
   initAudioSkipper() {
     const self = this;
 
@@ -511,7 +488,6 @@ export const adblockPlugin = {
       }
     };
 
-    // 0. Реактивный 0мс асинхронный хук из Redux/MobX селектора плеера (5071.js)
     window.__mod_instant_ad_kill = (player, state) => {
       if (player && !window.__spotify_player) {
         try { window.__spotify_player = player; } catch (e) {}
@@ -530,13 +506,10 @@ export const adblockPlugin = {
       }, 0);
     };
 
-    // А. Слушатели событий Spicetify Player (0мс задержка)
     this.attachSpicetifyListeners(checkAdState);
 
-    // Б. Быстрый фоновый опрос (150мс интервал)
     this.pollTimer = setInterval(checkAdState, 150);
 
-    // В. Наблюдатель за изменениями в DOM плеера
     const target = document && document.body;
     if (typeof MutationObserver !== 'undefined' && target) {
       this.observer = new MutationObserver(() => {
@@ -567,7 +540,6 @@ export const adblockPlugin = {
       }
     }
 
-    // Если Spicetify загружается асинхронно, подключаемся через повторные попытки
     let attempts = 0;
     this.spicetifyRetryTimer = setInterval(() => {
       attempts++;
@@ -607,7 +579,6 @@ export const adblockPlugin = {
       return false;
     };
 
-    // 0. Авторитетная проверка через перехваченное состояние Spotify Player (5071.js)
     if (window.__spotify_state) {
       try {
         const s = window.__spotify_state;
@@ -618,13 +589,12 @@ export const adblockPlugin = {
           ...(s.restrictions?.disallowSeekingReasons || []),
           ...(s.restrictions?.disallow_seeking_reasons || [])
         ];
-        // Точное совпадение строки 'ad_disallow' (НИКОГДА не regex /ad/i, который ошибочно ловит 'loading')
+        
         if (reasons.includes('ad_disallow')) return true;
         if (s.ad && typeof s.ad === 'object' && Object.keys(s.ad).length > 0 && s.ad.type === 'ad') return true;
       } catch (e) {}
     }
 
-    // 1. Авторитетная проверка через метаданные Spicetify Player
     if (window.Spicetify && window.Spicetify.Player) {
       try {
         const data = window.Spicetify.Player.data;
@@ -643,7 +613,6 @@ export const adblockPlugin = {
       } catch (e) {}
     }
 
-    // 2. Проверка ссылки трека и элементов рекламы в DOM
     if (typeof document !== 'undefined' && document && typeof document.querySelector === 'function') {
       try {
         const titleLink = document.querySelector('[data-testid="context-item-info-title"]');
@@ -668,7 +637,6 @@ export const adblockPlugin = {
           }
         }
 
-        // Дополнительные ad-специфичные UI элементы Spotify во время рекламных пауз
         if (
           document.querySelector('[data-testid="skippable-ad-delay"]') ||
           document.querySelector('[data-testid="skippable-ad-skip-button"]') ||
@@ -687,28 +655,25 @@ export const adblockPlugin = {
   },
 
   handleAdDetected() {
-    // Шаг 1: Моментальное глушение звука (буфер безопасности)
+    
     this.muteBuffer();
     try {
       if (document.body) document.body.classList.add('mod-ad-playing');
     } catch (e) {}
 
-    // Определяем текущий URI трека/рекламы для дедупликации
     const track = (window.Spicetify && window.Spicetify.Player && window.Spicetify.Player.data &&
                    (window.Spicetify.Player.data.item || window.Spicetify.Player.data.track)) ||
                   (window.__spotify_state && (window.__spotify_state.item || window.__spotify_state.track));
     const trackUri = (track && typeof track.uri === 'string' && track.uri.length > 0) ? track.uri : null;
 
-    // Мьютекс: если пропуск уже в процессе выполнения, предотвращаем параллельные вызовы
     if (this.isSkipping) return;
 
     const now = Date.now();
-    // Дедупликация: не отправлять повторный пропуск для того же самого рекламного URI в течение 2000мс
+    
     if (trackUri && this.lastSkippedTrackUri === trackUri && (now - this.lastSkipTimestamp < 2000)) {
       return;
     }
 
-    // Дебаунс: минимум 250мс между пропусками и ограничение 5 последовательных пропусков (защита от зацикливания)
     if (now - this.lastSkipTimestamp < 250 || this.consecutiveSkips >= 5) {
       return;
     }
@@ -735,7 +700,6 @@ export const adblockPlugin = {
       domMuteBtn.getAttribute('aria-label') === 'Включить звук'
     );
 
-    // Проверяем, не заглушен ли звук самим пользователем (независимые проверки состояния)
     let alreadyMuted = false;
     if (player && typeof player.getMute === 'function') {
       try { alreadyMuted = Boolean(player.getMute()); } catch (e) {}
@@ -749,12 +713,11 @@ export const adblockPlugin = {
 
     if (alreadyMuted) {
       this.wasAlreadyMuted = true;
-      return; // Пользователь сам выключил звук - сохраняем и не вмешиваемся
+      return; 
     }
 
     this.wasAlreadyMuted = false;
 
-    // Сохраняем исходную ненулевую громкость
     if (player && typeof player.getVolume === 'function') {
       try {
         const v = player.getVolume();
@@ -764,7 +727,6 @@ export const adblockPlugin = {
       } catch (e) {}
     }
 
-    // Уровень 1: Spicetify Player mute API
     let didMute = false;
     if (player && typeof player.mute === 'function') {
       try {
@@ -774,7 +736,6 @@ export const adblockPlugin = {
       } catch (e) {}
     }
 
-    // Уровень 2: Spicetify Player setVolume(0)
     if (!didMute && player && typeof player.setVolume === 'function') {
       try {
         player.setVolume(0);
@@ -783,7 +744,6 @@ export const adblockPlugin = {
       } catch (e) {}
     }
 
-    // Уровень 3: DOM кнопка громкости
     if (!didMute && domMuteBtn && !isDomMuted) {
       try {
         domMuteBtn.click();
@@ -792,7 +752,6 @@ export const adblockPlugin = {
       } catch (e) {}
     }
 
-    // Уровень 4: HTML5 теги audio / video
     try {
       const mediaElements = document.querySelectorAll('audio, video');
       mediaElements.forEach(m => {
@@ -805,14 +764,12 @@ export const adblockPlugin = {
       this.isMutedByMod = true;
     }
 
-    // Запуск сторожевого таймера безопасности (предотвращение залипания громкости)
     this.armSafetyWatchdog();
   },
 
   triggerInstantSkip() {
     console.log('[Mod:Adblock] Audio ad detected! Triggering clean single skip...');
 
-    // Tier 1: Spicetify.Player.skipAd()
     if (window.Spicetify && window.Spicetify.Player && typeof window.Spicetify.Player.skipAd === 'function') {
       try {
         window.Spicetify.Player.skipAd();
@@ -823,7 +780,6 @@ export const adblockPlugin = {
       }
     }
 
-    // Tier 2: Spicetify.Player.next()
     if (window.Spicetify && window.Spicetify.Player && typeof window.Spicetify.Player.next === 'function') {
       try {
         window.Spicetify.Player.next();
@@ -834,7 +790,6 @@ export const adblockPlugin = {
       }
     }
 
-    // Tier 3: Spicetify.Platform.PlayerAPI.skipToNext()
     if (window.Spicetify && window.Spicetify.Platform && window.Spicetify.Platform.PlayerAPI && 
         typeof window.Spicetify.Platform.PlayerAPI.skipToNext === 'function') {
       try {
@@ -846,7 +801,6 @@ export const adblockPlugin = {
       }
     }
 
-    // Tier 4: Spicetify.Player.seek(1) (Fast-forward fallback)
     if (window.Spicetify && window.Spicetify.Player && typeof window.Spicetify.Player.seek === 'function') {
       try {
         window.Spicetify.Player.seek(1);
@@ -857,7 +811,6 @@ export const adblockPlugin = {
       }
     }
 
-    // Tier 5: Direct native Spotify Player hook from 6590.js / 5071.js
     if (window.__spotify_player && typeof window.__spotify_player.skipToNext === 'function') {
       try {
         window.__spotify_player.skipToNext();
@@ -868,7 +821,6 @@ export const adblockPlugin = {
       }
     }
 
-    // Tier 6: DOM Skippable Ad Skip Button click (rendered by 4468.js)
     try {
       const adSkipBtn = document.querySelector('button[data-testid="skippable-ad-skip-button"]');
       if (adSkipBtn) {
@@ -884,7 +836,6 @@ export const adblockPlugin = {
       }
     } catch (e) {}
 
-    // Tier 7: DOM Next Button Force Click & React Props Fallback
     try {
       const nextBtn = document.querySelector('button[data-testid="control-button-skip-forward"]');
       if (nextBtn) {
@@ -896,7 +847,6 @@ export const adblockPlugin = {
           nextBtn.setAttribute('aria-disabled', 'false');
         }
 
-        // Вызов через React Fiber Props, если доступно
         const reactPropsKey = Object.keys(nextBtn).find(k => k.startsWith('__reactProps$'));
         if (reactPropsKey && nextBtn[reactPropsKey] && typeof nextBtn[reactPropsKey].onClick === 'function') {
           try {
@@ -928,7 +878,6 @@ export const adblockPlugin = {
     const player = window.Spicetify && window.Spicetify.Player;
     const domMuteBtn = document.querySelector('button[data-testid="volume-bar-toggle-mute-button"]');
 
-    // 1. Spicetify Player unmute API
     if (player && typeof player.unmute === 'function') {
       try {
         player.unmute();
@@ -936,7 +885,6 @@ export const adblockPlugin = {
       } catch (e) {}
     }
 
-    // 2. Spicetify Player setVolume (восстанавливаем кэшированную или нормальную громкость)
     if (player && typeof player.setVolume === 'function') {
       try {
         const targetVol = (typeof this.savedVolume === 'number' && this.savedVolume > 0)
@@ -947,7 +895,6 @@ export const adblockPlugin = {
       } catch (e) {}
     }
 
-    // 3. DOM кнопка громкости
     if (domMuteBtn) {
       const isDomMuted = domMuteBtn.getAttribute('aria-label') === 'Unmute' ||
                          domMuteBtn.getAttribute('aria-label') === 'Включить звук';
@@ -959,7 +906,6 @@ export const adblockPlugin = {
       }
     }
 
-    // 4. HTML5 media unmute
     try {
       const mediaElements = document.querySelectorAll('audio, video');
       mediaElements.forEach(m => {
@@ -976,10 +922,9 @@ export const adblockPlugin = {
   },
 
   armSafetyWatchdog() {
-    // Не сбрасываем уже работающий сторожевой таймер при частых опросах
+    
     if (this.safetyWatchdogTimer) return;
 
-    // Сторожевой таймер безопасности: безусловное восстановление звука через 2000мс
     this.safetyWatchdogTimer = setTimeout(() => {
       this.safetyWatchdogTimer = null;
       if (this.isMutedByMod) {
@@ -1001,11 +946,8 @@ export const adblockPlugin = {
   }
 };
 
-// Synchronously initialize the network interceptor immediately upon module evaluation
-// so that window.fetch and XMLHttpRequest are hooked before any client network traffic starts.
 try {
   adblockPlugin.initNetworkInterceptor();
 } catch (e) {
-  // Silent fallback in non-browser or partial testing environments
+  
 }
-
