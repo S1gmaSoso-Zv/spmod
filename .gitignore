@@ -1,11 +1,8 @@
-# Logs & runtime data
 *.log
 *.log.*
 companion/*.log
 companion/*.log.*
 companion/playlists.json
-
-# Test, scratch & temporary debug scripts
 check_*.ps1
 test_*.ps1
 diag_*.ps1
@@ -39,14 +36,11 @@ dummy_*.*
 *.m4a
 *.mp3
 Spotify Downloads/
-
-# Backups & local agent artifacts
 backup/
 .agents/
 extracted_test/
 *.bak
-
-# Node & OS
+*.zip
 node_modules/
 .DS_Store
 Thumbs.db
